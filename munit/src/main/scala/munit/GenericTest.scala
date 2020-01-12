@@ -15,6 +15,8 @@ class GenericTest[T](
     val tags: Set[Tag],
     val location: Location
 ) extends Serializable {
+  def this(name: String, body: () => T)(implicit loc: Location) =
+    this(name, body, Set.empty, loc)
   def withName(newName: String): GenericTest[T] =
     copy(name = newName)
   def withBody[A](newBody: () => A): GenericTest[A] =

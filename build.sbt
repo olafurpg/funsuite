@@ -83,3 +83,16 @@ lazy val tests = project
     ),
     skip in publish := true
   )
+
+lazy val docs = project
+  .in(file("munit-docs"))
+  .dependsOn(munit)
+  .enablePlugins(MdocPlugin, DocusaurusPlugin)
+  .settings(
+    mdocOut :=
+      baseDirectory.in(ThisBuild).value / "website" / "target" / "docs",
+    mdocVariables := Map(
+      "VERSION" -> version.value.replaceFirst("\\+.*", "")
+    ),
+    fork := false
+  )

@@ -32,8 +32,8 @@ object DiffProductFrameworkSuite
          |   friends = List(
          |+    1,
          |     2
-         |10:     val john2 = User("John", 43, 2.to(2).toList)
-         |11:     assertEqual(john2, john)
-         |12:   }
+         |10:    val john2 = User("John", 43, 2.to(2).toList)
+         |11:    assertEqual(john2, john)
+         |12:  }
          |""".stripMargin
     )
