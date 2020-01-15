@@ -1,3 +1,5 @@
+import sbtcrossproject.CrossPlugin.autoImport.crossProject
+import sbtcrossproject.CrossPlugin.autoImport.CrossType
 def scala213 = "2.13.1"
 def scala212 = "2.12.10"
 def scala211 = "2.11.12"
@@ -18,7 +20,6 @@ inThisBuild(
       )
     ),
     scalaVersion := scala213,
-    fork := true,
     testFrameworks := List(
       new TestFramework("munit.Framework")
     ),
@@ -33,7 +34,7 @@ inThisBuild(
 skip in publish := true
 crossScalaVersions := List()
 
-lazy val munit = project
+lazy val munit = crossProject(JSPlatform, JVMPlatform)
   .settings(
     crossScalaVersions := List(scala213, scala212, scala211, dotty),
     unmanagedSourceDirectories.in(Compile) ++= {
@@ -66,7 +67,9 @@ lazy val munit = project
             "-Ywarn-unused:imports"
           )
       }
-    },
+    }
+  )
+  .jvmSettings(
     libraryDependencies ++= List(
       "junit" % "junit" % "4.13",
       "com.geirsson" % "junit-interface" % "0.11.6",
@@ -79,8 +82,10 @@ lazy val munit = project
       }
     }
   )
+lazy val munitJVM = munit.jvm
+lazy val munitJS = munit.js
 
-lazy val tests = project
+lazy val tests = crossProject(JSPlatform, JVMPlatform)
   .dependsOn(munit)
   .enablePlugins(BuildInfoPlugin)
   .settings(
@@ -92,10 +97,13 @@ lazy val tests = project
     ),
     skip in publish := true
   )
+  .jvmSettings(
+    fork := true
+  )
 
 lazy val docs = project
   .in(file("munit-docs"))
-  .dependsOn(munit)
+  .dependsOn(munitJVM)
   .enablePlugins(MdocPlugin, DocusaurusPlugin)
   .settings(
     crossScalaVersions := List(scala213),
