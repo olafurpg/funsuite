@@ -35,8 +35,13 @@ inThisBuild(
 skip in publish := true
 crossScalaVersions := List()
 val isPreScala213 = Set("2.11", "2.12")
+val scala2Versions = List(scala211, scala212, scala213)
+val scalaVersions = scala2Versions ++ List(dotty)
 def isScala2(binaryVersion: String): Boolean = binaryVersion.startsWith("2")
 def isScala3(binaryVersion: String): Boolean = binaryVersion.startsWith("0")
+val sharedJSSettings = List(
+  crossScalaVersions := scala2Versions
+)
 
 lazy val munit = crossProject(JSPlatform, JVMPlatform)
   .settings(
@@ -73,6 +78,7 @@ lazy val munit = crossProject(JSPlatform, JVMPlatform)
       }
     }
   )
+  .jsSettings(sharedJSSettings)
   .jvmSettings(
     libraryDependencies ++= List(
       "junit" % "junit" % "4.13",
@@ -96,11 +102,13 @@ lazy val tests = crossProject(JSPlatform, JVMPlatform)
     crossScalaVersions := List(scala213, scala212, scala211, dotty),
     buildInfoPackage := "munit",
     buildInfoKeys := Seq[BuildInfoKey](
-      "sourceDirectory" -> sourceDirectory.in(Compile).value,
+      "sourceDirectory" ->
+        baseDirectory.in(ThisBuild).value / "tests" / "shared" / "src" / "main",
       scalaVersion
     ),
     skip in publish := true
   )
+  .jsSettings(sharedJSSettings)
   .jvmSettings(
     fork := true
   )
