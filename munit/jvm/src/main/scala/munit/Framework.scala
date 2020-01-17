@@ -11,6 +11,7 @@ class Framework extends com.geirsson.junit.JUnitFramework {
     "munit.Suite",
     "munit.MUnitRunner"
   )
+  override val name = "munit"
   override val fingerprints: Array[Fingerprint] = Array(
     munitFingerprint,
     new SubclassFingerprint {
