@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
   * Extend this class if you don't need the functionality in FunSuite.
   */
 @RunWith(classOf[MUnitRunner])
-abstract class Suite {
+abstract class Suite extends PlatformSuite {
 
   /** The value produced by test bodies. */
   type TestValue

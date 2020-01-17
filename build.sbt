@@ -90,7 +90,8 @@ lazy val munit = crossProject(JSPlatform, JVMPlatform)
   .jsSettings(
     sharedJSSettings,
     libraryDependencies ++= List(
-      "org.scala-js" %% "scalajs-test-interface" % scalaJSVersion
+      "org.scala-js" %% "scalajs-test-interface" % scalaJSVersion,
+      "org.scala-js" %% "scalajs-junit-test-runtime" % scalaJSVersion
     )
   )
   .jvmSettings(
