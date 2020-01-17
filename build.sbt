@@ -1,5 +1,6 @@
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 import sbtcrossproject.CrossPlugin.autoImport.CrossType
+import scala.collection.mutable
 def scala213 = "2.13.1"
 def scala212 = "2.12.10"
 def scala211 = "2.11.12"
@@ -33,22 +34,25 @@ inThisBuild(
 
 skip in publish := true
 crossScalaVersions := List()
+val isPreScala213 = Set("2.11", "2.12")
+val isScala2 = Set("2.11", "2.12")
+val isScala3 = Set("0.21")
 
 lazy val munit = crossProject(JSPlatform, JVMPlatform)
   .settings(
     crossScalaVersions := List(scala213, scala212, scala211, dotty),
     unmanagedSourceDirectories.in(Compile) ++= {
-      scalaBinaryVersion.value match {
-        case "2.12" | "2.11" =>
-          List(
-            sourceDirectory.in(Compile).value / "scala-pre-2.13",
-            sourceDirectory.in(Compile).value / "scala-2"
-          )
-        case "2.13" =>
-          List(sourceDirectory.in(Compile).value / "scala-2")
-        case _ =>
-          Nil
+      val base =
+        baseDirectory.in(ThisBuild).value / "munit" / "shared" / "src" / "main"
+      val result = mutable.ListBuffer.empty[File]
+      val binaryVersion = scalaBinaryVersion.value
+      if (isPreScala213(binaryVersion)) {
+        result += sourceDirectory.in(Compile).value / "scala-pre-2.13"
       }
+      if (isScala2(binaryVersion)) {
+        result += sourceDirectory.in(Compile).value / "scala-2"
+      }
+      result.toList
     },
     scalacOptions ++= {
       scalaBinaryVersion.value match {
