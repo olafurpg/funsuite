@@ -70,11 +70,18 @@ lazy val munit = crossProject(JSPlatform, JVMPlatform)
         case _ =>
           List(
             "-target:jvm-1.8",
-            "-Yrangepos",
+            "-Yrangepos"
             // -Xlint is unusable because of
             // https://github.com/scala/bug/issues/10448
-            "-Ywarn-unused:imports"
+            // "-Ywarn-unused:imports"
           )
+      }
+    },
+    libraryDependencies ++= {
+      scalaBinaryVersion.value match {
+        case "0.21" => Nil
+        case _ =>
+          List("org.scala-lang" % "scala-reflect" % scalaVersion.value)
       }
     }
   )
@@ -84,13 +91,7 @@ lazy val munit = crossProject(JSPlatform, JVMPlatform)
       "junit" % "junit" % "4.13",
       "com.geirsson" % "junit-interface" % "0.11.6",
       "com.googlecode.java-diff-utils" % "diffutils" % "1.3.0"
-    ) ++ {
-      scalaBinaryVersion.value match {
-        case "0.21" => Nil
-        case _ =>
-          List("org.scala-lang" % "scala-reflect" % scalaVersion.value)
-      }
-    }
+    )
   )
 lazy val munitJVM = munit.jvm
 lazy val munitJS = munit.js
