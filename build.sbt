@@ -35,8 +35,8 @@ inThisBuild(
 skip in publish := true
 crossScalaVersions := List()
 val isPreScala213 = Set("2.11", "2.12")
-val isScala2 = Set("2.11", "2.12")
-val isScala3 = Set("0.21")
+def isScala2(binaryVersion: String): Boolean = binaryVersion.startsWith("2")
+def isScala3(binaryVersion: String): Boolean = binaryVersion.startsWith("0")
 
 lazy val munit = crossProject(JSPlatform, JVMPlatform)
   .settings(
@@ -47,10 +47,10 @@ lazy val munit = crossProject(JSPlatform, JVMPlatform)
       val result = mutable.ListBuffer.empty[File]
       val binaryVersion = scalaBinaryVersion.value
       if (isPreScala213(binaryVersion)) {
-        result += sourceDirectory.in(Compile).value / "scala-pre-2.13"
+        result += base / "scala-pre-2.13"
       }
       if (isScala2(binaryVersion)) {
-        result += sourceDirectory.in(Compile).value / "scala-2"
+        result += base / "scala-2"
       }
       result.toList
     },
