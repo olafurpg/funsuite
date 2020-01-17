@@ -1,5 +1,6 @@
 package munit
 
+import munit.internal.PlatformCompat
 import org.junit.runner.Description
 import org.junit.runner.notification.RunNotifier
 import java.lang.reflect.Modifier
@@ -60,10 +61,6 @@ class MUnitRunner(val cls: Class[_ <: Suite]) extends Runner with Filterable {
         Nil
     }
     description
-  }
-
-  def isIgnored(): Boolean = {
-    cls.getAnnotationsByType(classOf[IgnoreSuite]).nonEmpty
   }
 
   override def run(notifier: RunNotifier): Unit = {
@@ -172,7 +169,7 @@ class MUnitRunner(val cls: Class[_ <: Suite]) extends Runner with Filterable {
   }
 
   def runAll(notifier: RunNotifier): Unit = {
-    if (isIgnored()) {
+    if (PlatformCompat.isIgnoreSuite(cls)) {
       notifier.fireTestIgnored(suiteDescription)
       return
     }
