@@ -19,12 +19,13 @@ class SbtRunner(
     None
   }
   def serializeTask(task: Task, serializer: TaskDef => String): String = {
-    println("serializeTask")
-    ""
+    serializer(task.taskDef())
   }
   def deserializeTask(task: String, deserializer: String => TaskDef): Task = {
-    println(s"deserializeTask: $task")
-    new SbtTask(deserializer(""), (_, _) => Future.successful(()))
+    new SbtTask(deserializer(task), (loggers, eventHandler) => {
+      println(s"deserialize: $task")
+      Future.successful(())
+    })
   }
   def done: String = ""
   def tasks(taskDefs: Array[TaskDef]): Array[Task] = {
@@ -34,7 +35,7 @@ class SbtRunner(
           new SbtTask(
             task,
             (loggers, eventHandler) => {
-              println("execute")
+              println(s"execute: ${task.fullyQualifiedName()}")
               Future.successful(())
             }
           )
