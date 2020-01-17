@@ -2,7 +2,7 @@ import sbtcrossproject.CrossPlugin.autoImport.crossProject
 import sbtcrossproject.CrossPlugin.autoImport.CrossType
 import scala.collection.mutable
 val scalaJSVersion =
-  Option(System.getenv("SCALAJS_VERSION")).getOrElse("0.6.31")
+  Option(System.getenv("SCALAJS_VERSION")).getOrElse("1.0.0-RC1")
 def scala213 = "2.13.1"
 def scala212 = "2.12.10"
 def scala211 = "2.11.12"

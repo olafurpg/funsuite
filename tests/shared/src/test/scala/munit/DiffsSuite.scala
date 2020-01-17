@@ -1,6 +1,7 @@
 package munit
+import munit.internal.MUnitBootstrapper
 
-class DiffsSuite extends FunSuite {
+class DiffsSuite extends FunSuite { self =>
   test("ansi") {
     val diff1 = Diffs.unifiedDiff("a", "b")
     val diff2 = Diffs.unifiedDiff("a", "c")

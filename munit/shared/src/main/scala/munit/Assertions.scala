@@ -86,14 +86,14 @@ trait Assertions {
     try {
       body
       fail(
-        s"expected exception of type '${ev.runtimeClass.getCanonicalName()}' but body evaluated successfully"
+        s"expected exception of type '${ev.runtimeClass.getName()}' but body evaluated successfully"
       )
     } catch {
       case e: FailException => throw e
       case NonFatal(e) =>
         if (!ev.runtimeClass.isAssignableFrom(e.getClass())) {
-          val obtained = e.getClass().getCanonicalName()
-          val expected = ev.runtimeClass.getCanonicalName()
+          val obtained = e.getClass().getName()
+          val expected = ev.runtimeClass.getName()
           throw new FailException(
             s"intercept failed, exception '$obtained' is not a subtype of '$expected",
             cause = e,

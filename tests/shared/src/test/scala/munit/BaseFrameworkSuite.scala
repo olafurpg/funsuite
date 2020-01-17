@@ -38,6 +38,7 @@ abstract class BaseFrameworkSuite extends FunSuite {
         def trace(x: Throwable): Unit = out.println(x)
       }
       val framework = new Framework
+      new ScalaJSClassLoader
       val runner = framework.runner(
         Array("+l"), // use sbt loggers
         Array(),
@@ -46,7 +47,7 @@ abstract class BaseFrameworkSuite extends FunSuite {
       val tasks = runner.tasks(
         Array(
           new TaskDef(
-            cls.getCanonicalName(),
+            cls.getName(),
             framework.munitFingerprint,
             false,
             Array()

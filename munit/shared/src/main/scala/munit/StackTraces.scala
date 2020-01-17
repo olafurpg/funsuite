@@ -27,7 +27,7 @@ object StackTraces {
     loop(ex)
     ex
   }
-  private val className = classOf[StackTraces].getCanonicalName() + "$"
+  private val className = "munit.StackTraces$"
   def filterCallStack(
       stack: Array[StackTraceElement]
   ): Array[StackTraceElement] = {
