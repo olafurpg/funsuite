@@ -21,7 +21,7 @@ class PrintersSuite extends FunSuite { self =>
   check(
     "basic",
     "a",
-    "\"ab\""
+    "\"a\""
   )
 
   check(

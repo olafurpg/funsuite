@@ -43,7 +43,7 @@ def isScala2(binaryVersion: String): Boolean = binaryVersion.startsWith("2")
 def isScala3(binaryVersion: String): Boolean = binaryVersion.startsWith("0")
 val sharedJSSettings = List(
   crossScalaVersions := scala2Versions,
-  scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)),
+  scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule))
 )
 
 lazy val munit = crossProject(JSPlatform, JVMPlatform)
@@ -98,8 +98,7 @@ lazy val munit = crossProject(JSPlatform, JVMPlatform)
   .jvmSettings(
     libraryDependencies ++= List(
       "junit" % "junit" % "4.13",
-      "com.geirsson" % "junit-interface" % "0.11.6",
-      "com.googlecode.java-diff-utils" % "diffutils" % "1.3.0"
+      "com.geirsson" % "junit-interface" % "0.11.6"
     )
   )
 lazy val munitJVM = munit.jvm

@@ -1,10 +1,10 @@
-package difflib.myers
+package munit.difflib.myers
 
 sealed abstract class PathNode(val i: Int, val j: Int, val prev: PathNode) {
 
   def isSnake: Boolean
   final def isBootstrap: Boolean = {
-    i < 0 && j < 0
+    i < 0 || j < 0
   }
   final def previousSnake: PathNode = {
     if (isBootstrap) null

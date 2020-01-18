@@ -1,10 +1,10 @@
-package difflib
+package munit.difflib
 
 import java.util.{ArrayList, List}
 import java.util
 
-import difflib.myers.MyersDiff
 import munit.Printers
+import munit.difflib.myers.MyersDiff
 
 object DiffUtils {
   def generateUnifiedDiff(
@@ -18,10 +18,13 @@ object DiffUtils {
       val ret: util.List[String] = new util.ArrayList()
       ret.add("--- " + original)
       ret.add("+++ " + revised)
-      val patchDeltas: util.List[Delta[String]] = new util.ArrayList()
+      val patchDeltas: util.List[Delta[String]] =
+        new util.ArrayList(patch.getDeltas)
       val deltas: util.List[Delta[String]] = new util.ArrayList()
+
       var delta = patchDeltas.get(0)
       deltas.add(delta)
+
       if (patchDeltas.size() > 1) {
         for (i <- 1 until patchDeltas.size) {
           val position = delta.getOriginal.getPosition // store
@@ -34,9 +37,10 @@ object DiffUtils {
           // position.
           // And if it is, add it to the current set
           val nextDelta = patchDeltas.get(i)
-          if ((position + delta.getOriginal.size + contextSize) >= (nextDelta.getOriginal.getPosition - contextSize))
+          if ((position + delta.getOriginal.size + contextSize) >=
+                (nextDelta.getOriginal.getPosition - contextSize)) {
             deltas.add(nextDelta)
-          else { // if it isn't, output the current set,
+          } else { // if it isn't, output the current set,
             // then create a new set and add the current Delta to
             // it.
             val curBlock = processDeltas(originalLines, deltas, contextSize)
@@ -47,6 +51,8 @@ object DiffUtils {
           delta = nextDelta
         }
       }
+      val curBlock = processDeltas(originalLines, deltas, contextSize)
+      ret.addAll(curBlock)
       ret
     } else {
       new util.ArrayList[String]()

@@ -1,4 +1,4 @@
-package difflib
+package munit.difflib
 
 sealed abstract class Delta[T](original: Chunk[T], revised: Chunk[T]) {
 

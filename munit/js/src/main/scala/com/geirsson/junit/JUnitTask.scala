@@ -79,7 +79,6 @@ private[junit] final class JUnitTask(
             reporter.reportIgnored(description.getMethodName)
           }
           override def fireTestFinished(description: Description): Unit = {
-            println(s"test finished: ${description.getMethodName}")
             description.getMethodName match {
               case Some(methodName) =>
                 total += 1
@@ -95,7 +94,6 @@ private[junit] final class JUnitTask(
             }
           }
           override def fireTestSuiteFinished(description: Description): Unit = {
-            println(s"suite finished: ${description.getMethodName}")
             reporter.reportRunFinished(
               isFailed.size,
               ignored,
@@ -108,7 +106,6 @@ private[junit] final class JUnitTask(
             failure.description.getMethodName match {
               case Some(methodName) =>
                 isFailed += methodName
-                println(s"failure: $methodName")
                 failure.ex.printStackTrace()
                 reporter.reportErrors(
                   failure.description.getTestClass.fold("")(_.getName),

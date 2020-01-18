@@ -1,4 +1,4 @@
-package difflib
+package munit.difflib
 
 import java.util
 
