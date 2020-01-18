@@ -3,7 +3,8 @@ package munit.difflib.myers
 import java.util
 import munit.Printers
 
-class MyersDiff[T](equalizer: Equalizer[T]) extends munit.difflib.DiffAlgorithm[T] {
+class MyersDiff[T](equalizer: Equalizer[T])
+    extends munit.difflib.DiffAlgorithm[T] {
   def this() = this(Equalizer.default[T])
   override def diff(
       original: util.List[T],
@@ -37,8 +38,10 @@ class MyersDiff[T](equalizer: Equalizer[T]) extends munit.difflib.DiffAlgorithm[
       path = path.prev
       val ianchor = path.i
       val janchor = path.j
-      val original = new munit.difflib.Chunk[T](ianchor, copyOfRange(orig, ianchor, i))
-      val revised = new munit.difflib.Chunk[T](janchor, copyOfRange(rev, janchor, j))
+      val original =
+        new munit.difflib.Chunk[T](ianchor, copyOfRange(orig, ianchor, i))
+      val revised =
+        new munit.difflib.Chunk[T](janchor, copyOfRange(rev, janchor, j))
       val delta: munit.difflib.Delta[T] =
         if (original.size == 0 && revised.size != 0) {
           new munit.difflib.InsertDelta[T](original, revised)

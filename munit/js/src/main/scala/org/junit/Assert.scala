@@ -410,7 +410,7 @@ object Assert {
   private def failNotEquals(message: String, expected: Any, actual: Any): Unit =
     fail(format(message, expected, actual))
 
-  private[junit] def format(
+  def format(
       message: String,
       expected: Any,
       actual: Any

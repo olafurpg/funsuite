@@ -30,7 +30,7 @@ object ComparisonFailure {
       }
     }
 
-    private[junit] def sharedPrefix(): String = {
+    def sharedPrefix(): String = {
       val end: Int = Math.min(expected.length, actual.length)
       (0 until end)
         .find(i => expected.charAt(i) != actual.charAt(i))

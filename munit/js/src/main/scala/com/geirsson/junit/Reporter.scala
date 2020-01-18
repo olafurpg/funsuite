@@ -15,7 +15,7 @@ package com.geirsson.junit
 import org.junit._
 import sbt.testing._
 
-private[junit] final class Reporter(
+final class Reporter(
     eventHandler: EventHandler,
     loggers: Array[Logger],
     settings: RunSettings,
@@ -70,7 +70,7 @@ private[junit] final class Reporter(
       timeInSeconds: Double,
       errors: List[Throwable]
   ): Unit = {
-    def emit(t: Throwable) = {
+    def emit(t: Throwable): Unit = {
       logTestException(_.error, prefix, method, t, timeInSeconds)
       trace(t)
     }
@@ -301,6 +301,6 @@ private[junit] final class Reporter(
   }
 }
 
-private[junit] object Reporter {
+object Reporter {
   type Level = Logger => (String => Unit)
 }

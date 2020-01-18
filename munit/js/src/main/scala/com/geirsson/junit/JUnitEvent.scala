@@ -14,7 +14,7 @@ package com.geirsson.junit
 
 import sbt.testing._
 
-private[junit] final class JUnitEvent(
+final class JUnitEvent(
     taskDef: TaskDef,
     val status: Status,
     val selector: Selector,
