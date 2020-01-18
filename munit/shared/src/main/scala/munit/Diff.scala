@@ -71,7 +71,6 @@ class Diff(val obtained: String, val expected: String) extends Serializable {
       revised: Seq[String]
   ): String = {
     val diff = difflib.DiffUtils.diff(original.asJava, revised.asJava)
-    Printers.log(diff)
     val result =
       if (diff.getDeltas.isEmpty) ""
       else {

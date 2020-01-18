@@ -5,13 +5,23 @@ import java.net.URI
 import java.nio.file.Path
 import java.util
 import scala.collection.JavaConverters._
+import java.nio.file.FileSystem
+import java.nio.file.LinkOption
+import java.nio.file.{WatchKey, WatchService}
+import java.nio.file.WatchEvent.{Kind, Modifier}
+import java.nio.file.{WatchKey, WatchService}
+import java.nio.file.WatchEvent.Kind
 
 // Rough implementation of java.nio.Path, should work similarly for the happy
 // path but has undefined behavior for error handling.
 case class NodeNIOPath(filename: String) extends Path {
   private[this] val escapedSeparator =
     java.util.regex.Pattern.quote(File.separator)
-
+  def getFileSystem(): FileSystem = ???
+  def toRealPath(x: LinkOption*): Path = ???
+  def register(x: WatchService, y: Array[Kind[_]], z: Modifier*): WatchKey = ???
+  def register(x: WatchService, y: Kind[_]*): WatchKey = ???
+  def compareTo(x: Path): Int = ???
   private def adjustIndex(idx: Int): Int =
     if (isAbsolute) idx + 1 else idx
   override def subpath(beginIndex: Int, endIndex: Int): Path =

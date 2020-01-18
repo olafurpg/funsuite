@@ -14,7 +14,6 @@ class PrintersSuite extends FunSuite { self =>
     test(name) {
       assume(isEnabled, "disabled test")
       val obtained = Printers.print(original)
-      Printers.log(obtained)
       assertNoDiff(obtained, expected)
     }
   }

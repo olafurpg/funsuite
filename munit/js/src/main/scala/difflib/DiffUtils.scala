@@ -14,7 +14,6 @@ object DiffUtils {
       patch: Patch[String],
       contextSize: Int
   ): util.List[String] = {
-    Printers.log(patch)
     if (!patch.getDeltas.isEmpty) {
       val ret: util.List[String] = new util.ArrayList()
       ret.add("--- " + original)

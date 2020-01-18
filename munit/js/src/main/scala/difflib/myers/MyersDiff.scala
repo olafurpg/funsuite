@@ -12,6 +12,7 @@ import difflib.{
   InsertDelta,
   Patch
 }
+import munit.Printers
 
 class MyersDiff[T](equalizer: Equalizer[T]) extends DiffAlgorithm[T] {
   def this() = this(Equalizer.default[T])
@@ -35,7 +36,9 @@ class MyersDiff[T](equalizer: Equalizer[T]) extends DiffAlgorithm[T] {
     var path = _path
     val patch = new Patch[T]
     println(s"PATH: $path")
+    println(s"PATH: ${path.isSnake}")
     if (path.isSnake) path = path.prev
+    println(s"PATH: ${path.prev.j}")
     while (path != null &&
            path.prev != null &&
            path.prev.j >= 0) {
@@ -51,14 +54,15 @@ class MyersDiff[T](equalizer: Equalizer[T]) extends DiffAlgorithm[T] {
       val janchor = path.j
       val original = new Chunk[T](ianchor, copyOfRange(orig, ianchor, i))
       val revised = new Chunk[T](janchor, copyOfRange(rev, janchor, j))
-      var delta: Delta[T] = null
-      if (original.size == 0 && revised.size != 0) {
-        delta = new InsertDelta[T](original, revised)
-      } else if (original.size > 0 && revised.size == 0) {
-        delta = new DeleteDelta[T](original, revised)
-      } else {
-        delta = new ChangeDelta[T](original, revised)
-      }
+      val delta: Delta[T] =
+        if (original.size == 0 && revised.size != 0) {
+          new InsertDelta[T](original, revised)
+        } else if (original.size > 0 && revised.size == 0) {
+          new DeleteDelta[T](original, revised)
+        } else {
+          new ChangeDelta[T](original, revised)
+        }
+      println(s"DELTA: $delta")
       patch.addDelta(delta)
       if (path.isSnake) {
         path = path.prev
@@ -70,19 +74,21 @@ class MyersDiff[T](equalizer: Equalizer[T]) extends DiffAlgorithm[T] {
   private def copyOfRange(original: util.List[T], fromIndex: Int, to: Int) =
     new util.ArrayList[T](original.subList(fromIndex, to))
 
-  private def buildPath(
+  def buildPath(
       orig: util.List[T],
       rev: util.List[T]
   ): PathNode = {
     val N = orig.size()
     val M = rev.size()
     val MAX = N + M + 1
-    val size = 1 + (2 * MAX)
+    val size = 1 + 2 * MAX
     val middle = size / 2
+    println(s"MIDDLE: $middle")
     val diagonal = new Array[PathNode](size)
 
     diagonal(middle + 1) = new Snake(0, -1, null)
-    for (d <- 0 until MAX) {
+    var d = 0
+    while (d < MAX) {
       var k = -d
       while (k <= d) {
         val kmiddle = middle + k
@@ -106,17 +112,25 @@ class MyersDiff[T](equalizer: Equalizer[T]) extends DiffAlgorithm[T] {
         // that's why there's no +1 when indexing the sequences
         while (i < N &&
                j < M &&
-               equals(orig.get(i), rev.get(j))) {
+               equalizer.equals(orig.get(i), rev.get(j))) {
           i += 1
           j += 1
         }
-        if (i > node.i) node = new Snake(i, j, node)
+        if (i > node.i) {
+          node = new Snake(i, j, node)
+        }
         diagonal(kmiddle) = node
-        if (i >= N && j >= M) return diagonal(kmiddle)
+        if (i >= N && j >= M) {
+          println("DIAGNOS : " + Printers.print(diagonal))
+          println("DIAGNOS : " + kmiddle)
+          println("DIAGNOS : " + diagonal(kmiddle))
+          return diagonal(kmiddle)
+        }
 
         k += 2
       }
       diagonal(middle + d - 1) = null
+      d += 1
     }
     // According to Myers, this cannot happen
     throw new DifferentiationFailedException("could not find a diff path")
