@@ -15,4 +15,11 @@ object DiffUtils {
       revised: ju.List[String]
   ): Patch[String] =
     ???
+  private def diff(
+      original: ju.List[String],
+      revised: ju.List[String],
+      algorithm: DiffAlgorithm[String]
+  ): Patch[String] = {
+    algorithm.diff(original, revised)
+  }
 }
