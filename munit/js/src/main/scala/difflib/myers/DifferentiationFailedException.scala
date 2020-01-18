@@ -1,3 +1,3 @@
 package difflib.myers
 
-class DifferentiationFailedException extends Exception {}
+class DifferentiationFailedException(message: String) extends Exception(message)

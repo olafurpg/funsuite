@@ -1,6 +1,7 @@
 package munit
 
 import scala.util.Properties
+import scala.util.control.NonFatal
 
 class PrintersSuite extends FunSuite { self =>
   val isScala213: Boolean = BuildInfo.scalaVersion.startsWith("2.13")
@@ -13,6 +14,7 @@ class PrintersSuite extends FunSuite { self =>
     test(name) {
       assume(isEnabled, "disabled test")
       val obtained = Printers.print(original)
+      Printers.log(obtained)
       assertNoDiff(obtained, expected)
     }
   }
@@ -20,7 +22,7 @@ class PrintersSuite extends FunSuite { self =>
   check(
     "basic",
     "a",
-    "\"a\""
+    "\"ab\""
   )
 
   check(

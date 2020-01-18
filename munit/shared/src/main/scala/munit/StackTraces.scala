@@ -19,7 +19,7 @@ object StackTraces {
       if (e != null && isVisited.add(e)) {
         val stack = e.getStackTrace()
         if (stack != null) {
-          e.setStackTrace(filterCallStack(stack))
+//          e.setStackTrace(filterCallStack(stack))
         }
         loop(e.getCause())
       }

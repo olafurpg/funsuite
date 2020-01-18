@@ -143,7 +143,7 @@ private[junit] final class Reporter(
 
   private def infoOrDebug: Reporter.Level =
     if (settings.verbose) _.info
-    else _.debug
+    else _ => _ => ()
 
   private def formatTest(method: Option[String], color: String): String = {
     method.fold(formattedTestClass) { method =>

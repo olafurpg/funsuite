@@ -1,6 +1,7 @@
 package difflib.myers
 
-sealed abstract class PathNode(i: Int, j: Int, prev: PathNode) {
+sealed abstract class PathNode(val i: Int, val j: Int, val prev: PathNode) {
+
   def isSnake: Boolean
   final def isBootstrap: Boolean = {
     i < 0 && j < 0

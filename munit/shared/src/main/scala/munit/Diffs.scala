@@ -15,6 +15,7 @@ object Diffs {
       Assertions.fail("Obtained empty output!")
     }
     val diff = new Diff(obtained, expected)
+    Printers.log(diff.unifiedDiff)
     if (diff.isEmpty) true
     else {
       Assertions.fail(diff.createReport(title, printObtainedAsStripMargin))

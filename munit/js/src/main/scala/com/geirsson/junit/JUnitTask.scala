@@ -83,11 +83,13 @@ private[junit] final class JUnitTask(
             description.getMethodName match {
               case Some(methodName) =>
                 total += 1
-                reporter.reportTestFinished(
-                  methodName,
-                  succeeded = !isFailed(methodName),
-                  elapsedSeconds()
-                )
+                if (!isFailed(methodName)) {
+                  reporter.reportTestFinished(
+                    methodName,
+                    succeeded = true,
+                    elapsedSeconds()
+                  )
+                }
               case None =>
                 println(s"missing method name: $description")
             }
@@ -106,17 +108,19 @@ private[junit] final class JUnitTask(
             failure.description.getMethodName match {
               case Some(methodName) =>
                 isFailed += methodName
-                reporter.reportTestFinished(
-                  methodName,
-                  succeeded = false,
-                  elapsedSeconds()
-                )
+                println(s"failure: $methodName")
+                failure.ex.printStackTrace()
                 reporter.reportErrors(
                   failure.description.getTestClass.fold("")(_.getName),
                   failure.description.getMethodName,
                   elapsedSeconds(),
                   List(failure.ex)
                 )
+//                reporter.reportTestFinished(
+//                  methodName,
+//                  succeeded = false,
+//                  elapsedSeconds()
+//                )
               case None =>
                 println(s"missing method name: ${failure.description}")
             }
