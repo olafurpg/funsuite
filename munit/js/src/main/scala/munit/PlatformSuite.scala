@@ -1,7 +1,6 @@
 package munit
 
 import com.geirsson.junit.Bootstrapper
-import munit.internal.MUnitBootstrapper
 
 import scala.scalajs.reflect.annotation._
 

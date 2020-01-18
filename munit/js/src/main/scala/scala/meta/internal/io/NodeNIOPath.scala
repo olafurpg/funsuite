@@ -9,7 +9,8 @@ import scala.collection.JavaConverters._
 // Rough implementation of java.nio.Path, should work similarly for the happy
 // path but has undefined behavior for error handling.
 case class NodeNIOPath(filename: String) extends Path {
-  private[this] val escapedSeparator = java.util.regex.Pattern.quote(File.separator)
+  private[this] val escapedSeparator =
+    java.util.regex.Pattern.quote(File.separator)
 
   private def adjustIndex(idx: Int): Int =
     if (isAbsolute) idx + 1 else idx
@@ -41,8 +42,10 @@ case class NodeNIOPath(filename: String) extends Path {
     NodeNIOPath(JSPath.relative(filename, other.toString))
   override def getNameCount: Int = {
     val strippeddrive =
-      if ((filename.length > 1) && (filename(1) == ':')) filename.substring(2) else filename
-    val (first, remaining) = strippeddrive.split(escapedSeparator + "+").span(_.isEmpty)
+      if ((filename.length > 1) && (filename(1) == ':')) filename.substring(2)
+      else filename
+    val (first, remaining) =
+      strippeddrive.split(escapedSeparator + "+").span(_.isEmpty)
     if (remaining.isEmpty) first.length
     else remaining.length
   }
@@ -67,7 +70,9 @@ case class NodeNIOPath(filename: String) extends Path {
   override def resolveSibling(other: Path): Path =
     resolveSibling(other.toString)
   override def resolveSibling(other: String): Path =
-    adjustResolvedPath(NodeNIOPath(JSPath.resolve(JSPath.dirname(filename), other)))
+    adjustResolvedPath(
+      NodeNIOPath(JSPath.resolve(JSPath.dirname(filename), other))
+    )
   override def resolve(other: Path): Path =
     resolve(other.toString)
   override def resolve(other: String): Path =
@@ -81,7 +86,11 @@ case class NodeNIOPath(filename: String) extends Path {
   override def toString: String =
     filename
   override def iterator(): util.Iterator[Path] =
-    filename.split(File.separator).iterator.map(name => NodeNIOPath(name): Path).asJava
+    filename
+      .split(File.separator)
+      .iterator
+      .map(name => NodeNIOPath(name): Path)
+      .asJava
 }
 
 object NodeNIOPath {

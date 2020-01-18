@@ -18,7 +18,8 @@ object Paths {
   }
 
   def get(uri: URI): Path = {
-    if (uri.getScheme != "file") throw new IllegalArgumentException("only file: URIs are supported")
+    if (uri.getScheme != "file")
+      throw new IllegalArgumentException("only file: URIs are supported")
     val uripath = uri.getPath
     val parts = uripath.split('/').toList
     val (leading, trailing) = parts.span(_ == "")

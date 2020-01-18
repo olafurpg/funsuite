@@ -22,8 +22,11 @@ class File(path: String) {
     NodeNIOPath(path)
   def toURI: URI = {
     val file = getAbsoluteFile.toString
-    val uripath = if (file.startsWith("/")) file else "/" + file.replace(File.separator, "/")
-    val withslash = if (isDirectory && !uripath.endsWith("/")) uripath + "/" else uripath
+    val uripath =
+      if (file.startsWith("/")) file
+      else "/" + file.replace(File.separator, "/")
+    val withslash =
+      if (isDirectory && !uripath.endsWith("/")) uripath + "/" else uripath
     new URI("file", null, withslash, null)
   }
   def getAbsoluteFile: File =
@@ -33,7 +36,9 @@ class File(path: String) {
   def getParentFile: File =
     toPath.getParent.toFile
   def mkdirs(): Unit =
-    throw new UnsupportedOperationException("mkdirs() is not supported in Scala.js")
+    throw new UnsupportedOperationException(
+      "mkdirs() is not supported in Scala.js"
+    )
   def getPath: String =
     path
   def exists(): Boolean =

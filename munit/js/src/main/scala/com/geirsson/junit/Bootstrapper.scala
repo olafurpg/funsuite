@@ -5,12 +5,12 @@ import scala.scalajs.reflect.annotation.EnableReflectiveInstantiation
 import scala.util.Try
 
 /** Scala.js internal JUnit bootstrapper.
- *
- *  This class is public due to implementation details. Only the junit compiler
- *  plugin may generate classes inheriting from it.
- *
- *  Relying on this trait directly is unspecified behavior.
- */
+  *
+  *  This class is public due to implementation details. Only the junit compiler
+  *  plugin may generate classes inheriting from it.
+  *
+  *  Relying on this trait directly is unspecified behavior.
+  */
 @EnableReflectiveInstantiation
 trait Bootstrapper {
   def beforeClass(): Unit
