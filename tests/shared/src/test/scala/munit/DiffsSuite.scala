@@ -1,4 +1,5 @@
 package munit
+
 import munit.internal.MUnitBootstrapper
 
 class DiffsSuite extends FunSuite { self =>

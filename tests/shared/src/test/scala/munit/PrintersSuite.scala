@@ -2,7 +2,7 @@ package munit
 
 import scala.util.Properties
 
-class PrintersSuite extends FunSuite {
+class PrintersSuite extends FunSuite { self =>
   val isScala213: Boolean = BuildInfo.scalaVersion.startsWith("2.13")
   def check(
       name: String,

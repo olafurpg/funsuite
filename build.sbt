@@ -42,7 +42,8 @@ val scalaVersions = scala2Versions ++ List(dotty)
 def isScala2(binaryVersion: String): Boolean = binaryVersion.startsWith("2")
 def isScala3(binaryVersion: String): Boolean = binaryVersion.startsWith("0")
 val sharedJSSettings = List(
-  crossScalaVersions := scala2Versions
+  crossScalaVersions := scala2Versions,
+  scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)),
 )
 
 lazy val munit = crossProject(JSPlatform, JVMPlatform)
