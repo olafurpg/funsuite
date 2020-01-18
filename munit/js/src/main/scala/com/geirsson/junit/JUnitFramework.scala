@@ -47,6 +47,7 @@ abstract class JUnitFramework extends Framework {
     var decodeScalaNames = false
     var logAssert = false
     var notLogExceptionClass = false
+    var useSbtLoggers = false
     for (str <- args) {
       str match {
         case "-v" => verbose = true
@@ -89,15 +90,18 @@ abstract class JUnitFramework extends Framework {
         case "+s" => decodeScalaNames = false
         case "+a" => logAssert = false
         case "+c" => notLogExceptionClass = false
+        case "+l" => useSbtLoggers = true
+        case "-l" => useSbtLoggers = false
         case _    =>
       }
     }
     new RunSettings(
-      !noColor,
-      decodeScalaNames,
-      verbose,
-      logAssert,
-      notLogExceptionClass
+      color = !noColor,
+      decodeScalaNames = decodeScalaNames,
+      verbose = verbose,
+      logAssert = logAssert,
+      notLogExceptionClass = notLogExceptionClass,
+      useSbtLoggers = useSbtLoggers
     )
   }
 }

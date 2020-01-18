@@ -19,7 +19,8 @@ final class RunSettings(
     decodeScalaNames: Boolean,
     val verbose: Boolean,
     val logAssert: Boolean,
-    val notLogExceptionClass: Boolean
+    val notLogExceptionClass: Boolean,
+    val useSbtLoggers: Boolean
 ) {
   def decodeName(name: String): String = {
     if (decodeScalaNames)
