@@ -10,10 +10,9 @@
  * additional information regarding copyright ownership.
  */
 
-package org.scalajs.junit
+package com.geirsson.junit
 
 import org.junit._
-
 import sbt.testing._
 
 private[junit] final class Reporter(eventHandler: EventHandler,

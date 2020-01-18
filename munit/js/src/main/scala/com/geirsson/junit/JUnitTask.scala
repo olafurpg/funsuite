@@ -10,16 +10,14 @@
  * additional information regarding copyright ownership.
  */
 
-package org.scalajs.junit
-
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
-
-import scala.util.{Try, Success, Failure}
-
-import scala.scalajs.reflect.Reflect
+package com.geirsson.junit
 
 import sbt.testing._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.scalajs.reflect.Reflect
+import scala.util.{Failure, Success, Try}
 
 /* Implementation note: In JUnitTask we use Future[Try[Unit]] instead of simply
  * Future[Unit]. This is to prevent Scala's Future implementation to box/wrap

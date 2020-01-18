@@ -10,7 +10,7 @@
  * additional information regarding copyright ownership.
  */
 
-package org.scalajs.junit
+package com.geirsson.junit
 
 import scala.util.Try
 
