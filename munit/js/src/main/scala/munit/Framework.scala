@@ -1,31 +1,14 @@
 package munit
 
-import sbt.testing.Fingerprint
-import sbt.testing.Runner
-import sbt.testing.SubclassFingerprint
-import munit.internal.MUnitFingerprint
+import com.geirsson.junit.{CustomFingerprint, CustomRunners, JUnitFramework}
 
-class Framework extends sbt.testing.Framework {
-  val underlying = new com.novocode.junit.JUnitFramework
+class Framework extends JUnitFramework {
   override val name = "munit"
-  val munitFingerprint = new MUnitFingerprint(isModule = true)
-  val fingerprints: Array[Fingerprint] = Array(
-    munitFingerprint,
-    new MUnitFingerprint(isModule = false)
+  val munitFingerprint = new CustomFingerprint("munit.Suite", isModule = false)
+  val customRunners = new CustomRunners(
+    List(
+      munitFingerprint,
+      new CustomFingerprint("munit.Suite", isModule = true)
+    )
   )
-  def runner(
-      args: Array[String],
-      remoteArgs: Array[String],
-      testClassLoader: ClassLoader
-  ): Runner = {
-    underlying.runner(args, remoteArgs, testClassLoader)
-  }
-  def slaveRunner(
-      args: Array[String],
-      remoteArgs: Array[String],
-      testClassLoader: ClassLoader,
-      send: String => Unit
-  ): Runner = {
-    underlying.slaveRunner(args, remoteArgs, testClassLoader, send)
-  }
 }

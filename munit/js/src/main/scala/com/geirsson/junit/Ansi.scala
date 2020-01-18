@@ -1,6 +1,6 @@
 package com.geirsson.junit
 
-private[junit] object Ansi {
+object Ansi {
 
   private[this] final val NORMAL = "\u001B[0m"
 
@@ -19,8 +19,7 @@ private[junit] object Ansi {
         val c = s.charAt(i)
         if (c == '\u001B') {
           i += 1
-          while (i < len && s.charAt(i) != 'm')
-            i += 1
+          while (i < len && s.charAt(i) != 'm') i += 1
         } else {
           r += c
         }

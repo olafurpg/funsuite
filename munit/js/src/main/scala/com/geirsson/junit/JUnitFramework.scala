@@ -14,18 +14,14 @@ package com.geirsson.junit
 
 import sbt.testing._
 
-class JUnitFramework extends Framework {
+abstract class JUnitFramework extends Framework {
 
   val name: String = "Scala.js JUnit test framework"
 
-  private object JUnitFingerprint extends AnnotatedFingerprint {
-    override def annotationName(): String = "org.junit.Test"
-
-    override def isModule(): Boolean = false
-  }
+  def customRunners: CustomRunners
 
   def fingerprints(): Array[Fingerprint] = {
-    Array(JUnitFingerprint)
+    customRunners.runners.toArray
   }
 
   def runner(
@@ -33,7 +29,7 @@ class JUnitFramework extends Framework {
       remoteArgs: Array[String],
       testClassLoader: ClassLoader
   ): Runner = {
-    new JUnitRunner(args, remoteArgs, parseRunSettings(args))
+    new JUnitRunner(args, remoteArgs, parseRunSettings(args), customRunners)
   }
 
   def slaveRunner(
@@ -42,7 +38,7 @@ class JUnitFramework extends Framework {
       testClassLoader: ClassLoader,
       send: String => Unit
   ): Runner = {
-    new JUnitRunner(args, remoteArgs, parseRunSettings(args))
+    new JUnitRunner(args, remoteArgs, parseRunSettings(args), customRunners)
   }
 
   private def parseRunSettings(args: Array[String]): RunSettings = {

@@ -1,8 +1,6 @@
 package munit.internal
 
-import sbt.testing.SubclassFingerprint
+import com.geirsson.junit.CustomFingerprint
 
-class MUnitFingerprint(val isModule: Boolean) extends SubclassFingerprint {
-  def superclassName(): String = "munit.Suite"
-  def requireNoArgConstructor(): Boolean = true
-}
+class MUnitFingerprint(isModule: Boolean)
+    extends CustomFingerprint("munit.Suite", isModule)

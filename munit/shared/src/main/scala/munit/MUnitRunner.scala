@@ -11,12 +11,12 @@ import org.junit.runner.manipulation.Filter
 import org.junit.runner.Runner
 import scala.collection.mutable
 
-class MUnitRunner(val cls: Class[_ <: Suite]) extends Runner with Filterable {
-  require(
-    hasEligibleConstructor(),
-    s"Class '${cls.getCanonicalName()}' is missing a public empty argument constructor"
-  )
-  val suite = cls.newInstance()
+class MUnitRunner(val cls: Class[_ <: Suite], newInstance: () => Suite)
+    extends Runner
+    with Filterable {
+  def this(cls: Class[_ <: Suite]) =
+    this(MUnitRunner.ensureEligibleConstructor(cls), () => cls.newInstance())
+  val suite = newInstance()
   private val suiteDescription = Description.createSuiteDescription(cls)
   @volatile private var filter: Filter = Filter.ALL
   val descriptions = mutable.Map.empty[suite.Test, Description]
@@ -185,7 +185,19 @@ class MUnitRunner(val cls: Class[_ <: Suite]) extends Runner with Filterable {
     }
   }
 
-  private def hasEligibleConstructor(): Boolean = {
+}
+object MUnitRunner {
+  def run(suite: Suite, notifier: RunNotifier): Unit = {}
+  private def ensureEligibleConstructor(
+      cls: Class[_ <: Suite]
+  ): Class[_ <: Suite] = {
+    require(
+      hasEligibleConstructor(cls),
+      s"Class '${cls.getName}' is missing a public empty argument constructor"
+    )
+    cls
+  }
+  private def hasEligibleConstructor(cls: Class[_ <: Suite]): Boolean = {
     try {
       val constructor = cls.getConstructor(
         new Array[java.lang.Class[_]](0): _*
