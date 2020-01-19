@@ -30,8 +30,11 @@ object Ansi {
   }
 
   final val RED = "\u001B[31m"
+  final val LIGHT_RED = "\u001b[91m"
   final val YELLOW = "\u001B[33m"
   final val BLUE = "\u001B[34m"
   final val MAGENTA = "\u001B[35m"
   final val CYAN = "\u001B[36m"
+  final val GREEN = "\u001B[32m"
+  final val DARK_GREY = "\u001B[90m"
 }

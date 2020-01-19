@@ -1,13 +1,5 @@
 /*
- * Scala.js (https://www.scala-js.org/)
- *
- * Copyright EPFL.
- *
- * Licensed under Apache License 2.0
- * (https://www.apache.org/licenses/LICENSE-2.0).
- *
- * See the NOTICE file distributed with this work for
- * additional information regarding copyright ownership.
+ * Adapted from https://github.com/scala-js/scala-js, see NOTICE.md.
  */
 
 package com.geirsson.junit
@@ -53,7 +45,8 @@ final class JUnitTask(
           cls.runtimeClass.asInstanceOf[Class[_ <: Suite]],
           () => cls.newInstance().asInstanceOf[Suite]
         )
-        val reporter = new Reporter(eventHandler, loggers, runSettings, taskDef)
+        val reporter =
+          new JUnitReporter(eventHandler, loggers, runSettings, taskDef)
         val notifier: RunNotifier = new MUnitRunNotifier(reporter)
         try runner.run(notifier)
         catch {

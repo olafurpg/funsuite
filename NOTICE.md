@@ -32,3 +32,10 @@ As a translation, it constitutes a derivative work and is therefore licensed
 under the BSD License, whose full text can be found in
 munit/js/src/main/scala/org/hamcrest/LICENSE-hamcrest.txt
 ```
+
+# License notice for java-diff-utils
+
+MUnit contains parts which are derived from
+[the java-diff-utils project](https://code.google.com/archive/p/java-diff-utils/source).
+The original license can be found here:
+https://www.apache.org/licenses/LICENSE-2.0.txt

@@ -1,13 +1,5 @@
 /*
- * Scala.js (https://www.scala-js.org/)
- *
- * Copyright EPFL.
- *
- * Licensed under Apache License 2.0
- * (https://www.apache.org/licenses/LICENSE-2.0).
- *
- * See the NOTICE file distributed with this work for
- * additional information regarding copyright ownership.
+ * Adapted from https://github.com/scala-js/scala-js, see NOTICE.md.
  */
 
 package com.geirsson.junit
@@ -15,53 +7,76 @@ package com.geirsson.junit
 import org.junit._
 import sbt.testing._
 
-final class Reporter(
+final class JUnitReporter(
     eventHandler: EventHandler,
     loggers: Array[Logger],
     settings: RunSettings,
     taskDef: TaskDef
 ) {
+  private val isAnsiSupported = loggers.forall(_.ansiCodesSupported()) && settings.color
 
-  def reportRunStarted(): Unit =
-    log(infoOrDebug, Ansi.c("Test run started", Ansi.BLUE))
-
-  def reportRunFinished(
-      failed: Int,
-      ignored: Int,
-      total: Int,
-      timeInSeconds: Double
-  ): Unit = {
-    val msg = {
-      Ansi.c("Test run finished: ", Ansi.BLUE) +
-        Ansi.c(s"$failed failed", if (failed == 0) Ansi.BLUE else Ansi.RED) +
-        Ansi.c(s", ", Ansi.BLUE) +
-        Ansi.c(
-          s"$ignored ignored",
-          if (ignored == 0) Ansi.BLUE else Ansi.YELLOW
-        ) +
-        Ansi.c(s", $total total, ${timeInSeconds}s", Ansi.BLUE)
+  def reportTestSuiteStarted(): Unit = {
+    log(Info, formattedTestClass + ":")
+  }
+  def reportTestStarted(method: Option[String]): Unit = {
+    if (settings.verbose) {
+      log(Info, s"$method started")
     }
-
-    log(infoOrDebug, msg)
   }
 
-  def reportIgnored(method: Option[String]): Unit = {
-    logTestInfo(_.info, method, "ignored")
-    emitEvent(method, Status.Skipped)
+  def reportTestIgnored(method: String): Unit = {
+    if (settings.verbose) {
+      log(Info, Ansi.c(s"==> i $method ignored", Ansi.YELLOW))
+    }
+    emitEvent(Some(method), Status.Ignored)
   }
-
-  def reportTestStarted(method: String): Unit =
-    logTestInfo(infoOrDebug, Some(method), "started")
-
-  def reportTestFinished(
+  def reportAssumptionViolation(
       method: String,
-      succeeded: Boolean,
-      timeInSeconds: Double
+      timeInSeconds: Double,
+      e: Throwable
   ): Unit = {
-    logTestInfo(_.debug, Some(method), s"finished, took $timeInSeconds sec")
-
-    if (succeeded)
-      emitEvent(Some(method), Status.Success)
+    logTestException(
+      infoOrDebug,
+      "",
+      Some(method),
+      e,
+      timeInSeconds
+    )
+    emitEvent(Some(method), Status.Skipped)
+  }
+  private def formatTime(elapsedSeconds: Double): String =
+    Ansi.c("%.2fs".format(elapsedSeconds), Ansi.DARK_GREY)
+  def reportTestPassed(method: String, elapsedSeconds: Double): Unit = {
+    log(
+      Info,
+      Ansi.c(s"+ $method", Ansi.GREEN) + " " + formatTime(elapsedSeconds)
+    )
+    emitEvent(Some(method), Status.Success)
+  }
+  def reportTestFailed(
+      method: String,
+      ex: Throwable,
+      elapsedSeconds: Double
+  ): Unit = {
+    log(
+      Info,
+      new StringBuilder()
+        .append(
+          Ansi.c(
+            s"==> X ${taskDef.fullyQualifiedName()}.$method",
+            Ansi.LIGHT_RED
+          )
+        )
+        .append(" ")
+        .append(formatTime(elapsedSeconds))
+        .append(" ")
+        .append(ex.getClass().getName())
+        .append(": ")
+        .append(ex.getMessage())
+        .toString()
+    )
+    trace(ex)
+    emitEvent(Some(method), Status.Failure)
   }
 
   def reportErrors(
@@ -71,7 +86,7 @@ final class Reporter(
       errors: List[Throwable]
   ): Unit = {
     def emit(t: Throwable): Unit = {
-      logTestException(_.error, prefix, method, t, timeInSeconds)
+      logTestException(Error, prefix, method, t, timeInSeconds)
       trace(t)
     }
 
@@ -82,30 +97,16 @@ final class Reporter(
     }
   }
 
-  def reportAssumptionViolation(
-      method: String,
-      timeInSeconds: Double,
-      e: Throwable
-  ): Unit = {
-    logTestException(
-      _.warn,
-      "Test assumption in test ",
-      Some(method),
-      e,
-      timeInSeconds
-    )
-    emitEvent(Some(method), Status.Skipped)
-  }
-
   private def logTestInfo(
-      level: Reporter.Level,
+      level: Level,
       method: Option[String],
-      msg: String
+      msg: String,
+      color: String
   ): Unit =
-    log(level, s"Test ${formatTest(method, Ansi.CYAN)} $msg")
+    log(level, formatTest(method, color))
 
   private def logTestException(
-      level: Reporter.Level,
+      level: Level,
       prefix: String,
       method: Option[String],
       ex: Throwable,
@@ -135,15 +136,36 @@ final class Reporter(
     log(level, msg)
   }
 
+  def reportRunFinished(
+      failed: Int,
+      ignored: Int,
+      total: Int,
+      timeInSeconds: Double
+  ): Unit = {
+    if (settings.verbose) {
+      val msg = {
+        Ansi.c("Test run finished: ", Ansi.BLUE) +
+          Ansi.c(s"$failed failed", if (failed == 0) Ansi.BLUE else Ansi.RED) +
+          Ansi.c(s", ", Ansi.BLUE) +
+          Ansi.c(
+            s"$ignored ignored",
+            if (ignored == 0) Ansi.BLUE else Ansi.YELLOW
+          ) +
+          Ansi.c(s", $total total, ${timeInSeconds}s", Ansi.BLUE)
+      }
+      log(Info, msg)
+    }
+  }
+
   private def trace(t: Throwable): Unit = {
     if (!t.isInstanceOf[AssertionError] || settings.logAssert) {
       logTrace(t)
     }
   }
 
-  private def infoOrDebug: Reporter.Level =
-    if (settings.verbose) _.info
-    else _ => _ => ()
+  private def infoOrDebug: Level =
+    if (settings.verbose) Info
+    else Debug
 
   private def formatTest(method: Option[String], color: String): String = {
     method.fold(formattedTestClass) { method =>
@@ -153,11 +175,10 @@ final class Reporter(
   }
 
   private lazy val formattedTestClass =
-    formatClass(taskDef.fullyQualifiedName, Ansi.YELLOW)
+    formatClass(taskDef.fullyQualifiedName, Ansi.GREEN)
 
   private def formatClass(fullName: String, color: String): String = {
-    val (prefix, name) = fullName.splitAt(fullName.lastIndexOf(".") + 1)
-    prefix + Ansi.c(name, color)
+    Ansi.c(fullName, color)
   }
 
   private def emitEvent(method: Option[String], status: Status): Unit = {
@@ -168,13 +189,31 @@ final class Reporter(
     eventHandler.handle(new JUnitEvent(taskDef, status, selector))
   }
 
-  def log(level: Reporter.Level, s: String): Unit = {
-    for (l <- loggers)
-      level(l)(filterAnsiIfNeeded(l, s))
+  def log(level: Level, s: String): Unit = {
+    if (settings.useSbtLoggers) {
+      for (l <- loggers) {
+        val msg = filterAnsiIfNeeded(l, s)
+        level match {
+          case Debug => l.debug(msg)
+          case Info  => l.info(msg)
+          case Warn  => l.warn(msg)
+          case Error => l.error(msg)
+          case _     => l.error(msg)
+        }
+      }
+    } else {
+      level match {
+        case Debug | Trace if !settings.verbose =>
+        case _ =>
+          println(filterAnsiIfNeeded(isAnsiSupported, s))
+      }
+    }
   }
 
   private def filterAnsiIfNeeded(l: Logger, s: String): String =
-    if (l.ansiCodesSupported() && settings.color) s
+    filterAnsiIfNeeded(l.ansiCodesSupported(), s)
+  private def filterAnsiIfNeeded(isColorSupported: Boolean, s: String): String =
+    if (isColorSupported && settings.color) s
     else Ansi.filterAnsi(s)
 
   private def logTrace(t: Throwable): Unit = {
@@ -231,17 +270,17 @@ final class Reporter(
 
     for (i <- top to m2) {
       log(
-        _.error,
+        Error,
         "    at " +
           stackTraceElementToString(trace(i), testFileName)
       )
     }
     if (m0 != m2) {
       // skip junit-related frames
-      log(_.error, "    ...")
+      log(Error, "    ...")
     } else if (framesInCommon != 0) {
       // skip frames that were in the previous trace too
-      log(_.error, "    ... " + framesInCommon + " more")
+      log(Error, "    ... " + framesInCommon + " more")
     }
     logStackTraceAsCause(trace, t.getCause, testFileName)
   }
@@ -259,7 +298,7 @@ final class Reporter(
         m -= 1
         n -= 1
       }
-      log(_.error, "Caused by: " + t)
+      log(Error, "Caused by: " + t)
       logStackTracePart(trace, m, trace.length - 1 - m, t, testFileName)
     }
   }
@@ -299,8 +338,10 @@ final class Reporter(
     r += ')'
     r
   }
-}
-
-object Reporter {
-  type Level = Logger => (String => Unit)
+  private val Trace = 0
+  private val Debug = 1
+  private val Info = 2
+  private val Warn = 3
+  private val Error = 4
+  private type Level = Int
 }

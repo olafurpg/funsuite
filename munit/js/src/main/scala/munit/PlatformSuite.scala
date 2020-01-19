@@ -1,7 +1,5 @@
 package munit
 
-import com.geirsson.junit.Bootstrapper
-
 import scala.scalajs.reflect.annotation._
 
 @EnableReflectiveInstantiation

@@ -12,7 +12,7 @@ MUnit is a Scala testing library with the following goals:
   help you quickly understand what caused a test failure. MUnit tries to
   displays diffs and source locations when possible and it does a best-effort to
   highlight relevant stack trace elements.
-- **No Scala dependencies**: MUnit is implemented in ~1k lines of Scala code
+- **No Scala dependencies**: MUnit is implemented in ~2k lines of Scala code
   with no external Scala dependencies. The transitive Java dependencies weigh in
   total ~500kb, which is mostly just JUnit.
 
