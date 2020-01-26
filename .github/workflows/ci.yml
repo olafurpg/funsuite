@@ -15,6 +15,11 @@ jobs:
       - uses: actions/checkout@v2
       - uses: olafurpg/setup-scala@v2
       - run: sbt +testsJVM/test plugin/test
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS:
+            ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          GOOGLE_APPLICATION_CREDENTIALS_JSON:
+            ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
   js:
     strategy:
       fail-fast: false
@@ -27,18 +32,32 @@ jobs:
       - run: sbt +testsJS/test
         env:
           SCALAJS_VERSION: ${{ matrix.scalajs }}
+          GOOGLE_APPLICATION_CREDENTIALS:
+            ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          GOOGLE_APPLICATION_CREDENTIALS_JSON:
+            ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
   native:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: olafurpg/setup-scala@v2
       - run: sbt +testsNative/test
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS:
+            ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          GOOGLE_APPLICATION_CREDENTIALS_JSON:
+            ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
   windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - uses: olafurpg/setup-scala@v2
       - run: sbt +testsJVM/test
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS:
+            ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          GOOGLE_APPLICATION_CREDENTIALS_JSON:
+            ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
   checks:
     runs-on: ubuntu-latest
     steps:

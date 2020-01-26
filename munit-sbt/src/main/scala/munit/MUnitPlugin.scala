@@ -36,7 +36,8 @@ object MUnitPlugin extends AutoPlugin {
               Files.createDirectories(path.getParent())
               Files.write(path, json)
               true
-            case None => false
+            case None =>
+              false
           }
         }
       } yield new MUnitGcpListener()
