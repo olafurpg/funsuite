@@ -89,7 +89,7 @@ resources after a test case.</p>
 <p>Use <code>FunFixture.map2</code> to compose multiple fixtures into a single fixture.</p>
 <pre><code class="hljs css language-scala"><span class="hljs-comment">// Fixture with access to two temporary files.</span>
 <span class="hljs-keyword">val</span> files2 = <span class="hljs-type">FunFixture</span>.map2(files, files)
-<span class="hljs-comment">// files2: FunFixture[(Path, Path)] = munit.FunSuite$FunFixture@74c1b03a</span>
+<span class="hljs-comment">// files2: FunFixture[(Path, Path)] = munit.FunSuite$FunFixture@3b1f1118</span>
 files2.test(<span class="hljs-string">"two"</span>) {
   <span class="hljs-keyword">case</span> (file1, file2) =&gt;
     assertNotEquals(file1, file2)
