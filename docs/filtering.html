@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Filtering tests · MUnit</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="MUnit provides several options for selecting what tests to run."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Filtering tests · MUnit"/><meta property="og:type" content="website"/><meta property="og:url" content="http://scalameta.org/munit/munit/index.html"/><meta property="og:description" content="MUnit provides several options for selecting what tests to run."/><meta property="og:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><link rel="shortcut icon" href="/munit/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="http://scalameta.org/munit/munit/blog/atom.xml" title="MUnit Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="http://scalameta.org/munit/munit/blog/feed.xml" title="MUnit Blog RSS Feed"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-140140828-1', 'auto');
+              ga('send', 'pageview');
+            </script><link rel="stylesheet" href="/munit/css/custom.css"/><script src="/munit/js/scrollSpy.js"></script><link rel="stylesheet" href="/munit/css/main.css"/><script src="/munit/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/munit/"><img class="logo" src="/munit/img/scalameta-logo.png" alt="MUnit"/><h2 class="headerTitleWithLogo">MUnit</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/munit/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/munit/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/scalameta/munit" target="_blank">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Overview</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/munit/docs/getting-started.html">Getting started</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/tests.html">Declaring tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/assertions.html">Writing assertions</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/fixtures.html">Using fixtures</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/munit/docs/filtering.html">Filtering tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/reports.html">Generating test reports</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/scalatest.html">Coming from ScalaTest</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/troubleshooting.html">Troubleshooting</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/scalameta/munit/edit/master/docs/filtering.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Filtering tests</h1></header><article><div><span><p>MUnit provides several options for selecting what tests to run.</p>
+<h2><a class="anchor" aria-hidden="true" id="run-only-a-single-test-case"></a><a href="#run-only-a-single-test-case" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run only a single test case</h2>
+<p>Use <code>testOnly -- $GLOB</code> to filter a fully qualified test name from the command
+line.</p>
+<pre><code class="hljs css language-sh"><span class="hljs-comment"># sbt shell</span>
+&gt; testOnly -- *issue-456
+&gt; testOnly -- com.foo.controllers.*
+</code></pre>
+<p>Use <code>testOnly -- --only=$TEST_FILTER</code> to filter an individual test name from the
+command line.</p>
+<pre><code class="hljs css language-sh"><span class="hljs-comment"># sbt shell</span>
+&gt; testOnly -- --only=issue-456
+</code></pre>
+<p>Use <code>.only</code> to run only a single test without custom command-line arguments.</p>
+<pre><code class="hljs css language-scala">test(<span class="hljs-string">"issue-457"</span>) {
+  <span class="hljs-comment">// will not run</span>
+}
+test(<span class="hljs-string">"issue-456"</span>.only) {
+  <span class="hljs-comment">// only test that runs</span>
+}
+test(<span class="hljs-string">"issue-455"</span>) {
+  <span class="hljs-comment">// will not run</span>
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ignore-single-test-case"></a><a href="#ignore-single-test-case" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ignore single test case</h2>
+<p>Use <code>.ignore</code> to skip an individual test case in a test suite.</p>
+<pre><code class="hljs css language-scala">test(<span class="hljs-string">"issue-456"</span>.ignore) {
+  <span class="hljs-comment">// will not run</span>
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ignore-single-test-case-based-on-a-dynamic-conditions"></a><a href="#ignore-single-test-case-based-on-a-dynamic-conditions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ignore single test case based on a dynamic conditions</h2>
+<p>Use <code>assume(condition, explanation)</code> to skip tests when some conditions do not
+hold. For example, use <code>assume</code> to conditionally run tests based on the
+operating system or the Scala compiler version.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> scala.util.<span class="hljs-type">Properties</span>
+test(<span class="hljs-string">"paths"</span>) {
+  assume(<span class="hljs-type">Properties</span>.isLinux, <span class="hljs-string">"this test runs only on Linux"</span>)
+  assume(<span class="hljs-type">Properties</span>.versionNumberString.startsWith(<span class="hljs-string">"2.13"</span>), <span class="hljs-string">"this test runs only on Scala 2.13"</span>)
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ignore-entire-test-suite"></a><a href="#ignore-entire-test-suite" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ignore entire test suite</h2>
+<p>Use the <code>@IgnoreSuite</code> annotation to skip all tests in a test suite.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-meta">@munit</span>.<span class="hljs-type">IgnoreSuite</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  test(<span class="hljs-string">"hello1"</span>) {
+    <span class="hljs-comment">// will not run</span>
+  }
+  test(<span class="hljs-string">"hello2"</span>) {
+    <span class="hljs-comment">// will not run</span>
+  }
+  <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<p>The <code>IgnoreSuite</code> annotation is only supported on the JVM. A workaround for
+Scala.js and Scala Native is to mark the test suite as abstract so that it
+doesn't run.</p>
+<pre><code class="hljs css language-diff"><span class="hljs-deletion">- @munit.IgnoreSuite</span>
+<span class="hljs-deletion">- class MySuite extends munit.FunSuite {</span>
+<span class="hljs-addition">+ abstract class MySuite extends munit.FunSuite {</span>
+    test("hello1") {
+      // will not run
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ignore-entire-test-suite-based-on-a-dynamic-condition"></a><a href="#ignore-entire-test-suite-based-on-a-dynamic-condition" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ignore entire test suite based on a dynamic condition</h2>
+<p>Override <code>munitIgnore: Boolean</code> to skip an entire test suite based on a dynamic
+condition.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyWindowsOnlySuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitIgnore</span></span>: <span class="hljs-type">Boolean</span> = !scala.util.<span class="hljs-type">Properties</span>.isWin
+  test(<span class="hljs-string">"windows-only"</span>) {
+    <span class="hljs-comment">// only runs on Windows</span>
+  }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="include-and-exclude-tests-based-on-tags"></a><a href="#include-and-exclude-tests-based-on-tags" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Include and exclude tests based on tags</h2>
+<p>Use <code>--include-tags=$TAG1,$TAG2</code> and <code>--exclude-tags=$TAG1,$TAG2</code> to include and
+exclude which tests to run based on tags. For example, imagine you have the
+following test suite:</p>
+<pre><code class="hljs css language-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TagsSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">val</span> include = <span class="hljs-keyword">new</span> munit.<span class="hljs-type">Tag</span>(<span class="hljs-string">"include"</span>)
+  <span class="hljs-keyword">val</span> exclude = <span class="hljs-keyword">new</span> munit.<span class="hljs-type">Tag</span>(<span class="hljs-string">"exclude"</span>)
+  test(<span class="hljs-string">"a"</span>.tag(include)) {}
+  test(<span class="hljs-string">"b"</span>.tag(exclude)) {}
+  test(<span class="hljs-string">"c"</span>.tag(include).tag(exclude)) {}
+  test(<span class="hljs-string">"d"</span>) {}
+}
+</code></pre>
+<table>
+<thead>
+<tr><th style="text-align:left">Arguments</th><th style="text-align:center">Matching tests</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left"><code>&lt;no arguments&gt;</code></td><td style="text-align:center"><code>&lt;all tests&gt;</code></td></tr>
+<tr><td style="text-align:left"><code>--include-tags=include</code></td><td style="text-align:center"><code>a, c</code></td></tr>
+<tr><td style="text-align:left"><code>--include-tags=include --exclude-tags=exclude</code></td><td style="text-align:center"><code>a</code></td></tr>
+<tr><td style="text-align:left"><code>--exclude-tags=exclude</code></td><td style="text-align:center"><code>a, d</code></td></tr>
+</tbody>
+</table>
+<h2><a class="anchor" aria-hidden="true" id="group-test-suites-with-categories"></a><a href="#group-test-suites-with-categories" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Group test suites with categories</h2>
+<blockquote>
+<p>This feature is only supported on the JVM.</p>
+</blockquote>
+<p>Use the <code>@Category(...)</code> annotation from JUnit to group tests suites together.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-comment">// package myapp</span>
+<span class="hljs-keyword">import</span> org.junit.experimental.categories.<span class="hljs-type">Category</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Slow</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">Tag</span>(<span class="hljs-params">"<span class="hljs-type">Slow</span>"</span>)</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Fast</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">Tag</span>(<span class="hljs-params">"<span class="hljs-type">Fast</span>"</span>)</span>
+
+<span class="hljs-meta">@Category</span>(<span class="hljs-type">Array</span>(classOf[<span class="hljs-type">Slow</span>]))
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySlowSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  test(<span class="hljs-string">"slow"</span>) {
+    <span class="hljs-type">Thread</span>.sleep(<span class="hljs-number">1000</span>)
+  }
+  <span class="hljs-comment">// ...</span>
+}
+<span class="hljs-meta">@Category</span>(<span class="hljs-type">Array</span>(classOf[<span class="hljs-type">Slow</span>], classOf[<span class="hljs-type">Fast</span>]))
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySlowFastSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-comment">// ...</span>
+}
+<span class="hljs-meta">@Category</span>(<span class="hljs-type">Array</span>(classOf[<span class="hljs-type">Fast</span>]))
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyFastSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<p>Next, use <code>--include-category=$CATEGORY</code> and <code>--exclude-category=$CATEGORY</code> to
+determine what test suites to run from the command line.</p>
+<pre><code class="hljs css language-sh"><span class="hljs-comment"># matches: MySlowSuite, MySlowFastSuite</span>
+&gt; testOnly -- --include-category=myapp.Slow
+
+<span class="hljs-comment"># matches: MySlowSuite</span>
+&gt; testOnly -- --include-category=myapp.Slow --exclude-category=myapp.Fast
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="filter-tests-cases-based-on-a-dynamic-conditions"></a><a href="#filter-tests-cases-based-on-a-dynamic-conditions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Filter tests cases based on a dynamic conditions</h2>
+<p>Override <code>munitTests()</code> to customize what tests get executed. For example, use
+this feature to skip tests based on a dynamic condition.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> scala.util.<span class="hljs-type">Properties</span>
+<span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Windows</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">Tag</span>(<span class="hljs-params">"<span class="hljs-type">Windows</span>"</span>)</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyWindowsTagSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitTests</span></span>(): <span class="hljs-type">Seq</span>[<span class="hljs-type">Test</span>] = {
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">default</span> = <span class="hljs-keyword">super</span>.munitTests()
+    <span class="hljs-keyword">if</span> (!<span class="hljs-type">Properties</span>.isWin) <span class="hljs-keyword">default</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">default</span>.filter(_.tags.contains(<span class="hljs-type">Windows</span>))
+  }
+  test(<span class="hljs-string">"files"</span>.tag(<span class="hljs-type">Windows</span>)) {
+    <span class="hljs-comment">// will always run, including on Windows</span>
+  }
+  test(<span class="hljs-string">"files"</span>) {
+    <span class="hljs-comment">// will not run in Windows</span>
+  }
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/munit/docs/fixtures.html"><span class="arrow-prev">← </span><span>Using fixtures</span></a><a class="docs-next button" href="/munit/docs/reports.html"><span>Generating test reports</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#run-only-a-single-test-case">Run only a single test case</a></li><li><a href="#ignore-single-test-case">Ignore single test case</a></li><li><a href="#ignore-single-test-case-based-on-a-dynamic-conditions">Ignore single test case based on a dynamic conditions</a></li><li><a href="#ignore-entire-test-suite">Ignore entire test suite</a></li><li><a href="#ignore-entire-test-suite-based-on-a-dynamic-condition">Ignore entire test suite based on a dynamic condition</a></li><li><a href="#include-and-exclude-tests-based-on-tags">Include and exclude tests based on tags</a></li><li><a href="#group-test-suites-with-categories">Group test suites with categories</a></li><li><a href="#filter-tests-cases-based-on-a-dynamic-conditions">Filter tests cases based on a dynamic conditions</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#045C4D"><section class="sitemap"><a href="/munit/" class="nav-home"><img src="/munit/img/scalameta-logo.png" alt="MUnit" width="66" height="58"/></a><div><h5>Overview</h5><a href="/munit/docs/getting-started.html">Getting started</a></div><div><h5>Social</h5><a href="https://github.com/scalameta/munit" target="_blank"><img src="https://img.shields.io/github/stars/scalameta/munit.svg?color=%23087e8b&amp;label=stars&amp;logo=github&amp;style=social"/></a><a href="https://discord.gg/RFpSVth" target="_blank"><img src="https://img.shields.io/discord/632642981228314653?logo=discord&amp;style=social"/></a><a href="https://gitter.im/scalameta/munit" target="_blank"><img src="https://img.shields.io/gitter/room/scalameta/munit.svg?logo=gitter&amp;style=social"/></a><a href="https://twitter.com/scalameta" target="_blank"><img src="https://img.shields.io/twitter/follow/scalameta.svg?logo=twitter&amp;style=social"/></a></div></section><section class="copyright">Copyright © 2020 Scalameta</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '586dbbac9432319747bfea750fab16cb',
+                indexName: 'scalameta_munit',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>

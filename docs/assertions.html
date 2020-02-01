@@ -1,0 +1,257 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Writing assertions · MUnit</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="MUnit provides a few ways to fail a test given a condition."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Writing assertions · MUnit"/><meta property="og:type" content="website"/><meta property="og:url" content="http://scalameta.org/munit/munit/index.html"/><meta property="og:description" content="MUnit provides a few ways to fail a test given a condition."/><meta property="og:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><link rel="shortcut icon" href="/munit/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="http://scalameta.org/munit/munit/blog/atom.xml" title="MUnit Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="http://scalameta.org/munit/munit/blog/feed.xml" title="MUnit Blog RSS Feed"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-140140828-1', 'auto');
+              ga('send', 'pageview');
+            </script><link rel="stylesheet" href="/munit/css/custom.css"/><script src="/munit/js/scrollSpy.js"></script><link rel="stylesheet" href="/munit/css/main.css"/><script src="/munit/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/munit/"><img class="logo" src="/munit/img/scalameta-logo.png" alt="MUnit"/><h2 class="headerTitleWithLogo">MUnit</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/munit/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/munit/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/scalameta/munit" target="_blank">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Overview</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/munit/docs/getting-started.html">Getting started</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/tests.html">Declaring tests</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/munit/docs/assertions.html">Writing assertions</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/fixtures.html">Using fixtures</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/filtering.html">Filtering tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/reports.html">Generating test reports</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/scalatest.html">Coming from ScalaTest</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/troubleshooting.html">Troubleshooting</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/scalameta/munit/edit/master/docs/assertions.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Writing assertions</h1></header><article><div><span><p>MUnit provides a few ways to fail a test given a condition.</p>
+<h2><a class="anchor" aria-hidden="true" id="assert"></a><a href="#assert" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>assert()</code></h2>
+<p>Use <code>assert()</code> to fail a test if a boolean condition does not hold true. For
+example, assume we have two values:</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">val</span> a = <span class="hljs-number">1</span>
+<span class="hljs-comment">// a: Int = 1</span>
+<span class="hljs-keyword">val</span> b = <span class="hljs-number">2</span>
+<span class="hljs-comment">// b: Int = 2</span>
+</code></pre>
+<p>In the most basic case when no hints are provided, the error message is
+&quot;assertion failed&quot; when the condition is false.</p>
+<pre><code class="hljs css language-scala">assert(a &gt; b)
+<span class="hljs-comment">// munit.FailException: assertion failed</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+<p>Include an optional message to explain why the assertion failed.</p>
+<pre><code class="hljs css language-scala">assert(a &gt; b, <span class="hljs-string">"a was smaller than b"</span>)
+<span class="hljs-comment">// munit.FailException: a was smaller than b</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+<p>Use <code>clue()</code> to include optional clues in the boolean condition based on values
+in the expression.</p>
+<pre><code class="hljs css language-scala">assert(clue(a) &gt; clue(b))
+<span class="hljs-comment">// munit.FailException: assertion failed</span>
+<span class="hljs-comment">// Clues {</span>
+<span class="hljs-comment">//   a: Int = 1</span>
+<span class="hljs-comment">//   b: Int = 2</span>
+<span class="hljs-comment">// }</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+<p>Clues can wrap more complicated expressions.</p>
+<pre><code class="hljs css language-scala">assert(clue(<span class="hljs-type">List</span>(a).head) &gt; clue(b))
+<span class="hljs-comment">// munit.FailException: assertion failed</span>
+<span class="hljs-comment">// Clues {</span>
+<span class="hljs-comment">//   List(a).head: Int = 1</span>
+<span class="hljs-comment">//   b: Int = 2</span>
+<span class="hljs-comment">// }</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="assertequals"></a><a href="#assertequals" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>assertEquals()</code></h2>
+<p>Use <code>assertEquals()</code> to assert that two values are the same.</p>
+<pre><code class="hljs css language-scala">assertEquals(a, b)
+<span class="hljs-comment">// munit.FailException: values are not the same</span>
+<span class="hljs-comment">// =&gt; Obtained</span>
+<span class="hljs-comment">// 1</span>
+<span class="hljs-comment">// =&gt; Diff (- obtained, + expected)</span>
+<span class="hljs-comment">// -1</span>
+<span class="hljs-comment">// +2</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+<p>The error message automatically produces a diff on assertion failure.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Library</span>(<span class="hljs-params">name: <span class="hljs-type">String</span>, awesome: <span class="hljs-type">Boolean</span>, versions: <span class="hljs-type">Range</span> = 0.to(1</span>))</span>
+<span class="hljs-keyword">val</span> munitLibrary = <span class="hljs-type">Library</span>(<span class="hljs-string">"MUnit"</span>, <span class="hljs-literal">true</span>)
+<span class="hljs-comment">// munitLibrary: Library = Library("MUnit", true, Range(0, 1))</span>
+<span class="hljs-keyword">val</span> mdocLibrary = <span class="hljs-type">Library</span>(<span class="hljs-string">"MDoc"</span>, <span class="hljs-literal">true</span>)
+<span class="hljs-comment">// mdocLibrary: Library = Library("MDoc", true, Range(0, 1))</span>
+</code></pre>
+<pre><code class="hljs css language-scala">assertEquals(munitLibrary, mdocLibrary)
+<span class="hljs-comment">// munit.FailException: values are not the same</span>
+<span class="hljs-comment">// =&gt; Obtained</span>
+<span class="hljs-comment">// Library(</span>
+<span class="hljs-comment">//   name = "MUnit",</span>
+<span class="hljs-comment">//   awesome = true,</span>
+<span class="hljs-comment">//   versions = Range(</span>
+<span class="hljs-comment">//     0,</span>
+<span class="hljs-comment">//     1</span>
+<span class="hljs-comment">//   )</span>
+<span class="hljs-comment">// )</span>
+<span class="hljs-comment">// =&gt; Diff (- obtained, + expected)</span>
+<span class="hljs-comment">//  Library(</span>
+<span class="hljs-comment">// -  name = "MUnit",</span>
+<span class="hljs-comment">// +  name = "MDoc",</span>
+<span class="hljs-comment">//    awesome = true,</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+<p>Diffs make it easy to track down differences even in large data structures.</p>
+<pre><code class="hljs css language-scala">assertEquals(
+  <span class="hljs-type">Map</span>(<span class="hljs-number">1</span> -&gt; <span class="hljs-type">List</span>(<span class="hljs-number">1.</span>to(<span class="hljs-number">3</span>))),
+  <span class="hljs-type">Map</span>(<span class="hljs-number">1</span> -&gt; <span class="hljs-type">List</span>(<span class="hljs-number">1.</span>to(<span class="hljs-number">4</span>)))
+)
+<span class="hljs-comment">// munit.FailException: values are not the same</span>
+<span class="hljs-comment">// =&gt; Obtained</span>
+<span class="hljs-comment">// Map(</span>
+<span class="hljs-comment">//   1 -&gt; List(</span>
+<span class="hljs-comment">//     Range(</span>
+<span class="hljs-comment">//       1,</span>
+<span class="hljs-comment">//       2,</span>
+<span class="hljs-comment">//       3</span>
+<span class="hljs-comment">//     )</span>
+<span class="hljs-comment">//   )</span>
+<span class="hljs-comment">// )</span>
+<span class="hljs-comment">// =&gt; Diff (- obtained, + expected)</span>
+<span class="hljs-comment">//        2,</span>
+<span class="hljs-comment">// -      3</span>
+<span class="hljs-comment">// +      3,</span>
+<span class="hljs-comment">// +      4</span>
+<span class="hljs-comment">//      )</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+<p>Comparing two values of different types is a compile error.</p>
+<pre><code class="hljs css language-scala">assertEquals(<span class="hljs-number">1</span>, <span class="hljs-string">""</span>)
+<span class="hljs-comment">// error: Cannot prove that Int =:= String.</span>
+<span class="hljs-comment">// Error occurred in an application involving default arguments.</span>
+<span class="hljs-comment">// assertEquals(1, "")</span>
+<span class="hljs-comment">// ^^^^^^^^^^^^^^^^^^^</span>
+</code></pre>
+<p>The two types must match exactly, it's a type error to compare two values even
+if one value is a subtype of the other.</p>
+<pre><code class="hljs css language-scala">assertEquals(<span class="hljs-type">Some</span>(<span class="hljs-number">1</span>), <span class="hljs-type">Option</span>(<span class="hljs-number">1</span>))
+<span class="hljs-comment">// error: Cannot prove that Some[Int] =:= Option[Int].</span>
+<span class="hljs-comment">// Error occurred in an application involving default arguments.</span>
+<span class="hljs-comment">// assertEquals(Some(1): Option[Int], Option(1))</span>
+<span class="hljs-comment">// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+</code></pre>
+<p>Upcast the subtype using a type ascription <code>subtype: Supertype</code> when you want to
+compare a subtype with a supertype.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-comment">// OK</span>
+assertEquals(<span class="hljs-type">Some</span>(<span class="hljs-number">1</span>): <span class="hljs-type">Option</span>[<span class="hljs-type">Int</span>], <span class="hljs-type">Option</span>(<span class="hljs-number">1</span>))
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="assertnotequals"></a><a href="#assertnotequals" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>assertNotEquals()</code></h2>
+<p>Use <code>assertNotEqual()</code> to assert that two values are not the same.</p>
+<pre><code class="hljs css language-scala">assertNotEquals(a, a)
+<span class="hljs-comment">// munit.FailException: values are the same</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+<p>The assertion does not fail when both values are different.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-comment">// OK</span>
+assertNotEquals(a, b)
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="assertnodiff"></a><a href="#assertnodiff" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>assertNoDiff()</code></h2>
+<p>Use <code>assertNoDiff()</code> to compare two multiline strings.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">val</span> obtainedString = <span class="hljs-string">"val x = 41\nval y = 43\nval z = 43"</span>
+<span class="hljs-comment">// obtainedString: String = """val x = 41</span>
+<span class="hljs-comment">// val y = 43</span>
+<span class="hljs-comment">// val z = 43"""</span>
+<span class="hljs-keyword">val</span> expectedString = <span class="hljs-string">"val x = 41\nval y = 42\nval z = 43"</span>
+<span class="hljs-comment">// expectedString: String = """val x = 41</span>
+<span class="hljs-comment">// val y = 42</span>
+<span class="hljs-comment">// val z = 43"""</span>
+</code></pre>
+<pre><code class="hljs css language-scala">assertNoDiff(obtainedString, expectedString)
+<span class="hljs-comment">// munit.FailException: diff assertion failed</span>
+<span class="hljs-comment">// =&gt; Obtained</span>
+<span class="hljs-comment">//     """|val x = 41</span>
+<span class="hljs-comment">//        |val y = 43</span>
+<span class="hljs-comment">//        |val z = 43</span>
+<span class="hljs-comment">//        |""".stripMargin</span>
+<span class="hljs-comment">// =&gt; Diff (- obtained, + expected)</span>
+<span class="hljs-comment">//  val x = 41</span>
+<span class="hljs-comment">// -val y = 43</span>
+<span class="hljs-comment">// +val y = 42</span>
+<span class="hljs-comment">//  val z = 43</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+<p>The difference between <code>assertNoDiff()</code> and <code>assertEquals()</code> is that
+<code>assertEquals()</code> fails according to the <code>==</code> method while <code>assertNoDiff()</code>
+ignores non-visible differences such as trailing/leading whitespace,
+Windows/Unix newlines and ANSI color codes. The &quot;=&gt; Obtained&quot; section of
+<code>assertNoDiff()</code> error messages also include copy-paste friendly syntax using
+<code>.stripMargin</code>.</p>
+<h2><a class="anchor" aria-hidden="true" id="fail"></a><a href="#fail" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fail()</code></h2>
+<p>Use <code>fail()</code> to make the test case fail immediately.</p>
+<pre><code class="hljs css language-scala">fail(<span class="hljs-string">"test failed"</span>)
+<span class="hljs-comment">// munit.FailException: test failed</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+<p>Use <code>clues()</code> to include optional context why the test failed.</p>
+<pre><code class="hljs css language-scala">fail(<span class="hljs-string">"test failed"</span>, clues(a + b))
+<span class="hljs-comment">// munit.FailException: test failed</span>
+<span class="hljs-comment">// Clues {</span>
+<span class="hljs-comment">//   a + b: Int = 3</span>
+<span class="hljs-comment">// }</span>
+<span class="hljs-comment">//  at munit.Assertions.fail(Assertions.scala:134)</span>
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/munit/docs/tests.html"><span class="arrow-prev">← </span><span>Declaring tests</span></a><a class="docs-next button" href="/munit/docs/fixtures.html"><span>Using fixtures</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#assert"><code>assert()</code></a></li><li><a href="#assertequals"><code>assertEquals()</code></a></li><li><a href="#assertnotequals"><code>assertNotEquals()</code></a></li><li><a href="#assertnodiff"><code>assertNoDiff()</code></a></li><li><a href="#fail"><code>fail()</code></a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#045C4D"><section class="sitemap"><a href="/munit/" class="nav-home"><img src="/munit/img/scalameta-logo.png" alt="MUnit" width="66" height="58"/></a><div><h5>Overview</h5><a href="/munit/docs/getting-started.html">Getting started</a></div><div><h5>Social</h5><a href="https://github.com/scalameta/munit" target="_blank"><img src="https://img.shields.io/github/stars/scalameta/munit.svg?color=%23087e8b&amp;label=stars&amp;logo=github&amp;style=social"/></a><a href="https://discord.gg/RFpSVth" target="_blank"><img src="https://img.shields.io/discord/632642981228314653?logo=discord&amp;style=social"/></a><a href="https://gitter.im/scalameta/munit" target="_blank"><img src="https://img.shields.io/gitter/room/scalameta/munit.svg?logo=gitter&amp;style=social"/></a><a href="https://twitter.com/scalameta" target="_blank"><img src="https://img.shields.io/twitter/follow/scalameta.svg?logo=twitter&amp;style=social"/></a></div></section><section class="copyright">Copyright © 2020 Scalameta</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '586dbbac9432319747bfea750fab16cb',
+                indexName: 'scalameta_munit',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Getting started · MUnit</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="MUnit is a Scala testing library with the following goals:"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Getting started · MUnit"/><meta property="og:type" content="website"/><meta property="og:url" content="http://scalameta.org/munit/munit/index.html"/><meta property="og:description" content="MUnit is a Scala testing library with the following goals:"/><meta property="og:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><link rel="shortcut icon" href="/munit/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="http://scalameta.org/munit/munit/blog/atom.xml" title="MUnit Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="http://scalameta.org/munit/munit/blog/feed.xml" title="MUnit Blog RSS Feed"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-140140828-1', 'auto');
+              ga('send', 'pageview');
+            </script><link rel="stylesheet" href="/munit/css/custom.css"/><script src="/munit/js/scrollSpy.js"></script><link rel="stylesheet" href="/munit/css/main.css"/><script src="/munit/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/munit/"><img class="logo" src="/munit/img/scalameta-logo.png" alt="MUnit"/><h2 class="headerTitleWithLogo">MUnit</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive siteNavItemActive"><a href="/munit/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/munit/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/scalameta/munit" target="_blank">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Overview</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/munit/docs/getting-started.html">Getting started</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/tests.html">Declaring tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/assertions.html">Writing assertions</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/fixtures.html">Using fixtures</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/filtering.html">Filtering tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/reports.html">Generating test reports</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/scalatest.html">Coming from ScalaTest</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/troubleshooting.html">Troubleshooting</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/scalameta/munit/edit/master/docs/getting-started.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Getting started</h1></header><article><div><span><p>MUnit is a Scala testing library with the following goals:</p>
+<ul>
+<li><strong>Reuse JUnit</strong>: MUnit is implemented as a JUnit runner and tries to build on
+top of existing JUnit functionality where possible. Any tool that knows how to
+run a JUnit test suite knows how to run MUnit, including IDEs like IntelliJ.</li>
+<li><strong>Actionable errors</strong>: test reports are pretty-printed with colors to help you
+quickly understand what caused a test failure. MUnit tries to displays diffs
+and source locations when possible and it does a best-effort to highlight
+relevant stack trace elements.</li>
+<li><strong>No Scala dependencies</strong>: MUnit has no external Scala dependencies so that it
+can easily cross-build against a wide range of Scala compiler versions.</li>
+<li><strong>Cross-platform</strong>: MUnit compiles to JVM bytecode, JavaScript via Scala.js
+and ahead-of-time optimized binaries via Scala Native/LLVM.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="quick-start"></a><a href="#quick-start" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Quick start</h2>
+<p><img src="https://img.shields.io/maven-central/v/org.scalameta/munit_2.13?style=for-the-badge" alt="Badge with version of the latest release"></p>
+<pre><code class="hljs css language-scala">libraryDependencies += <span class="hljs-string">"org.scalameta"</span> %% <span class="hljs-string">"munit"</span> % <span class="hljs-string">"0.4.2"</span>
+<span class="hljs-comment">// Use %%% for non-JVM projects.</span>
+testFrameworks += <span class="hljs-keyword">new</span> <span class="hljs-type">TestFramework</span>(<span class="hljs-string">"munit.Framework"</span>)
+</code></pre>
+<table>
+<thead>
+<tr><th>Scala Version</th><th style="text-align:center">JVM</th><th style="text-align:center">Scala.js (0.6.x, 1.x)</th><th style="text-align:center">Native (0.4.x)</th></tr>
+</thead>
+<tbody>
+<tr><td>2.11.x</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td></tr>
+<tr><td>2.12.x</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">n/a</td></tr>
+<tr><td>2.13.x</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">n/a</td></tr>
+<tr><td>0.21.x</td><td style="text-align:center">✅</td><td style="text-align:center">n/a</td><td style="text-align:center">n/a</td></tr>
+</tbody>
+</table>
+<p>Next, write a test suite.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  test(<span class="hljs-string">"hello"</span>) {
+    <span class="hljs-keyword">val</span> obtained = <span class="hljs-number">42</span>
+    <span class="hljs-keyword">val</span> expected = <span class="hljs-number">43</span>
+    assertEquals(obtained, expected)
+  }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="run-tests-in-sbt"></a><a href="#run-tests-in-sbt" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run tests in sbt</h3>
+<p>Execute <code>sbt test</code> to run MUnit tests in the terminal. It's recommended to stay
+in the sbt shell for the best compiler performance.</p>
+<pre><code class="hljs css language-sh">$ sbt
+&gt; <span class="hljs-built_in">test</span>
+</code></pre>
+<p>Use <code>testOnly</code> to run only a single test suite in the sbt shell.</p>
+<pre><code class="hljs css language-sh"><span class="hljs-comment"># sbt shell</span>
+&gt; testOnly com.MySuite
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="run-tests-in-intellij"></a><a href="#run-tests-in-intellij" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run tests in IntelliJ</h3>
+<p>MUnit test suites can be executed from in IntelliJ like normal test suites.</p>
+<p><img src="https://i.imgur.com/oAA2ZeQ.png" alt="Running MUnit from IntelliJ"></p>
+<p>It's normal that it's not possible to run individual test cases from IntelliJ
+since it does not yet understand the <code>test(&quot;name&quot;) {...}</code> syntax. As a
+workaround, use the <code>.only</code> marker to run only a single test from IntelliJ.</p>
+<pre><code class="hljs css language-diff"><span class="hljs-deletion">- test("name") {</span>
+<span class="hljs-addition">+ test("name".only) {</span>
+    // ...
+  }
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="run-tests-in-vs-code"></a><a href="#run-tests-in-vs-code" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run tests in VS Code</h3>
+<p>MUnit test suites can be executed from VS Code like normal test suites.</p>
+<p><img src="https://i.imgur.com/hmL0hAp.png" alt="Running MUnit from VS Code"></p>
+<h3><a class="anchor" aria-hidden="true" id="search-for-failed-tests-in-ci-logs"></a><a href="#search-for-failed-tests-in-ci-logs" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Search for failed tests in CI logs</h3>
+<p>Test results are formatted in a specific way to make it easy to search for them
+in a large log file.</p>
+<table>
+<thead>
+<tr><th>Test</th><th>Prefix</th></tr>
+</thead>
+<tbody>
+<tr><td>Success</td><td><code>+</code></td></tr>
+<tr><td>Failed</td><td><code>==&gt; X</code></td></tr>
+<tr><td>Ignored</td><td><code>==&gt; i</code></td></tr>
+<tr><td>Skipped</td><td><code>==&gt; s</code></td></tr>
+</tbody>
+</table>
+<p>Knowing these prefixes may come in handy for example when browsing test logs in
+a browser. Search for <code>==&gt; X</code> to quickly navigate to the failed tests.</p>
+<h2><a class="anchor" aria-hidden="true" id="usage-guide"></a><a href="#usage-guide" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage guide</h2>
+<p>See the guide on <a href="tests.html">writing tests</a> to learn more about using MUnit.</p>
+<h2><a class="anchor" aria-hidden="true" id="why-junit"></a><a href="#why-junit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Why JUnit?</h2>
+<p>MUnit builds on top of JUnit in order to benefit from existing JUnit tooling
+integrations. For example, IntelliJ can already automatically detect JUnit test
+suites and provides a nice interface to explore JUnit test results. Some build
+tools like Pants also have built-in support to JUnit test suites.</p>
+<h2><a class="anchor" aria-hidden="true" id="why-not-just-junit"></a><a href="#why-not-just-junit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Why not just JUnit?</h2>
+<p>The default JUnit testing syntax is based on annotations and does not feel
+idiomatic when used from Scala. MUnit tries to fill in the gap by providing a
+small Scala API on top of JUnit.</p>
+<h2><a class="anchor" aria-hidden="true" id="stability"></a><a href="#stability" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Stability</h2>
+<p>MUnit is a new library with no stability guarantees. While this project is
+versioned at v0.x, it's expected that new releases, including patch releases,
+will have binary and source breaking changes.</p>
+<h2><a class="anchor" aria-hidden="true" id="inspirations"></a><a href="#inspirations" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Inspirations</h2>
+<p>MUnit is inspired by several existing testing libraries:</p>
+<ul>
+<li>ScalaTest: the syntax for defining <code>munit.FunSuite</code> test suites is the same as
+for <code>org.scalatest.FunSuite</code>.</li>
+<li>JUnit: MUnit is implemented as a custom JUnit runner and features like
+<code>assume</code> test filters are implemented on top of existing JUnit functionality.</li>
+<li>utest: the nicely formatted stack traces and test reports is heavily inspired
+by the beautifully formatted output in utest.</li>
+<li>ava: the idea for showing the source locations for assertion errors comes from
+<a href="https://github.com/avajs/ava">ava</a>, a JavaScript testing library.</li>
+</ul>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-next button" href="/munit/docs/tests.html"><span>Declaring tests</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#quick-start">Quick start</a><ul class="toc-headings"><li><a href="#run-tests-in-sbt">Run tests in sbt</a></li><li><a href="#run-tests-in-intellij">Run tests in IntelliJ</a></li><li><a href="#run-tests-in-vs-code">Run tests in VS Code</a></li><li><a href="#search-for-failed-tests-in-ci-logs">Search for failed tests in CI logs</a></li></ul></li><li><a href="#usage-guide">Usage guide</a></li><li><a href="#why-junit">Why JUnit?</a></li><li><a href="#why-not-just-junit">Why not just JUnit?</a></li><li><a href="#stability">Stability</a></li><li><a href="#inspirations">Inspirations</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#045C4D"><section class="sitemap"><a href="/munit/" class="nav-home"><img src="/munit/img/scalameta-logo.png" alt="MUnit" width="66" height="58"/></a><div><h5>Overview</h5><a href="/munit/docs/getting-started.html">Getting started</a></div><div><h5>Social</h5><a href="https://github.com/scalameta/munit" target="_blank"><img src="https://img.shields.io/github/stars/scalameta/munit.svg?color=%23087e8b&amp;label=stars&amp;logo=github&amp;style=social"/></a><a href="https://discord.gg/RFpSVth" target="_blank"><img src="https://img.shields.io/discord/632642981228314653?logo=discord&amp;style=social"/></a><a href="https://gitter.im/scalameta/munit" target="_blank"><img src="https://img.shields.io/gitter/room/scalameta/munit.svg?logo=gitter&amp;style=social"/></a><a href="https://twitter.com/scalameta" target="_blank"><img src="https://img.shields.io/twitter/follow/scalameta.svg?logo=twitter&amp;style=social"/></a></div></section><section class="copyright">Copyright © 2020 Scalameta</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '586dbbac9432319747bfea750fab16cb',
+                indexName: 'scalameta_munit',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>

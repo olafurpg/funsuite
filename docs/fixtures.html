@@ -1,0 +1,245 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Using fixtures · MUnit</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Test fixtures are the environments in which tests run. Fixtures allow you to"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Using fixtures · MUnit"/><meta property="og:type" content="website"/><meta property="og:url" content="http://scalameta.org/munit/munit/index.html"/><meta property="og:description" content="Test fixtures are the environments in which tests run. Fixtures allow you to"/><meta property="og:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><link rel="shortcut icon" href="/munit/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="http://scalameta.org/munit/munit/blog/atom.xml" title="MUnit Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="http://scalameta.org/munit/munit/blog/feed.xml" title="MUnit Blog RSS Feed"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-140140828-1', 'auto');
+              ga('send', 'pageview');
+            </script><link rel="stylesheet" href="/munit/css/custom.css"/><script src="/munit/js/scrollSpy.js"></script><link rel="stylesheet" href="/munit/css/main.css"/><script src="/munit/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/munit/"><img class="logo" src="/munit/img/scalameta-logo.png" alt="MUnit"/><h2 class="headerTitleWithLogo">MUnit</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/munit/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/munit/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/scalameta/munit" target="_blank">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Overview</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/munit/docs/getting-started.html">Getting started</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/tests.html">Declaring tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/assertions.html">Writing assertions</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/munit/docs/fixtures.html">Using fixtures</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/filtering.html">Filtering tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/reports.html">Generating test reports</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/scalatest.html">Coming from ScalaTest</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/troubleshooting.html">Troubleshooting</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/scalameta/munit/edit/master/docs/fixtures.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Using fixtures</h1></header><article><div><span><p>Test fixtures are the environments in which tests run. Fixtures allow you to
+acquire resources during setup and clean up resources after the tests finish
+running.</p>
+<h2><a class="anchor" aria-hidden="true" id="functional-test-local-fixtures"></a><a href="#functional-test-local-fixtures" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Functional test-local fixtures</h2>
+<p>Functional test-local fixtures allow you to write test cases with simple
+setup/teardown methods to initialize resources before a test case and clean up
+resources after a test case.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> java.nio.file._
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FunFixtureSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">val</span> files = <span class="hljs-keyword">new</span> <span class="hljs-type">FunFixture</span>[<span class="hljs-type">Path</span>](
+    setup = { test =&gt;
+      <span class="hljs-type">Files</span>.createTempFile(<span class="hljs-string">"tmp"</span>, test.name)
+    },
+    teardown = { file =&gt;
+      <span class="hljs-comment">// Always gets called, even if test failed.</span>
+      <span class="hljs-type">Files</span>.deleteIfExists(file)
+    }
+  )
+
+  files.test(<span class="hljs-string">"basic"</span>) { file =&gt;
+    assert(<span class="hljs-type">Files</span>.isRegularFile(file), <span class="hljs-string">s"Files.isRegularFile(<span class="hljs-subst">$file</span>)"</span>)
+  }
+}
+</code></pre>
+<p>Use <code>FunFixture.map2</code> to compose multiple fixtures into a single fixture.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-comment">// Fixture with access to two temporary files.</span>
+<span class="hljs-keyword">val</span> files2 = <span class="hljs-type">FunFixture</span>.map2(files, files)
+<span class="hljs-comment">// files2: FunFixture[(Path, Path)] = munit.FunSuite$FunFixture@74c1b03a</span>
+files2.test(<span class="hljs-string">"two"</span>) {
+  <span class="hljs-keyword">case</span> (file1, file2) =&gt;
+    assertNotEquals(file1, file2)
+    assert(<span class="hljs-type">Files</span>.isRegularFile(file1), <span class="hljs-string">s"Files.isRegularFile(<span class="hljs-subst">$file1</span>)"</span>)
+    assert(<span class="hljs-type">Files</span>.isRegularFile(file2), <span class="hljs-string">s"Files.isRegularFile(<span class="hljs-subst">$file2</span>)"</span>)
+}
+</code></pre>
+<p>Functional test-local fixtures are desirable since they are easy to reason
+about. Try to use functional test-local fixtures when possible, and only resort
+to reusable or ad-hoc fixtures when necessary.</p>
+<h2><a class="anchor" aria-hidden="true" id="reusable-test-local-fixtures"></a><a href="#reusable-test-local-fixtures" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reusable test-local fixtures</h2>
+<p>Reusable test-local fixtures are more powerful than functional test-local
+fixtures because they can declare custom logic that gets evaluted before each
+local test case and get torn down after each test case. These increased
+capabilities come at the price of ergonomics of the API.</p>
+<p>Override the <code>beforeEach()</code> and <code>afterEach()</code> methods in the <code>Fixture[T]</code> trait
+to configure a reusable test-local fixture.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> java.nio.file._
+<span class="hljs-keyword">import</span> munit._
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FilesSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">val</span> file = <span class="hljs-keyword">new</span> <span class="hljs-type">Fixture</span>[<span class="hljs-type">Path</span>](<span class="hljs-string">"files"</span>) {
+    <span class="hljs-keyword">var</span> file: <span class="hljs-type">Path</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply</span></span>() = file
+    <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">beforeEach</span></span>(context: <span class="hljs-type">BeforeEach</span>): <span class="hljs-type">Unit</span> = {
+      file = <span class="hljs-type">Files</span>.createTempFile(<span class="hljs-string">"files"</span>, context.test.name)
+    }
+    <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">afterEach</span></span>(context: <span class="hljs-type">AfterEach</span>): <span class="hljs-type">Unit</span> = {
+      <span class="hljs-comment">// Always gets called, even if test failed.</span>
+      <span class="hljs-type">Files</span>.deleteIfExists(file)
+    }
+  }
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitFixtures</span> </span>= <span class="hljs-type">List</span>(file)
+
+  test(<span class="hljs-string">"exists"</span>) {
+    <span class="hljs-comment">// `file` is the temporary file that was created for this test case.</span>
+    assert(<span class="hljs-type">Files</span>.exists(file()))
+  }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="reusable-suite-local-fixtures"></a><a href="#reusable-suite-local-fixtures" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reusable suite-local fixtures</h2>
+<p>Reusable suite-local fixtures work the same as reusable test-local fixtures but
+they override the <code>beforeAll()</code> and <code>afterAll()</code> methods instead of
+<code>beforeEach()</code> and <code>afterEach()</code>.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> java.sql.<span class="hljs-type">Connection</span>
+<span class="hljs-keyword">import</span> java.sql.<span class="hljs-type">DriverManager</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">val</span> db = <span class="hljs-keyword">new</span> <span class="hljs-type">Fixture</span>[<span class="hljs-type">Connection</span>](<span class="hljs-string">"database"</span>) {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">var</span> connection: <span class="hljs-type">Connection</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply</span></span>() = connection
+    <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">beforeAll</span></span>(): <span class="hljs-type">Unit</span> = {
+      connection = <span class="hljs-type">DriverManager</span>.getConnection(<span class="hljs-string">"jdbc:h2:mem:"</span>, <span class="hljs-string">"sa"</span>, <span class="hljs-literal">null</span>)
+    }
+    <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">afterAll</span></span>(): <span class="hljs-type">Unit</span> = {
+      connection.close()
+    }
+  }
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitFixtures</span> </span>= <span class="hljs-type">List</span>(db)
+
+  test(<span class="hljs-string">"test1"</span>) {
+    db() <span class="hljs-comment">// database connection has been initialized</span>
+  }
+  test(<span class="hljs-string">"test2"</span>) {
+    <span class="hljs-comment">// ...</span>
+    db() <span class="hljs-comment">// the same `db` instance as in "test1"</span>
+  }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ad-hoc-test-local-fixtures"></a><a href="#ad-hoc-test-local-fixtures" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ad-hoc test-local fixtures</h2>
+<p>Override <code>beforeEach()</code> and <code>afterEach()</code> to add custom logic that should run
+before and after each tests case. For example, use this feature to create
+temporary files before executing tests or clean up acquired resources after the
+test finish.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> java.nio.file._
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">var</span> path: <span class="hljs-type">Path</span> = <span class="hljs-literal">null</span>
+
+  <span class="hljs-comment">// Runs before each individual test.</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">beforeEach</span></span>(context: <span class="hljs-type">BeforeEach</span>): <span class="hljs-type">Unit</span> = {
+    path = <span class="hljs-type">Files</span>.createTempFile(<span class="hljs-string">"MySuite"</span>, context.test.name)
+  }
+
+  <span class="hljs-comment">// Runs after each individual test.</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">afterEach</span></span>(context: <span class="hljs-type">AfterEach</span>): <span class="hljs-type">Unit</span> = {
+    <span class="hljs-type">Files</span>.deleteIfExists(path)
+  }
+
+  test(<span class="hljs-string">"test1"</span>) {
+    <span class="hljs-comment">// ...</span>
+    path <span class="hljs-comment">// will be deleted after this test case finishes</span>
+  }
+  test(<span class="hljs-string">"test2"</span>) {
+    <span class="hljs-comment">// ...</span>
+    path <span class="hljs-comment">// not the same `path` as in "test1"</span>
+  }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ad-hoc-suite-local-fixtures"></a><a href="#ad-hoc-suite-local-fixtures" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ad-hoc suite-local fixtures</h2>
+<p>Override <code>beforeAll()</code> and <code>afterAll()</code> to add custom logic that should run
+before all test cases start runniing and after all tests cases have finished
+running. For example, use this feature to establish a database connection that
+should be reused between test cases.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> java.sql.<span class="hljs-type">Connection</span>
+<span class="hljs-keyword">import</span> java.sql.<span class="hljs-type">DriverManager</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">var</span> db: <span class="hljs-type">Connection</span> = <span class="hljs-literal">null</span>
+
+  <span class="hljs-comment">// Runs once before all tests start.</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">beforeAll</span></span>(): <span class="hljs-type">Unit</span> = {
+    <span class="hljs-comment">// start in-memory database connection.</span>
+    db = <span class="hljs-type">DriverManager</span>.getConnection(<span class="hljs-string">"jdbc:h2:mem:"</span>, <span class="hljs-string">"sa"</span>, <span class="hljs-literal">null</span>)
+  }
+
+  <span class="hljs-comment">// Runs once after all tests have completed, regardless if tests passed or failed.</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">afterAll</span></span>(): <span class="hljs-type">Unit</span> = {
+    db.close()
+  }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="avoid-stateful-operations-in-the-class-constructor"></a><a href="#avoid-stateful-operations-in-the-class-constructor" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Avoid stateful operations in the class constructor</h2>
+<p>Test classes may sometimes get initialized even if no tests run so it's best to
+avoid declaring fixture in the class constructor instead of <code>beforeAll()</code>.</p>
+<p>For example, IDEs like IntelliJ may load the class to discover the names of the
+test cases that are available.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> java.sql.<span class="hljs-type">DriverManager</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-comment">// Don't do this, because the class may get initialized even if no tests run.</span>
+  <span class="hljs-keyword">val</span> db = <span class="hljs-type">DriverManager</span>.getConnection(<span class="hljs-string">"jdbc:h2:mem:"</span>, <span class="hljs-string">"sa"</span>, <span class="hljs-literal">null</span>)
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">afterAll</span></span>(): <span class="hljs-type">Unit</span> = {
+    <span class="hljs-comment">// May never get called, resulting in connection leaking.</span>
+    db.close()
+  }
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/munit/docs/assertions.html"><span class="arrow-prev">← </span><span>Writing assertions</span></a><a class="docs-next button" href="/munit/docs/filtering.html"><span>Filtering tests</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#functional-test-local-fixtures">Functional test-local fixtures</a></li><li><a href="#reusable-test-local-fixtures">Reusable test-local fixtures</a></li><li><a href="#reusable-suite-local-fixtures">Reusable suite-local fixtures</a></li><li><a href="#ad-hoc-test-local-fixtures">Ad-hoc test-local fixtures</a></li><li><a href="#ad-hoc-suite-local-fixtures">Ad-hoc suite-local fixtures</a></li><li><a href="#avoid-stateful-operations-in-the-class-constructor">Avoid stateful operations in the class constructor</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#045C4D"><section class="sitemap"><a href="/munit/" class="nav-home"><img src="/munit/img/scalameta-logo.png" alt="MUnit" width="66" height="58"/></a><div><h5>Overview</h5><a href="/munit/docs/getting-started.html">Getting started</a></div><div><h5>Social</h5><a href="https://github.com/scalameta/munit" target="_blank"><img src="https://img.shields.io/github/stars/scalameta/munit.svg?color=%23087e8b&amp;label=stars&amp;logo=github&amp;style=social"/></a><a href="https://discord.gg/RFpSVth" target="_blank"><img src="https://img.shields.io/discord/632642981228314653?logo=discord&amp;style=social"/></a><a href="https://gitter.im/scalameta/munit" target="_blank"><img src="https://img.shields.io/gitter/room/scalameta/munit.svg?logo=gitter&amp;style=social"/></a><a href="https://twitter.com/scalameta" target="_blank"><img src="https://img.shields.io/twitter/follow/scalameta.svg?logo=twitter&amp;style=social"/></a></div></section><section class="copyright">Copyright © 2020 Scalameta</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '586dbbac9432319747bfea750fab16cb',
+                indexName: 'scalameta_munit',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>

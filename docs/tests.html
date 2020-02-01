@@ -1,0 +1,341 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Declaring tests · MUnit</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="MUnit provides several ways to declare different kinds of tests."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Declaring tests · MUnit"/><meta property="og:type" content="website"/><meta property="og:url" content="http://scalameta.org/munit/munit/index.html"/><meta property="og:description" content="MUnit provides several ways to declare different kinds of tests."/><meta property="og:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><link rel="shortcut icon" href="/munit/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="http://scalameta.org/munit/munit/blog/atom.xml" title="MUnit Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="http://scalameta.org/munit/munit/blog/feed.xml" title="MUnit Blog RSS Feed"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-140140828-1', 'auto');
+              ga('send', 'pageview');
+            </script><link rel="stylesheet" href="/munit/css/custom.css"/><script src="/munit/js/scrollSpy.js"></script><link rel="stylesheet" href="/munit/css/main.css"/><script src="/munit/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/munit/"><img class="logo" src="/munit/img/scalameta-logo.png" alt="MUnit"/><h2 class="headerTitleWithLogo">MUnit</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/munit/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/munit/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/scalameta/munit" target="_blank">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Overview</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/munit/docs/getting-started.html">Getting started</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/munit/docs/tests.html">Declaring tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/assertions.html">Writing assertions</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/fixtures.html">Using fixtures</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/filtering.html">Filtering tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/reports.html">Generating test reports</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/scalatest.html">Coming from ScalaTest</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/troubleshooting.html">Troubleshooting</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/scalameta/munit/edit/master/docs/tests.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Declaring tests</h1></header><article><div><span><p>MUnit provides several ways to declare different kinds of tests.</p>
+<h2><a class="anchor" aria-hidden="true" id="declare-basic-test"></a><a href="#declare-basic-test" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Declare basic test</h2>
+<p>Use <code>test()</code> to declare a basic test case that passes as long as the test body
+does not crash with an exception.</p>
+<pre><code class="hljs css language-scala">test(<span class="hljs-string">"basic"</span>) {
+
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="declare-async-test"></a><a href="#declare-async-test" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Declare async test</h2>
+<p>Async tests are declared the same way as basic tests. Test bodies that return
+<code>Future[T]</code> will automatically be awaited upon with <code>Await.result()</code>.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> scala.concurrent.<span class="hljs-type">Future</span>
+<span class="hljs-keyword">implicit</span> <span class="hljs-keyword">val</span> ec = scala.concurrent.<span class="hljs-type">ExecutionContext</span>.global
+test(<span class="hljs-string">"async"</span>) {
+  <span class="hljs-type">Future</span> {
+    println(<span class="hljs-string">"Hello Internet!"</span>)
+  }
+}
+</code></pre>
+<p>The default timout for async tests is 30 seconds.</p>
+<p>Override <code>munitTimeout</code> to customize the timeout for how long tests should
+await.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> scala.concurrent.duration.<span class="hljs-type">Duration</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomTimeoutSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-comment">// await one second instead of default</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-keyword">val</span> munitTimeout = <span class="hljs-type">Duration</span>(<span class="hljs-number">1</span>, <span class="hljs-string">"s"</span>)
+  test(<span class="hljs-string">"slow-async"</span>) {
+    <span class="hljs-type">Future</span> {
+      <span class="hljs-type">Thread</span>.sleep(<span class="hljs-number">5000</span>)
+      <span class="hljs-comment">// Test times out before `println()` is evaluated.</span>
+      println(<span class="hljs-string">"pass"</span>)
+    }
+  }
+}
+</code></pre>
+<p>Note that <code>Await.result()</code> only works on the JVM. Scala.js and Scala Native
+tests that return uncompleted <code>Future[T]</code> values will fail.</p>
+<p>MUnit has special handling for <code>scala.concurrent.Future[T]</code> since it is
+available in the standard library. Override <code>munitTestValue</code> to add custom
+handling for other asynchronous types.</p>
+<p>For example, imagine that you have a <code>Task[T]</code> data type that is a lazy future.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> scala.concurrent.<span class="hljs-type">ExecutionContext</span>
+<span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Task</span>[+<span class="hljs-type">T</span>](<span class="hljs-params">run: (</span>) <span class="hljs-title">=&gt;</span> <span class="hljs-title">Future</span>[<span class="hljs-type">T</span>])</span>
+<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Task</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply</span></span>[<span class="hljs-type">T</span>](thunk: =&gt; <span class="hljs-type">T</span>)(<span class="hljs-keyword">implicit</span> ec: <span class="hljs-type">ExecutionContext</span>): <span class="hljs-type">Task</span>[<span class="hljs-type">T</span>] =
+    <span class="hljs-type">Task</span>(() =&gt; <span class="hljs-type">Future</span>(thunk))
+}
+
+test(<span class="hljs-string">"buggy-task"</span>) {
+  <span class="hljs-type">Task</span> {
+    <span class="hljs-type">Thread</span>.sleep(<span class="hljs-number">10</span>)
+    <span class="hljs-comment">// WARNING: test will pass because `Task.run()` was never called</span>
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-type">RuntimeException</span>(<span class="hljs-string">"BOOM!"</span>)
+  }
+}
+</code></pre>
+<p>Since tasks are lazy, a test that returns <code>Task[T]</code> will always pass since you
+need to call <code>run()</code> to start the task execution. Override <code>munitTestValue</code> to
+add make sure that <code>Task.run()</code> gets called.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> scala.concurrent.<span class="hljs-type">Await</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TaskSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitTestValue</span></span>(testValue: <span class="hljs-type">Any</span>): <span class="hljs-type">Any</span> =
+    testValue <span class="hljs-keyword">match</span> {
+      <span class="hljs-keyword">case</span> <span class="hljs-type">Task</span>(run) =&gt; <span class="hljs-type">Await</span>.result(run(), munitTimeout)
+      <span class="hljs-keyword">case</span> _ =&gt; <span class="hljs-keyword">super</span>.munitTestValue(testValue)
+    }
+  <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">val</span> ec = <span class="hljs-type">ExecutionContext</span>.global
+  test(<span class="hljs-string">"ok-task"</span>) {
+    <span class="hljs-type">Task</span> {
+      <span class="hljs-type">Thread</span>.sleep(<span class="hljs-number">5000</span>)
+      <span class="hljs-comment">// Test will fail because `Task.run()` is automatically called</span>
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-type">RuntimeException</span>(<span class="hljs-string">"BOOM!"</span>)
+    }
+  }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="run-tests-in-parallel"></a><a href="#run-tests-in-parallel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run tests in parallel</h2>
+<p>MUnit does not support running individual test cases in parallel. However, sbt
+automatically parallelizes the execution of multiple test suites. To disable
+parallel test suite execution in sbt, add the following setting to <code>build.sbt</code>.</p>
+<pre><code class="hljs css language-sh">Test / parallelExecution := <span class="hljs-literal">false</span>
+</code></pre>
+<p>To learn more about sbt test execution, see
+<a href="https://www.scala-sbt.org/1.x/docs/Testing.html">https://www.scala-sbt.org/1.x/docs/Testing.html</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="declare-tests-inside-a-helper-function"></a><a href="#declare-tests-inside-a-helper-function" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Declare tests inside a helper function</h2>
+<p>Avoid duplication between test cases by extracting the shared parts into a
+reusable method.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check</span></span>[<span class="hljs-type">T</span>](
+  name: <span class="hljs-type">String</span>,
+  original: <span class="hljs-type">List</span>[<span class="hljs-type">T</span>],
+  expected: <span class="hljs-type">Option</span>[<span class="hljs-type">T</span>]
+)(<span class="hljs-keyword">implicit</span> loc: munit.<span class="hljs-type">Location</span>): <span class="hljs-type">Unit</span> = {
+  test(name) {
+    <span class="hljs-keyword">val</span> obtained = original.headOption
+    assertEquals(obtained, expected)
+  }
+}
+
+check(<span class="hljs-string">"basic"</span>, <span class="hljs-type">List</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>), <span class="hljs-type">Some</span>(<span class="hljs-number">1</span>))
+check(<span class="hljs-string">"empty"</span>, <span class="hljs-type">List</span>(), <span class="hljs-type">Some</span>(<span class="hljs-number">1</span>))
+check(<span class="hljs-string">"null"</span>, <span class="hljs-type">List</span>(<span class="hljs-literal">null</span>, <span class="hljs-number">2</span>), <span class="hljs-type">Some</span>(<span class="hljs-literal">null</span>))
+</code></pre>
+<p>When declaring tests in a helper function, it's useful to pass around an
+<code>implicit loc: munit.Location</code> parameter in order to show relevant source
+locations when a test fails.</p>
+<p><img src="https://i.imgur.com/v7Vv5Rk.png" alt="Screen shot of console ouput with implicit Location parameter"></p>
+<p><strong>Screenshot above</strong>: test failure with implicit <code>Location</code> parameter, observe
+that the highlighted line points to the failing test case.</p>
+<p><img src="https://i.imgur.com/yXpA9dp.png" alt="Screen shot of console output without implicit Location parameter"></p>
+<p><strong>Screenshot above</strong> test failure without implicit <code>Location</code> parameter, observe
+that the highlighted line points to <code>assertEquals</code> line that is reused in all
+test cases.</p>
+<p>It's good practice to avoid slow operations when using test helpers. For
+example, use by-name variables if the arguments to the helper method do stateful
+stuff that can make the test fail.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-comment">// OK: `bytes` parameter is by-name so `readAllBytes` is evaluated in test body.</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">checkByName</span></span>(name: <span class="hljs-type">String</span>, bytes: =&gt; <span class="hljs-type">Array</span>[<span class="hljs-type">Byte</span>]): <span class="hljs-type">Unit</span> =
+  test(name) { <span class="hljs-comment">/* use bytes */</span> }
+<span class="hljs-comment">// Not OK: `bytes` parameter is eager so `readAllBytes` is evaluated in class constructor.</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">checkEager</span></span>(name: <span class="hljs-type">String</span>, bytes: <span class="hljs-type">Array</span>[<span class="hljs-type">Byte</span>]): <span class="hljs-type">Unit</span> =
+  test(name) { <span class="hljs-comment">/* use bytes */</span> }
+
+<span class="hljs-keyword">import</span> java.nio.file.{<span class="hljs-type">Files</span>, <span class="hljs-type">Paths</span>}
+checkByName(<span class="hljs-string">"file"</span>, <span class="hljs-type">Files</span>.readAllBytes(<span class="hljs-type">Paths</span>.get(<span class="hljs-string">"build.sbt"</span>)))
+checkEager(<span class="hljs-string">"file"</span>, <span class="hljs-type">Files</span>.readAllBytes(<span class="hljs-type">Paths</span>.get(<span class="hljs-string">"build.sbt"</span>)))
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="declare-test-that-should-always-fail"></a><a href="#declare-test-that-should-always-fail" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Declare test that should always fail</h2>
+<p>Use <code>.fail</code> to mark a test case that is expected to fail.</p>
+<pre><code class="hljs css language-scala">  test(<span class="hljs-string">"issue-456"</span>.fail) {
+    <span class="hljs-comment">// Reproduce reported bug</span>
+  }
+</code></pre>
+<p>A <code>.fail</code> test only succeeds if the test body fails. If the test body succeeds,
+the test fails. This feature is helpful if you want to for example reproduce a
+bug report but don't have a solution to fix the issue yet.</p>
+<h2><a class="anchor" aria-hidden="true" id="customize-evaluation-of-tests-with-tags"></a><a href="#customize-evaluation-of-tests-with-tags" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Customize evaluation of tests with tags</h2>
+<p>Override <code>munitRunTest()</code> to extend the default behavior for how test bodies are
+evaluated. For example, use this feature to implement a <code>Rerun(N)</code> modifier to
+evaluate the body multiple times.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rerun</span>(<span class="hljs-params">count: <span class="hljs-type">Int</span></span>) <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">Tag</span>(<span class="hljs-params">"<span class="hljs-type">Rerun</span>"</span>)</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyWindowsSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitRunTest</span></span>(options: munit.<span class="hljs-type">TestOptions</span>, body: =&gt; <span class="hljs-type">Any</span>): <span class="hljs-type">Any</span> = {
+    <span class="hljs-keyword">val</span> rerunCount = options.tags.collectFirst {
+      <span class="hljs-keyword">case</span> <span class="hljs-type">Rerun</span>(n) =&gt; n
+    }.getOrElse(<span class="hljs-number">1</span>)
+    <span class="hljs-number">1.</span>to(rerunCount).map(_ =&gt; <span class="hljs-keyword">super</span>.munitRunTest(options, body))
+  }
+  test(<span class="hljs-string">"files"</span>.tag(<span class="hljs-type">Rerun</span>(<span class="hljs-number">10</span>))) {
+    println(<span class="hljs-string">"Hello"</span>) <span class="hljs-comment">// will run 10 times</span>
+  }
+  test(<span class="hljs-string">"files"</span>) {
+    <span class="hljs-comment">// will run once, like normal</span>
+  }
+}
+</code></pre>
+<p>The <code>munitRunTest()</code> method is similar to <code>munitTestValue()</code> but is different in
+that you also have access information about the test in <code>TestOptions</code> such as
+tags.</p>
+<h2><a class="anchor" aria-hidden="true" id="customize-test-name-based-on-a-dynamic-condition"></a><a href="#customize-test-name-based-on-a-dynamic-condition" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Customize test name based on a dynamic condition</h2>
+<p>Override <code>munitNewTest</code> to customize how <code>Test</code> values are constructed. For
+example, use this feature to add a custom suffix to test names based on dynamic
+condition.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ScalaVersionSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">val</span> scalaVersion = scala.util.<span class="hljs-type">Properties</span>.versionNumberString
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitNewTest</span></span>(test: <span class="hljs-type">Test</span>): <span class="hljs-type">Test</span> =
+    test.withName(test.name + <span class="hljs-string">"-"</span> + scalaVersion)
+  test(<span class="hljs-string">"foo"</span>) {
+    assert(!scalaVersion.startsWith(<span class="hljs-string">"2.11"</span>))
+  }
+}
+</code></pre>
+<p>When running <code>sbt +test</code> to test multiple Scala versions, the Scala version will
+now be included in the test name making it quickly skim through the logs and
+what Scala version caused the tests to fail.</p>
+<pre><code class="hljs css language-scala">==&gt; <span class="hljs-type">X</span> munit.<span class="hljs-type">ScalaVersionFrameworkSuite</span>.foo<span class="hljs-number">-2.11</span><span class="hljs-number">.2</span>
+/path/to/<span class="hljs-type">ScalaVersionSuite</span>.scala:<span class="hljs-number">11</span> assertion failed
+<span class="hljs-number">10</span>:  test(<span class="hljs-string">"foo"</span>) {
+<span class="hljs-number">11</span>:    assert(!scalaVersion.startsWith(<span class="hljs-string">"2.11"</span>))
+<span class="hljs-number">12</span>:  }
+    at munit.<span class="hljs-type">Assertions</span>.fail(<span class="hljs-type">Assertions</span>.scala:<span class="hljs-number">121</span>)
++ munit.<span class="hljs-type">ScalaVersionFrameworkSuite</span>.foo<span class="hljs-number">-2.12</span><span class="hljs-number">.10</span>
++ munit.<span class="hljs-type">ScalaVersionFrameworkSuite</span>.foo<span class="hljs-number">-2.13</span><span class="hljs-number">.1</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="tag-flaky-tests"></a><a href="#tag-flaky-tests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tag flaky tests</h2>
+<p>Use <code>.flaky</code> to mark a test case that has a tendendency to non-deterministically
+fail for known or unknown reasons.</p>
+<pre><code class="hljs css language-scala">  test(<span class="hljs-string">"requests"</span>.flaky) {
+    <span class="hljs-comment">// I/O heavy tests that sometimes fail</span>
+  }
+</code></pre>
+<p>By default, flaky tests fail like basic tests unless the <code>MUNIT_FLAKY_OK</code>
+environment variable is set to <code>true</code>. Override <code>munitFlakyOK()</code> to customize
+when it's OK for flaky tests to fail.</p>
+<p>In practice, flaky tests have a tendency to creep into your codebase as the
+complexity of your application grows. Flaky tests reduce developer's trust in
+your codebase and negatively impacts the productivity of your team so it's
+important that you a strategy for dealing with flaky test failures when then
+surface.</p>
+<p>One possible strategy for dealing with flaky test failures is to mark a flaky
+test with <code>.flaky</code> to keep the test case running but not fail the build when the
+test case fails. MUnit registers flaky test failures as JUnit &quot;assumption
+violated&quot; failures. In sbt, flaky test failures are marked as &quot;skipped&quot;. Then
+use historical
+<a href="https://www.scala-sbt.org/1.x/docs/Testing.html#Test+Reports">JUnit XML reports</a>
+to keep track of how frequently flaky tests are failing and to get a better
+understanding of when and why they are failing.</p>
+<h2><a class="anchor" aria-hidden="true" id="run-logic-before-and-after-tests"></a><a href="#run-logic-before-and-after-tests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run logic before and after tests</h2>
+<p>See the <a href="fixtures.html">fixtures guide</a> for instructions for running custom
+logic before and after tests.</p>
+<h2><a class="anchor" aria-hidden="true" id="share-configuration-between-test-suites"></a><a href="#share-configuration-between-test-suites" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Share configuration between test suites</h2>
+<p>Declare an abstract <code>BaseSuite</code> to share configuration between all test suites
+in your project.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-keyword">val</span> munitTimeout = <span class="hljs-type">Duration</span>(<span class="hljs-number">1</span>, <span class="hljs-string">"min"</span>)
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitTestValue</span></span>(value: <span class="hljs-type">Any</span>): <span class="hljs-type">Any</span> =
+    ???
+  <span class="hljs-comment">// ...</span>
+}
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyFirstSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseSuite</span> </span>{ <span class="hljs-comment">/* ... */</span> }
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySecondSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseSuite</span> </span>{ <span class="hljs-comment">/* ... */</span> }
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="roll-our-own-testing-library-with-munitsuite"></a><a href="#roll-our-own-testing-library-with-munitsuite" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Roll our own testing library with <code>munit.Suite</code></h2>
+<p>The <code>munit.FunSuite</code> class comes with a lot of built-in functionality such as
+assertions, fixtures, <code>munitTimeout()</code> helpers and more. These features may not
+be necessary or even desirable when writing tests. You may sometimes prefer a
+smaller API.</p>
+<p>Extend the base class <code>munit.Suite</code> to implement a minimal test suite that
+includes no optional MUnit features. At its core, MUnit operates on a data
+structure <code>GenericTest[TestValue]</code> where the type parameter <code>TestValue</code>
+represents the return value of test bodies. This type parameter can be
+customized per-suite. In <code>munit.FunSuite</code>, the type parameter <code>TestValue</code> is
+defined as <code>Any</code> and <code>type Test = GenericTest[Any]</code>.</p>
+<p>Below is an example custom test suite with <code>type TestValue = Future[String]</code>.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyCustomSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">Suite</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">TestValue</span> </span>= <span class="hljs-type">Future</span>[<span class="hljs-type">String</span>]
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitTests</span></span>() = <span class="hljs-type">List</span>(
+    <span class="hljs-keyword">new</span> <span class="hljs-type">Test</span>(
+      <span class="hljs-string">"name"</span>,
+      <span class="hljs-comment">// compile error if it's not a Future[String]</span>
+      body = () =&gt; <span class="hljs-type">Future</span>.successful(<span class="hljs-string">"Hello world!"</span>),
+      tags = <span class="hljs-type">Set</span>.empty[<span class="hljs-type">Tag</span>],
+      location = implicitly[<span class="hljs-type">Location</span>]
+    )
+  )
+}
+</code></pre>
+<p>Some use-cases where you may want to define a custom <code>munit.Suite</code>:</p>
+<ul>
+<li>implement APIs that mimic testinig libraries to simplify the migration to
+MUnit</li>
+<li>design stricter APIs that don't use <code>Any</code></li>
+<li>design purely functional APIs with no publicly facing side-effects</li>
+</ul>
+<p>In application code, it's desirable to use strong types avoid mutable state.
+However, it's not clear that those best practices yield the same cost/benefit
+ratio when writing test code. MUnit intentionally exposes types such <code>Any</code> and
+side-effecting methods like <code>test(&quot;name&quot;) { ... }</code> because they subjectively
+make the testing API nice-to-use.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/munit/docs/getting-started.html"><span class="arrow-prev">← </span><span>Getting started</span></a><a class="docs-next button" href="/munit/docs/assertions.html"><span>Writing assertions</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#declare-basic-test">Declare basic test</a></li><li><a href="#declare-async-test">Declare async test</a></li><li><a href="#run-tests-in-parallel">Run tests in parallel</a></li><li><a href="#declare-tests-inside-a-helper-function">Declare tests inside a helper function</a></li><li><a href="#declare-test-that-should-always-fail">Declare test that should always fail</a></li><li><a href="#customize-evaluation-of-tests-with-tags">Customize evaluation of tests with tags</a></li><li><a href="#customize-test-name-based-on-a-dynamic-condition">Customize test name based on a dynamic condition</a></li><li><a href="#tag-flaky-tests">Tag flaky tests</a></li><li><a href="#run-logic-before-and-after-tests">Run logic before and after tests</a></li><li><a href="#share-configuration-between-test-suites">Share configuration between test suites</a></li><li><a href="#roll-our-own-testing-library-with-munitsuite">Roll our own testing library with <code>munit.Suite</code></a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#045C4D"><section class="sitemap"><a href="/munit/" class="nav-home"><img src="/munit/img/scalameta-logo.png" alt="MUnit" width="66" height="58"/></a><div><h5>Overview</h5><a href="/munit/docs/getting-started.html">Getting started</a></div><div><h5>Social</h5><a href="https://github.com/scalameta/munit" target="_blank"><img src="https://img.shields.io/github/stars/scalameta/munit.svg?color=%23087e8b&amp;label=stars&amp;logo=github&amp;style=social"/></a><a href="https://discord.gg/RFpSVth" target="_blank"><img src="https://img.shields.io/discord/632642981228314653?logo=discord&amp;style=social"/></a><a href="https://gitter.im/scalameta/munit" target="_blank"><img src="https://img.shields.io/gitter/room/scalameta/munit.svg?logo=gitter&amp;style=social"/></a><a href="https://twitter.com/scalameta" target="_blank"><img src="https://img.shields.io/twitter/follow/scalameta.svg?logo=twitter&amp;style=social"/></a></div></section><section class="copyright">Copyright © 2020 Scalameta</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '586dbbac9432319747bfea750fab16cb',
+                indexName: 'scalameta_munit',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>

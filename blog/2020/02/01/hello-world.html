@@ -1,0 +1,286 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>MUnit is a new Scala testing library · MUnit</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Hello world! I&#x27;m excited to announce the first release of MUnit, a new Scala"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="MUnit is a new Scala testing library · MUnit"/><meta property="og:type" content="website"/><meta property="og:url" content="http://scalameta.org/munit/munit/blog/2020/02/01/hello-world.html"/><meta property="og:description" content="Hello world! I&#x27;m excited to announce the first release of MUnit, a new Scala"/><meta property="og:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><link rel="shortcut icon" href="/munit/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="http://scalameta.org/munit/munit/blog/atom.xml" title="MUnit Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="http://scalameta.org/munit/munit/blog/feed.xml" title="MUnit Blog RSS Feed"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-140140828-1', 'auto');
+              ga('send', 'pageview');
+            </script><link rel="stylesheet" href="/munit/css/custom.css"/><script src="/munit/js/scrollSpy.js"></script><link rel="stylesheet" href="/munit/css/main.css"/><script src="/munit/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/munit/"><img class="logo" src="/munit/img/scalameta-logo.png" alt="MUnit"/><h2 class="headerTitleWithLogo">MUnit</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/munit/docs/getting-started.html" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/munit/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/scalameta/munit" target="_blank">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>All Blog Posts</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">All Blog Posts</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/munit/blog/2020/02/01/hello-world.html">MUnit is a new Scala testing library</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer postContainer blogContainer"><div class="wrapper"><div class="lonePost"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle"><a href="/munit/blog/2020/02/01/hello-world.html">MUnit is a new Scala testing library</a></h1><p class="post-meta">February 1, 2020</p><div class="authorBlock"><p class="post-authorName"><a href="https://twitter.com/olafurpg" target="_blank" rel="noreferrer noopener">Ólafur Páll Geirsson</a></p><div class="authorPhoto"><a href="https://twitter.com/olafurpg" target="_blank" rel="noreferrer noopener"><img src="https://github.com/olafurpg.png" alt="Ólafur Páll Geirsson"/></a></div></div></header><div><span><p>Hello world! I'm excited to announce the first release of MUnit, a new Scala
+testing library with a focus on actionable errors and extensible APIs. You may
+be thinking &quot;Why create Yet Another Scala testing library?&quot;. It's a good
+question and this post is my attempt to explain the motivations for creating
+MUnit.</p>
+<!-- truncate -->
+<p>Like many other existing testing libraries, MUnit has no external Scala
+dependencies and is published for a wide range of compiler versions and
+platforms.</p>
+<table>
+<thead>
+<tr><th>Scala Version</th><th style="text-align:center">JVM</th><th style="text-align:center">Scala.js (0.6.x, 1.x)</th><th style="text-align:center">Native (0.4.x)</th></tr>
+</thead>
+<tbody>
+<tr><td>2.11.x</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td></tr>
+<tr><td>2.12.x</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">n/a</td></tr>
+<tr><td>2.13.x</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">n/a</td></tr>
+<tr><td>0.21.x (Dotty)</td><td style="text-align:center">✅</td><td style="text-align:center">n/a</td><td style="text-align:center">n/a</td></tr>
+</tbody>
+</table>
+<p>MUnit tries to distinguish itself by focusing on the following features:</p>
+<ul>
+<li><strong>Tests as values</strong>: test cases are represented as normal data structures that
+you can manipulate and abstract over.</li>
+<li><strong>Rich filtering capabilities</strong>: MUnit provides fine-grained control over what
+tests are enabled for which environments.</li>
+<li><strong>Actionable errors</strong>: the formatting of failed test cases is optimized for
+giving you as much information as possible to understand how to fix the test
+case.</li>
+<li><strong>Tooling integrations</strong>: MUnit is implemented as a JUnit runner and tries to
+build on top of existing JUnit functionality where possible.</li>
+<li><strong>Insightful test reports</strong>: the MUnit sbt plugin allows you to analyze
+historical data about your tests to answer questions like &quot;is this test suite
+flaky?&quot; and &quot;which tests are slowing down my CI?&quot;.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="tldr"></a><a href="#tldr" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>TL;DR</h2>
+<p>To use MUnit, first add a dependency in your build.</p>
+<p><img src="https://img.shields.io/maven-central/v/org.scalameta/munit_2.13?style=for-the-badge" alt="Badge with version of the latest release"></p>
+<pre><code class="hljs css language-scala"><span class="hljs-comment">// build.sbt</span>
+libraryDependencies += <span class="hljs-string">"org.scalameta"</span> %% <span class="hljs-string">"munit"</span> % <span class="hljs-string">"0.4.3"</span>
+testFrameworks += <span class="hljs-keyword">new</span> <span class="hljs-type">TestFramework</span>(<span class="hljs-string">"munit.Framework"</span>)
+</code></pre>
+<p>Next, write a test case:</p>
+<pre><code class="hljs css language-scala"><span class="hljs-comment">// src/test/scala/com/MySuite.scala</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">munit</span>.<span class="hljs-title">FunSuite</span> </span>{
+  test(<span class="hljs-string">"hello"</span>) {
+    assert(<span class="hljs-number">41</span> == <span class="hljs-number">42</span>)
+  }
+}
+</code></pre>
+<p>Check out the
+<a href="https://scalameta.org/munit/docs/getting-started.html">getting started guide</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="tests-as-values"></a><a href="#tests-as-values" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tests as values</h2>
+<p>If you know how to write normal Scala programs you should feel comfortable
+reasoning about how MUnit works.</p>
+<p>Internally, a core MUnit data structure is <code>GenericTest[T]</code>, which represents a
+single test case and is roughly defined like this.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GenericType</span>[<span class="hljs-type">T</span>](<span class="hljs-params">
+  name: <span class="hljs-type">String</span>,
+  body: (</span>) <span class="hljs-title">=&gt;</span> <span class="hljs-title">T</span>,</span>
+  tags: <span class="hljs-type">Set</span>[<span class="hljs-type">Tag</span>],
+  location: <span class="hljs-type">Location</span>
+)
+<span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Suite</span> </span>{
+  <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">TestValue</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Test</span> </span>= <span class="hljs-type">GenericTest</span>[<span class="hljs-type">TestValue</span>]
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitTests</span></span>(): <span class="hljs-type">Seq</span>[<span class="hljs-type">Test</span>]
+}
+</code></pre>
+<p>A test suite returns a <code>Seq[Test]</code>, which you as a user can generate and
+abstract over any way you like.</p>
+<p>Importantly, MUnit test cases are not discovered via runtime reflection like in
+JUnit and MUnit test cases are not generated via macros like in utest.</p>
+<p>MUnit provides a high-level API to write tests in a ScalaTest-inspired
+<code>FunSuite</code> syntax where the type parameter for <code>GenericTest[T]</code> is defined as
+<code>Any</code>.</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FunSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Suite</span> </span>{
+  <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">TestValue</span> </span>= <span class="hljs-type">Any</span>
+}
+</code></pre>
+<p>For common usage of MUnit you are not expected to write raw
+<code>GenericTest[T](...)</code> expressions but knowing this underlying data model helps
+you implement features like test retries, disabling tests based on dynamic
+conditions, enforce stricter type safety and more.</p>
+<h2><a class="anchor" aria-hidden="true" id="rich-filtering-capabilities"></a><a href="#rich-filtering-capabilities" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rich filtering capabilities</h2>
+<p>Using tags, MUnit provides a extensible way to disable/enable tests based on
+static and dynamic conditions.</p>
+<p>For example, the MUnit codebase itself is cross-built against 11 different
+combinations of Scala compiler versions (2.11, 2.12, 2.13, Dotty) and platforms
+(JVM,JS,Native). Our CI also runs tests on JDK 8/11 and Linux/Windows.
+Inevitably, some test cases end up getting disabled in certain environments.</p>
+<p>Imagine that we have test case that for some reason should only run on Windows
+in Scala 2.13. We can implement a custom <code>Window213</code> tag with the following
+code:</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> scala.util.<span class="hljs-type">Properties</span>
+<span class="hljs-keyword">import</span> munit._
+<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Windows213</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Tag</span>(<span class="hljs-params">"<span class="hljs-type">Windows213</span>"</span>)</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">FunSuite</span> </span>{
+  <span class="hljs-comment">// reminder: type Test = GenericTest[Any]</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitNewTest</span></span>(test: <span class="hljs-type">Test</span>): <span class="hljs-type">Test</span> = {
+    <span class="hljs-keyword">val</span> isIgnored = !options.tags(<span class="hljs-type">Windows213</span>) || {
+      <span class="hljs-type">Properties</span>.isWin &amp;&amp;
+      <span class="hljs-type">Properties</span>.versionNumberString.startsWith(<span class="hljs-string">"2.13"</span>)
+    }
+    <span class="hljs-keyword">if</span> (isIgnored) test.withBody(() =&gt; <span class="hljs-type">Ignore</span>)
+    <span class="hljs-keyword">else</span> test
+  }
+
+  test(<span class="hljs-string">"windows-213"</span>.tag(<span class="hljs-type">Windows213</span>)) {
+    <span class="hljs-comment">// Only runs when operating system is Windows and Scala version is 2.13</span>
+  }
+  test(<span class="hljs-string">"normal test"</span>) {
+    <span class="hljs-comment">// Always runs.</span>
+  }
+}
+</code></pre>
+<p>By encoding the environment requirements in the test implementation, we prevent
+the situation where users run <code>sbt test</code> commands that are invalid for their
+active operating system or Scala version.</p>
+<p>Check out the
+<a href="https://scalameta.org/munit/docs/filtering.html">filtering tests guide</a> to
+learn more how to enable/disable tests with MUnit.</p>
+<h2><a class="anchor" aria-hidden="true" id="actionable-errors"></a><a href="#actionable-errors" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Actionable errors</h2>
+<p>The design goal for MUnit error messages is to give you as much context as
+possible to address the test failure. Let's consider a few concrete examples.</p>
+<p><img src="https://i.imgur.com/goYdJhw.png" alt="Demo showing source location for failed assertion"></p>
+<p>In the image above, you can cmd+click on the
+<code>.../test/scala/munit/DemoSuite.scala:7</code> path to open the failing line of code
+in your editor. By highlighting the failing line of code, you also immediately
+gain some understanding for why the test might be failing.</p>
+<p><img src="https://i.imgur.com/NaAU2He.png" alt="Demo showing diff between values of a case class"></p>
+<p>In the image above, the failing <code>assertEquals()</code> displays a diff comparing two
+values of a <code>User</code> case class. The &quot;Obtained&quot; section includes copy-paste
+friendly syntax of the obtained value, which can be helpful in the common
+situation when a failing test case should have passed because the expected
+behavior of your program has changed.</p>
+<p><img src="https://i.imgur.com/ZcRiR49.png" alt="Demo showing diff between multiline strings"></p>
+<p>In the image above, the failing <code>assertNoDiff()</code> includes a <code>stripMargin</code>
+formatted multiline string of the obtained string. The <code>assertNoDiff()</code>
+assertions is helpful for comparing multiline strings ignoring non-visible
+differences such as Windows/Unix newlines, ANSI colors and leading/trailing
+whitespace.</p>
+<p><img src="https://i.imgur.com/Iy82OWe.png" alt="Demo showing how to include clues in error messages"></p>
+<p>In the image above, the <code>clue(a)</code> helpers are used to enrich the error message
+with additional information that is displayed when the assertion fails.</p>
+<p><img src="https://i.imgur.com/iosErEv.png" alt="Demo showing highlighted stack traces"></p>
+<p>In the image above, stack trace elements that are defined from library
+dependencies like the standard library are grayed making it easier to find stack
+trace elements from your own code. This can be helpful when debugging exceptions
+with cryptic error messages. This feature is inspired by
+<a href="https://github.com/lihaoyi/utest">utest</a>.</p>
+<p>Check out the
+<a href="https://scalameta.org/munit/docs/assertions.html">writing assertions guide</a> to
+learn more how to write assertions with helpful error messages.</p>
+<h2><a class="anchor" aria-hidden="true" id="tooling-integrations"></a><a href="#tooling-integrations" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tooling integrations</h2>
+<p>The tooling side of a testing library is just as important as the library APIs.
+MUnit is implemented as a JUnit runner, which means that any tool that knows how
+to run a JUnit test knows how to run MUnit tests.</p>
+<p>For example, IntelliJ already detects MUnit test suites even if IntelliJ has no
+custom logic to support MUnit.</p>
+<p><img src="https://camo.githubusercontent.com/2965bd83df7b98dbc2734815c5bcbe3e784f6242/68747470733a2f2f692e696d6775722e636f6d2f6f4141325a65512e706e67" alt="Demo showing IntelliJ running MUnit tests"></p>
+<p>Likewise, build tools such as Gradle and Pants can integrate with MUnit using
+existing JUnit integrations.</p>
+<h2><a class="anchor" aria-hidden="true" id="insightful-test-reports"></a><a href="#insightful-test-reports" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Insightful test reports</h2>
+<p>MUnit has an sbt plugin to store structured JSON data about test results in
+Google Cloud. The data can then be used to generate HTML reports based on
+historical test data.</p>
+<p>The image below shows test cases in the
+<a href="https://scalameta.org/metals/docs/contributors/tests.html">Metals codebase</a>
+sorted by how frequently they fail on the <code>master</code> branch.
+<a href="https://scalameta.org/metals/docs/contributors/tests.html"><img src="https://i.imgur.com/UuxYnSa.png" alt="Example HTML test report based on historical data"></a></p>
+<blockquote>
+<p>Click on image to open full report</p>
+</blockquote>
+<p>The Metals test suite ignores failures in tests that are tagged as flaky.
+However, it's clear that <code>DefinitionLspSuite.missing-compiler-plugin</code> is not
+flaky, it consistently fails on every run. On the other hand,
+<code>PantsLspSuite.basic</code> has only failed once out of eleven test runs so it seems
+to be legitimately flaky.</p>
+<p>The Metals codebase has ~1.5k test cases, some which run against up to seven
+different Scala compiler versions. It's not ideal that some test cases fail
+non-deterministically but it's normal that it happens as the project evolves.
+While there is no silver bullet for avoiding flaky test failures, having data
+about how frequently a test fails is at least a starting point to begin
+addressing the problem.</p>
+<p>Check out the
+<a href="https://scalameta.org/munit/docs/reports.html">generating test reports guide</a>
+to learn how to configure your build to upload test reports to Google Cloud
+using the MUnit sbt plugin. The plugin is implemented as an sbt <code>testsListener</code>
+so it works in theory with any testing library (including ScalaTest, utest, ...)
+although it has so far only been tested against MUnit.</p>
+<h2><a class="anchor" aria-hidden="true" id="conclusion"></a><a href="#conclusion" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Conclusion</h2>
+<p>MUnit is a new Scala testing library with a focus on actionable errors and
+extensible APIs. MUnit is already used in several Scalameta projects including
+<a href="https://github.com/scalameta/scalameta">scalameta/scalameta</a>,
+<a href="https://github.com/scalameta/metals">scalameta/metals</a> and
+<a href="https://github.com/scalameta/mdoc">scalameta/mdoc</a>.</p>
+<p>Most of the ideas in this post are not new. The features in MUnit are heavily
+inspired by existing testing libraries including ScalaTest, utest, JUnit and ava
+(a JavaScript testing library). However, I'm not aware of a testing library that
+provides the combination of all the features presented in this post in one
+solution and I hope that explains the motivation for why MUnit exists.</p>
+<p>Happy testing ✌️</p>
+</span></div></div><div class="blogSocialSection"></div></div><div class="blog-recent"><a class="button" href="/munit/blog">Recent Posts</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#tldr">TL;DR</a></li><li><a href="#tests-as-values">Tests as values</a></li><li><a href="#rich-filtering-capabilities">Rich filtering capabilities</a></li><li><a href="#actionable-errors">Actionable errors</a></li><li><a href="#tooling-integrations">Tooling integrations</a></li><li><a href="#insightful-test-reports">Insightful test reports</a></li><li><a href="#conclusion">Conclusion</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#045C4D"><section class="sitemap"><a href="/munit/" class="nav-home"><img src="/munit/img/scalameta-logo.png" alt="MUnit" width="66" height="58"/></a><div><h5>Overview</h5><a href="/munit/docs/getting-started.html">Getting started</a></div><div><h5>Social</h5><a href="https://github.com/scalameta/munit" target="_blank"><img src="https://img.shields.io/github/stars/scalameta/munit.svg?color=%23087e8b&amp;label=stars&amp;logo=github&amp;style=social"/></a><a href="https://discord.gg/RFpSVth" target="_blank"><img src="https://img.shields.io/discord/632642981228314653?logo=discord&amp;style=social"/></a><a href="https://gitter.im/scalameta/munit" target="_blank"><img src="https://img.shields.io/gitter/room/scalameta/munit.svg?logo=gitter&amp;style=social"/></a><a href="https://twitter.com/scalameta" target="_blank"><img src="https://img.shields.io/twitter/follow/scalameta.svg?logo=twitter&amp;style=social"/></a></div></section><section class="copyright">Copyright © 2020 Scalameta</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '586dbbac9432319747bfea750fab16cb',
+                indexName: 'scalameta_munit',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>

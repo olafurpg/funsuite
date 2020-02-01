@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>http://scalameta.org/munit/munit/blog</id>
+    <title>MUnit Blog</title>
+    <updated>2020-02-01T06:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="http://scalameta.org/munit/munit/blog"/>
+    <subtitle>The best place to stay up-to-date with the latest MUnit news and events.</subtitle>
+    <logo>http://scalameta.org/munit/munit/img/scalameta-logo.png</logo>
+    <rights>Copyright © 2020 Scalameta</rights>
+    <entry>
+        <title type="html"><![CDATA[MUnit is a new Scala testing library]]></title>
+        <id>http://scalameta.org/munit/munit/blog/2020/02/01/hello-world.html</id>
+        <link href="http://scalameta.org/munit/munit/blog/2020/02/01/hello-world.html"/>
+        <updated>2020-02-01T06:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>Hello world! I'm excited to announce the first release of MUnit, a new Scala
+testing library with a focus on actionable errors and extensible APIs. You may
+be thinking &quot;Why create Yet Another Scala testing library?&quot;. It's a good
+question and this post is my attempt to explain the motivations for creating
+MUnit.</p>
+]]></summary>
+        <author>
+            <name>Ólafur Páll Geirsson</name>
+            <email/>
+            <uri>https://twitter.com/olafurpg</uri>
+        </author>
+    </entry>
+</feed>
