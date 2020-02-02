@@ -6,7 +6,7 @@ import MUnitPlugin.autoImport._
 
 object MUnitReportPlugin extends AutoPlugin {
   override def requires = MUnitPlugin
-  override val projectSettings = List(
+  override val projectSettings: List[Setting[_ <: Seq[Object]]] = List(
     libraryDependencies ++= {
       if ("unknown" == BuildInfo.munitVersion) Nil
       else List("org.scalameta" %% "munit-docs" % BuildInfo.munitVersion)

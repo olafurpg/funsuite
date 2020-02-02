@@ -11,6 +11,7 @@ import scala.util.control.NonFatal
 import java.util.regex.Pattern
 import munit.internal.console.AnsiColors
 import munit.internal.PlatformCompat
+import scala.concurrent.Future
 
 abstract class BaseFrameworkSuite extends FunSuite {
   val systemOut = System.out
@@ -79,28 +80,39 @@ abstract class BaseFrameworkSuite extends FunSuite {
           }
         }
       }
+      implicit val ec = munitExecuteNow
       val elapsedTimePattern =
         Pattern.compile(" \\d+\\.\\d+s$", Pattern.MULTILINE)
-      Console.withOut(out) {
-        Console.withErr(out) {
-          tasks.foreach(_.execute(eventHandler, Array(logger)))
+      TestingConsole.out = out
+      TestingConsole.err = out
+      for {
+        _ <- tasks.foldLeft(Future.successful(())) {
+          case (base, task) =>
+            base.flatMap(_ =>
+              PlatformCompat.executeAsync(
+                task,
+                eventHandler,
+                Array(logger)
+              )
+            )
         }
+      } yield {
+        val stdout =
+          AnsiColors.filterAnsi(baos.toString(StandardCharsets.UTF_8.name()))
+        val obtained = AnsiColors.filterAnsi(
+          t.format match {
+            case SbtFormat =>
+              events.toString().replaceAllLiterally("\"\"\"", "'''")
+            case StdoutFormat =>
+              elapsedTimePattern.matcher(stdout).replaceAll(" <elapsed time>")
+          }
+        )
+        assertNoDiff(
+          obtained,
+          t.expected,
+          stdout
+        )(t.location)
       }
-      val stdout =
-        AnsiColors.filterAnsi(baos.toString(StandardCharsets.UTF_8.name()))
-      val obtained = AnsiColors.filterAnsi(
-        t.format match {
-          case SbtFormat =>
-            events.toString().replaceAllLiterally("\"\"\"", "'''")
-          case StdoutFormat =>
-            elapsedTimePattern.matcher(stdout).replaceAll(" <elapsed time>")
-        }
-      )
-      assertNoDiff(
-        obtained,
-        t.expected,
-        stdout
-      )(t.location)
     }(t.location)
   }
 }

@@ -44,19 +44,18 @@ final class JUnitReporter(
     }
     emitEvent(method, Status.Skipped, new OptionalThrowable(e))
   }
-  def reportTestPassed(method: String, elapsedSeconds: Double): Unit = {
+  def reportTestPassed(method: String, elapsedMillis: Double): Unit = {
     log(
       Info,
-      AnsiColors.c(s"+ $method", AnsiColors.GREEN) + " " + formatTime(
-        elapsedSeconds
-      )
+      AnsiColors.c(s"+ $method", AnsiColors.GREEN) + " " +
+        formatTime(elapsedMillis)
     )
     emitEvent(method, Status.Success)
   }
   def reportTestFailed(
       method: String,
       ex: Throwable,
-      elapsedSeconds: Double
+      elapsedMillis: Double
   ): Unit = {
     log(
       Info,
@@ -68,7 +67,7 @@ final class JUnitReporter(
           )
         )
         .append(" ")
-        .append(formatTime(elapsedSeconds))
+        .append(formatTime(elapsedMillis))
         .append(" ")
         .append(ex.getClass().getName())
         .append(": ")
@@ -258,8 +257,8 @@ final class JUnitReporter(
       .append(AnsiColors.Reset)
       .toString()
   }
-  private def formatTime(elapsedSeconds: Double): String =
-    AnsiColors.c("%.2fs".format(elapsedSeconds), AnsiColors.DarkGrey)
+  private def formatTime(elapsedMillis: Double): String =
+    AnsiColors.c("%.2fs".format(elapsedMillis / 1000.0), AnsiColors.DarkGrey)
   private val Trace = 0
   private val Debug = 1
   private val Info = 2

@@ -57,6 +57,7 @@ addCommandAlias(
 val isPreScala213 = Set[Option[(Long, Long)]](Some((2, 11)), Some((2, 12)))
 val scala2Versions = List(scala211, scala212, scala213)
 val scalaVersions = scala2Versions ++ List(dotty)
+def isNotScala211(v: Option[(Long, Long)]): Boolean = !v.contains((2, 11))
 def isScala2(v: Option[(Long, Long)]): Boolean = v.exists(_._1 == 2)
 def isScala3(v: Option[(Long, Long)]): Boolean = v.exists(_._1 == 0)
 val isScalaJS = Def.setting[Boolean](
@@ -113,6 +114,9 @@ lazy val munit = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       }
       if (isPreScala213(partialVersion)) {
         result += base / "scala-pre-2.13"
+      }
+      if (isNotScala211(partialVersion)) {
+        result += base / "scala-post-2.11"
       }
       if (isScala2(partialVersion)) {
         result += base / "scala-2"

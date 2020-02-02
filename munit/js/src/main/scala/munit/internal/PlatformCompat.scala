@@ -4,26 +4,27 @@ import scala.scalajs.reflect.Reflect
 import sbt.testing.TaskDef
 import munit.MUnitRunner
 import scala.concurrent.Future
-import scala.concurrent.duration.Duration
+import sbt.testing.Task
+import sbt.testing.EventHandler
+import sbt.testing.Logger
+import scala.concurrent.Promise
 
 object PlatformCompat {
+  def executeAsync(
+      task: Task,
+      eventHandler: EventHandler,
+      loggers: Array[Logger]
+  ): Future[Unit] = {
+    val p = Promise[Unit]()
+    task.execute(eventHandler, loggers, _ => p.success(()))
+    p.future
+  }
   // Scala.js does not support looking up annotations at runtime.
   def isIgnoreSuite(cls: Class[_]): Boolean = false
 
   def isJVM: Boolean = false
   def isJS: Boolean = true
   def isNative: Boolean = false
-
-  def await[T](f: Future[T], timeout: Duration): T = {
-    f.value match {
-      case Some(value) =>
-        value.get
-      case None =>
-        throw new NoSuchElementException(
-          s"Future $f is not completed and `scala.concurrent.Await` is not supported in JavaScript."
-        )
-    }
-  }
 
   def newRunner(
       taskDef: TaskDef,

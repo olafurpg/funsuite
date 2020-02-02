@@ -1,6 +1,7 @@
 package munit
 
 class FixtureFrameworkSuite extends FunSuite {
+  def println(msg: String): Unit = TestingConsole.out.println(msg)
   private def fixture(name: String) = new Fixture[Int](name) {
     def apply(): Int = 1
     override def beforeAll(): Unit = {
