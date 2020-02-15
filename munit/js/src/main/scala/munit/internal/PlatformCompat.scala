@@ -8,6 +8,8 @@ import sbt.testing.Task
 import sbt.testing.EventHandler
 import sbt.testing.Logger
 import scala.concurrent.Promise
+import scala.util.Success
+import scala.concurrent.duration.Duration
 
 object PlatformCompat {
   def executeAsync(
@@ -18,6 +20,12 @@ object PlatformCompat {
     val p = Promise[Unit]()
     task.execute(eventHandler, loggers, _ => p.success(()))
     p.future
+  }
+  def await(future: Future[_], duration: Duration): Any = {
+    future.value match {
+      case Some(Success(value)) => value
+      case _                    => future
+    }
   }
   // Scala.js does not support looking up annotations at runtime.
   def isIgnoreSuite(cls: Class[_]): Boolean = false

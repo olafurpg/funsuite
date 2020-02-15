@@ -4,6 +4,8 @@ import scala.concurrent.Future
 import sbt.testing.Task
 import sbt.testing.EventHandler
 import sbt.testing.Logger
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 object PlatformCompat {
   def executeAsync(
@@ -13,6 +15,9 @@ object PlatformCompat {
   ): Future[Unit] = {
     task.execute(eventHandler, loggers)
     Future.successful(())
+  }
+  def await(future: Future[_], duration: Duration): Any = {
+    Await.result(future, duration)
   }
   def isIgnoreSuite(cls: Class[_]): Boolean =
     cls.getAnnotationsByType(classOf[munit.IgnoreSuite]).nonEmpty

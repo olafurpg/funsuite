@@ -56,11 +56,20 @@ abstract class FunSuite
 
   private val defaultTimeout = Duration(30, "s")
   def munitTimeout: Duration = defaultTimeout
-  def munitTestValue(testValue: Any): Future[Any] =
-    testValue match {
+  def munitTestValue(testValue: => Any): Future[Any] = {
+    val wrappedFuture = testValue match {
       case f: Future[_] => f
-      case v            => Future.successful(v)
+      case v            => Future(v)(munitExecutionContext)
     }
+    def flattenFuture(future: Future[_]): Future[_] = {
+      val nested = future.map {
+        case f: Future[_] => flattenFuture(f)
+        case x            => Future.successful(x)
+      }(munitExecuteNow)
+      nested.flatten
+    }
+    flattenFuture(wrappedFuture)
+  }
 
   def munitNewTest(test: Test): Test =
     test
