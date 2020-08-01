@@ -58,4 +58,8 @@ class AssertionsSuite extends BaseSuite {
          |""".stripMargin
     )
   }
+
+  test("trailing-whitespace".only) {
+    assertEquals("a ", "a")
+  }
 }

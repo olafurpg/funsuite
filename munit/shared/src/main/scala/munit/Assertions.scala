@@ -106,13 +106,27 @@ trait Assertions extends MacroCompat.CompileErrorMacro {
           printObtainedAsStripMargin = false
         )
         // try with `.toString` in case `munitPrint()` produces identical formatting for both values.
+        val obtainedString = obtained.toString()
+        val expectedString = expected.toString()
         Diffs.assertNoDiff(
-          obtained.toString(),
-          expected.toString(),
+          obtainedString,
+          expectedString,
           message => fail(message),
           munitPrint(clue),
-          printObtainedAsStripMargin = false
+          printObtainedAsStripMargin = false,
+          isTrimmed = true
         )
+        if (obtainedString != expectedString &&
+            obtainedString.trim() == expectedString.trim()) {
+          Diffs.assertNoDiff(
+            obtainedString,
+            expectedString,
+            message => fail(message),
+            munitPrint(clue),
+            printObtainedAsStripMargin = false,
+            isTrimmed = false
+          )
+        }
         fail(
           s"values are not equal even if they have the same `toString()`: $obtained"
         )

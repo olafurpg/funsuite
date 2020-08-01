@@ -5,19 +5,20 @@ import munit.Location
 object Diffs {
 
   def create(obtained: String, expected: String): Diff =
-    new Diff(obtained, expected)
+    new Diff(obtained, expected, isTrimmed = true)
 
   def assertNoDiff(
       obtained: String,
       expected: String,
       fail: String => Nothing,
       title: String = "",
-      printObtainedAsStripMargin: Boolean = true
+      printObtainedAsStripMargin: Boolean = true,
+      isTrimmed: Boolean = true
   )(implicit loc: Location): Boolean = {
     if (obtained.isEmpty && !expected.isEmpty) {
       fail("Obtained empty output!")
     }
-    val diff = new Diff(obtained, expected)
+    val diff = new Diff(obtained, expected, isTrimmed)
     if (diff.isEmpty) true
     else {
       fail(diff.createReport(title, printObtainedAsStripMargin))

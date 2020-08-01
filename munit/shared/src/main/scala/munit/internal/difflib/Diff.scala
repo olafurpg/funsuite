@@ -5,7 +5,8 @@ import munit.internal.difflib
 
 import scala.collection.JavaConverters._
 
-class Diff(val obtained: String, val expected: String) extends Serializable {
+class Diff(val obtained: String, val expected: String, val isTrimmed: Boolean)
+    extends Serializable {
   val obtainedClean: String = AnsiColors.filterAnsi(obtained)
   val expectedClean: String = AnsiColors.filterAnsi(expected)
   val obtainedLines: Seq[String] = splitIntoLines(obtainedClean)
@@ -50,11 +51,15 @@ class Diff(val obtained: String, val expected: String) extends Serializable {
     sb.append(unifiedDiff)
   }
 
+  private def trim(value: String): String = {
+    if (isTrimmed) value.trim
+    else value
+  }
   private def asStripMargin(obtained: String): String = {
     if (!obtained.contains("\n")) Printers.print(obtained)
     else {
       val out = new StringBuilder
-      val lines = obtained.trim.linesIterator
+      val lines = trim(obtained).linesIterator
       out.append("    \"\"\"|" + lines.next() + "\n")
       lines.foreach(line => {
         out.append("       |").append(line).append("\n")
@@ -105,6 +110,6 @@ class Diff(val obtained: String, val expected: String) extends Serializable {
   }
 
   private def splitIntoLines(string: String): Seq[String] = {
-    string.trim().replaceAllLiterally("\r\n", "\n").split("\n").toIndexedSeq
+    trim(string).replaceAllLiterally("\r\n", "\n").split("\n").toIndexedSeq
   }
 }
