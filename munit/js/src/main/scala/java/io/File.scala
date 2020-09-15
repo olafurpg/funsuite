@@ -1,5 +1,7 @@
 package java.io
 
+import scala.scalajs.js
+
 import java.net.URI
 import java.nio.file.Path
 

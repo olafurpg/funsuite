@@ -1,5 +1,5 @@
 package munit.internal.junitinterface
 
 trait Tag {
-  def value(): String
+  def value: String
 }

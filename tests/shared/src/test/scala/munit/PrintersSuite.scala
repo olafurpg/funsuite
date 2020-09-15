@@ -18,7 +18,7 @@ class PrintersSuite extends FunSuite { self =>
   }
 
   check(
-    "basic",
+    "basic".tag(NoDottyJS),
     "a",
     "\"a\""
   )

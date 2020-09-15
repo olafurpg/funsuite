@@ -85,8 +85,9 @@ object JSPath extends js.Any {
 object JSIO {
   private[internal] val process: JSProcess =
     js.Dynamic.global.process.asInstanceOf[JSProcess]
-  def isNode: Boolean = !js.isUndefined(process) && !js.isUndefined(process.cwd)
-
+  def isNode: Boolean =
+    js.typeOf(process) != "undefined" &&
+      js.typeOf(process.cwd()) != "undefined"
   def inNode[T](f: => T): T =
     if (JSIO.isNode) f
     else {

@@ -17,7 +17,7 @@ final class ScalaCheckInitialSeedSuite extends ScalaCheckSuite {
     }
   }
 
-  test("generated int are not all the same") {
+  test("generated int are not all the same".tag(NoDottyJS)) {
     assert(ints.size > 1)
   }
 }

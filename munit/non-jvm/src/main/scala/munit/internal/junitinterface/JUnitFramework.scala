@@ -53,7 +53,7 @@ abstract class JUnitFramework extends Framework {
     var logAssert = false
     var notLogExceptionClass = false
     var useSbtLoggers = false
-    var trimStackTraces = defaults.trimStackTraces()
+    var trimStackTraces = defaults.trimStackTraces
     var includeTags = Set.empty[String]
     var excludeTags = Set.empty[String]
     for (str <- args) {

@@ -14,8 +14,8 @@ class TagsFilter(
       var isExcluded = false
       description.getAnnotations.foreach {
         case t: Tag =>
-          isIncluded ||= include.contains(t.value())
-          isExcluded ||= exclude.contains(t.value())
+          isIncluded ||= include.contains(t.value)
+          isExcluded ||= exclude.contains(t.value)
         case _ =>
       }
       isIncluded && !isExcluded
