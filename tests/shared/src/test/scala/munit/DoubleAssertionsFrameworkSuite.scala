@@ -74,25 +74,3 @@ class DoubleAssertionsFrameworkSuite extends BaseSuite {
     )
   }
 }
-
-object DoubleAssertionsFrameworkSuite
-    extends FrameworkTest(
-      classOf[DoubleAssertionsFrameworkSuite],
-      """|==> success munit.DoubleAssertionsFrameworkSuite.Assert Equals NaN Fails
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert NaN Equals Fails
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert NaN Equals NaN
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert Pos Infinity Not Equals Neg Infinity
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert Pos Infinity Not Equals
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert Pos Infinity Equals Infinity
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert Neg Infinity Equals Infinity
-         |==> success munit.DoubleAssertionsFrameworkSuite.All Infinities
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert Equals NaN Fails-1
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert NaN Equals Fails-1
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert NaN Equals NaN-1
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert Pos Infinity Not Equals Neg Infinity-1
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert Pos Infinity Not Equals-1
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert Pos Infinity Equals Infinity-1
-         |==> success munit.DoubleAssertionsFrameworkSuite.Assert Neg Infinity Equals Infinity-1
-         |==> success munit.DoubleAssertionsFrameworkSuite.All Infinities-1
-         |""".stripMargin
-    )
