@@ -41,10 +41,15 @@ class MUnitRunner(val cls: Class[_ <: Suite], newInstance: () => Suite)
   val descriptions: mutable.Map[suite.Test, Description] =
     mutable.Map.empty[suite.Test, Description]
   val testNames: mutable.Set[String] = mutable.Set.empty[String]
-  lazy val munitTests: Seq[suite.Test] = suite.munitTests()
+  lazy val munitTests: mutable.ArrayBuffer[suite.Test] =
+    mutable.ArrayBuffer[suite.Test](suite.munitTests(): _*)
 
   override def filter(filter: Filter): Unit = {
-    this.filter = filter
+    val newTests = munitTests.filter { t =>
+      filter.shouldRun(createTestDescription(t))
+    }
+    munitTests.clear()
+    munitTests ++= newTests
   }
   override def configure(settings: Settings): Unit = {
     this.settings = settings
