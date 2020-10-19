@@ -24,6 +24,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
 import java.util.concurrent.ExecutionException
 import munit.internal.junitinterface.Settings
+import scala.util.Success
 
 class MUnitRunner(val cls: Class[_ <: Suite], newInstance: () => Suite)
     extends Runner
@@ -311,8 +312,22 @@ class MUnitRunner(val cls: Class[_ <: Suite], newInstance: () => Suite)
     }
   }
 
-  private def foreachUnsafe(thunks: Iterable[() => Unit]): Try[Unit] = {
+  private def foreachUnsafe(
+      thunks: Iterable[() => Future[Unit]]
+  ): Future[Unit] = {
     var errors = mutable.ListBuffer.empty[Throwable]
+    def loop(ts: Iterator[() => Future[Unit]]): Future[Unit] =
+      if (ts.hasNext) {
+        val fn = ts.next()
+        val result = fn()
+        result.value match {
+          case Some(Success(_)) => loop(ts)
+          case _ =>
+            loop(ts)
+        }
+      } else {
+        Future.successful(())
+      }
     thunks.foreach { thunk =>
       try {
         thunk()

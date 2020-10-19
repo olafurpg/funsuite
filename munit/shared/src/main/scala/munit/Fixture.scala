@@ -1,5 +1,7 @@
 package munit
 
+import scala.concurrent.Future
+
 /**
  * @param name The name of this fixture, used for displaying an error message if
  * `beforeAll()` or `afterAll()` fail.
@@ -18,8 +20,12 @@ abstract class Fixture[T](val fixtureName: String) {
    */
   def beforeEach(context: BeforeEach): Unit = ()
 
+  def beforeEachAsync(context: BeforeEach): TestValue = Future.successful(())
+
   /** Runs after each individual test case. */
   def afterEach(context: AfterEach): Unit = ()
+
+  def afterEachAsync(context: AfterEach): TestValue = Future.successful(())
 
   /** Runs once after the test suite has finished, regardless if the tests failed or not. */
   def afterAll(): Unit = ()
