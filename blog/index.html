@@ -144,13 +144,12 @@ graph for a Scala 3 application.</p>
 </svg>
 </div>
 <!-- prettier-ignore-end -->
-<p>The application has two direct dependencies (<code>a_library_3.0</code> and
-<code>b_library_2.13</code>) and one transitive dependency on MUnit. The problem is that
-the transitive MUnit dependency appears twice on the classpath: once for Scala 3
-(<code>munit_3.0</code>) and once for Scala 2.13 (<code>munit_2.13</code>). If <code>munit_3.0</code> and
-<code>munit_2.13</code> have binary incompatibilities then the application may compile
-successfully but crash at runtime with a <code>MethodNotFoundException</code> or
-<code>ClassNotFoundException</code>.</p>
+<p>The application has two direct dependencies (<code>a_library_3.0</code>, <code>b_library_2.13</code>)
+and one transitive dependency on MUnit. The problem is that the transitive MUnit
+dependency appears twice on the classpath: once for Scala 3 (<code>munit_3.0</code>) and
+once for Scala 2.13 (<code>munit_2.13</code>). If <code>munit_3.0</code> and <code>munit_2.13</code> have binary
+incompatibilities then the application may compile successfully but crash at
+runtime with a <code>MethodNotFoundException</code> or <code>ClassNotFoundException</code>.</p>
 <p>The next release of MUnit avoids this problem by including Scala 2 macros in the
 <code>munit_3.0</code> artifact. With this change, <code>b_library_2.13</code> can depend on
 <code>munit_3.0</code> and the dependency graph becomes like this instead.</p>
@@ -218,7 +217,7 @@ successfully but crash at runtime with a <code>MethodNotFoundException</code> or
 <p>This feature is new and has some limitations that's good to be aware of:</p>
 <ul>
 <li>Scala 2.13.4 can only understand libraries that are published with the old
-Scala 3.0.0-M1 version (latest is 3.0.0-M3 at the time of this writing.). The
+Scala 3.0.0-M1 version (latest is 3.0.0-M3 at the time of this writing). The
 upcoming Scala 2.13.5 release will be able to understand newer Scala 3.x
 releases.</li>
 <li>Some common features in Scala 2 macros don't work in Scala 3. Most notably,
