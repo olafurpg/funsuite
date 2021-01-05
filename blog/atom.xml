@@ -2,12 +2,64 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://scalameta.org/munit/munit/blog</id>
     <title>MUnit Blog</title>
-    <updated>2020-02-01T06:00:00.000Z</updated>
+    <updated>2021-01-05T06:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://scalameta.org/munit/munit/blog"/>
     <subtitle>The best place to stay up-to-date with the latest MUnit news and events.</subtitle>
     <logo>http://scalameta.org/munit/munit/img/scalameta-logo.png</logo>
-    <rights>Copyright © 2020 Scalameta</rights>
+    <rights>Copyright © 2021 Scalameta</rights>
+    <entry>
+        <title type="html"><![CDATA[Publish Scala 2 and Scala 3 macros together]]></title>
+        <id>http://scalameta.org/munit/munit/blog/2021/01/05/macromix.html</id>
+        <link href="http://scalameta.org/munit/munit/blog/2021/01/05/macromix.html"/>
+        <updated>2021-01-05T06:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>The next release of MUnit makes use of a new compiler feature that allows you to publish Scala 2 and Scala 3 macros together in a single artifact. The blog post <a href="https://www.scala-lang.org/blog/2020/11/19/scala-3-forward-compat.html">Forward Compatibility for the Scala 3 Transition</a> by Jamie Thompson explains this feature ...</p>]]></summary>
+        <author>
+            <name>Ólafur Páll Geirsson</name>
+            <uri>https://twitter.com/olafurpg</uri>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Using ScalaCheck with MUnit]]></title>
+        <id>http://scalameta.org/munit/munit/blog/2020/03/24/scalacheck.html</id>
+        <link href="http://scalameta.org/munit/munit/blog/2020/03/24/scalacheck.html"/>
+        <updated>2020-03-24T06:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>Property-based testing is a popular testing style and its most widely used
+implementation for Scala is the <a href="https://www.scalacheck.org">ScalaCheck</a>
+library.</p>
+<p>Starting with version 0.7.0, MUnit introduces a dedicated integration for
+ScalaCheck, which we'll explore in this blog post.</p>
+]]></summary>
+        <author>
+            <name>Gabriele Petronella</name>
+            <uri>https://twitter.com/gabro27</uri>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cross-platform async testing support]]></title>
+        <id>http://scalameta.org/munit/munit/blog/2020/02/16/async.html</id>
+        <link href="http://scalameta.org/munit/munit/blog/2020/02/16/async.html"/>
+        <updated>2020-02-16T06:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>MUnit v0.4.x did not support truly async tests on platforms like JavaScript. For
+example, the following test case would succeed even if it returns a failing
+future:</p>
+<pre><code class="hljs css language-scala">test(<span class="hljs-string">"should fail after 100 milliseconds"</span>) {
+  <span class="hljs-keyword">val</span> p = <span class="hljs-type">Promise</span>[<span class="hljs-type">Unit</span>]()
+  setTimeout(<span class="hljs-number">100</span>) {
+    p.failure(<span class="hljs-keyword">new</span> <span class="hljs-type">RuntimeException</span>(<span class="hljs-string">"boom"</span>))
+  }
+  p.future
+}
+</code></pre>
+<p>The latest MUnit v0.5.0 release fixes this issue by adding support for async
+tests on all platforms meaning that the example test case above fails as
+expected after 100 milliseconds.</p>
+]]></summary>
+        <author>
+            <name>Ólafur Páll Geirsson</name>
+            <uri>https://twitter.com/olafurpg</uri>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[MUnit is a new Scala testing library]]></title>
         <id>http://scalameta.org/munit/munit/blog/2020/02/01/hello-world.html</id>
@@ -21,7 +73,6 @@ MUnit.</p>
 ]]></summary>
         <author>
             <name>Ólafur Páll Geirsson</name>
-            <email/>
             <uri>https://twitter.com/olafurpg</uri>
         </author>
     </entry>

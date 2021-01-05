@@ -6,7 +6,7 @@
 
               ga('create', 'UA-140140828-1', 'auto');
               ga('send', 'pageview');
-            </script><link rel="stylesheet" href="/munit/css/custom.css"/><script src="/munit/js/scrollSpy.js"></script><link rel="stylesheet" href="/munit/css/main.css"/><script src="/munit/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/munit/"><img class="logo" src="/munit/img/scalameta-logo.png" alt="MUnit"/><h2 class="headerTitleWithLogo">MUnit</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/munit/docs/getting-started.html" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/munit/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/scalameta/munit" target="_blank">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>All Blog Posts</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">All Blog Posts</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/munit/blog/2020/02/01/hello-world.html">MUnit is a new Scala testing library</a></li></ul></div></div></section></div><script>
+            </script><link rel="stylesheet" href="/munit/css/custom.css"/><script src="/munit/js/scrollSpy.js"></script><link rel="stylesheet" href="/munit/css/main.css"/><script src="/munit/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/munit/"><img class="logo" src="/munit/img/scalameta-logo.png" alt="MUnit"/><h2 class="headerTitleWithLogo">MUnit</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/munit/docs/getting-started.html" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/munit/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/scalameta/munit" target="_blank">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>All Blog Posts</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">All Blog Posts</h3><ul class=""><li class="navListItem"><a class="navItem" href="/munit/blog/2021/01/05/macromix.html">Publish Scala 2 and Scala 3 macros together</a></li><li class="navListItem"><a class="navItem" href="/munit/blog/2020/03/24/scalacheck.html">Using ScalaCheck with MUnit</a></li><li class="navListItem"><a class="navItem" href="/munit/blog/2020/02/16/async.html">Cross-platform async testing support</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/munit/blog/2020/02/01/hello-world.html">MUnit is a new Scala testing library</a></li></ul></div></div></section></div><script>
             var coll = document.getElementsByClassName('collapsible');
             var checkActiveCategory = true;
             for (var i = 0; i < coll.length; i++) {
@@ -119,7 +119,7 @@ testFrameworks += <span class="hljs-keyword">new</span> <span class="hljs-type">
 reasoning about how MUnit works.</p>
 <p>Internally, a core MUnit data structure is <code>GenericTest[T]</code>, which represents a
 single test case and is roughly defined like this.</p>
-<pre><code class="hljs css language-scala"><span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GenericType</span>[<span class="hljs-type">T</span>](<span class="hljs-params">
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GenericTest</span>[<span class="hljs-type">T</span>](<span class="hljs-params">
   name: <span class="hljs-type">String</span>,
   body: (</span>) <span class="hljs-title">=&gt;</span> <span class="hljs-title">T</span>,</span>
   tags: <span class="hljs-type">Set</span>[<span class="hljs-type">Tag</span>],
@@ -137,9 +137,9 @@ abstract over any way you like.</p>
 JUnit and MUnit test cases are not generated via macros like in utest.</p>
 <p>MUnit provides a high-level API to write tests in a ScalaTest-inspired
 <code>FunSuite</code> syntax where the type parameter for <code>GenericTest[T]</code> is defined as
-<code>Any</code>.</p>
+<code>Future[Any]</code>.</p>
 <pre><code class="hljs css language-scala"><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FunSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Suite</span> </span>{
-  <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">TestValue</span> </span>= <span class="hljs-type">Any</span>
+  <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">TestValue</span> </span>= <span class="hljs-type">Future</span>[<span class="hljs-type">Any</span>]
 }
 </code></pre>
 <p>For common usage of MUnit you are not expected to write raw
@@ -160,23 +160,26 @@ code:</p>
 <span class="hljs-keyword">import</span> munit._
 <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Windows213</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Tag</span>(<span class="hljs-params">"<span class="hljs-type">Windows213</span>"</span>)</span>
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">FunSuite</span> </span>{
-  <span class="hljs-comment">// reminder: type Test = GenericTest[Any]</span>
-  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitNewTest</span></span>(test: <span class="hljs-type">Test</span>): <span class="hljs-type">Test</span> = {
-    <span class="hljs-keyword">val</span> isIgnored = !options.tags(<span class="hljs-type">Windows213</span>) || {
-      <span class="hljs-type">Properties</span>.isWin &amp;&amp;
-      <span class="hljs-type">Properties</span>.versionNumberString.startsWith(<span class="hljs-string">"2.13"</span>)
-    }
-    <span class="hljs-keyword">if</span> (isIgnored) test.withBody(() =&gt; <span class="hljs-type">Ignore</span>)
-    <span class="hljs-keyword">else</span> test
-  }
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">munitTestTransforms</span> </span>= <span class="hljs-keyword">super</span>.munitTestTransforms ++ <span class="hljs-type">List</span>(
+    <span class="hljs-keyword">new</span> <span class="hljs-type">TestTransform</span>(<span class="hljs-string">"Windows213"</span>, { test =&gt;
+      <span class="hljs-keyword">val</span> isIgnored =
+        test.tags(<span class="hljs-type">Windows213</span>) &amp;&amp; !(
+          <span class="hljs-type">Properties</span>.isWin &amp;&amp;
+            <span class="hljs-type">Properties</span>.versionNumberString.startsWith(<span class="hljs-string">"2.13"</span>)
+        )
+      <span class="hljs-keyword">if</span> (isIgnored) test.tag(<span class="hljs-type">Ignore</span>)
+      <span class="hljs-keyword">else</span> test
+    })
+  )
 
   test(<span class="hljs-string">"windows-213"</span>.tag(<span class="hljs-type">Windows213</span>)) {
     <span class="hljs-comment">// Only runs when operating system is Windows and Scala version is 2.13</span>
   }
   test(<span class="hljs-string">"normal test"</span>) {
-    <span class="hljs-comment">// Always runs.</span>
+    <span class="hljs-comment">// Always runs like a normal test.</span>
   }
 }
+
 </code></pre>
 <p>By encoding the environment requirements in the test implementation, we prevent
 the situation where users run <code>sbt test</code> commands that are invalid for their
@@ -202,29 +205,29 @@ behavior of your program has changed.</p>
 <p>In the image above, the failing <code>assertNoDiff()</code> includes a <code>stripMargin</code>
 formatted multiline string of the obtained string. The <code>assertNoDiff()</code>
 assertions is helpful for comparing multiline strings ignoring non-visible
-differences such as Windows/Unix newlines, ANSI colors and leading/trailing
+differences such as Windows/Unix newlines, ANSI color codes and leading/trailing
 whitespace.</p>
 <p><img src="https://i.imgur.com/Iy82OWe.png" alt="Demo showing how to include clues in error messages"></p>
 <p>In the image above, the <code>clue(a)</code> helpers are used to enrich the error message
 with additional information that is displayed when the assertion fails.</p>
 <p><img src="https://i.imgur.com/iosErEv.png" alt="Demo showing highlighted stack traces"></p>
 <p>In the image above, stack trace elements that are defined from library
-dependencies like the standard library are grayed making it easier to find stack
-trace elements from your own code. This can be helpful when debugging exceptions
-with cryptic error messages. This feature is inspired by
-<a href="https://github.com/lihaoyi/utest">utest</a>.</p>
+dependencies like the standard library are grayed out making it easier to find
+stack trace elements that are relevant for your code. This can be helpful when
+debugging large exception stack traces. This feature is inspired by the
+pretty-printing of stack traces in <a href="https://github.com/lihaoyi/utest">utest</a>.</p>
 <p>Check out the
 <a href="https://scalameta.org/munit/docs/assertions.html">writing assertions guide</a> to
 learn more how to write assertions with helpful error messages.</p>
 <h2><a class="anchor" aria-hidden="true" id="tooling-integrations"></a><a href="#tooling-integrations" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tooling integrations</h2>
-<p>The tooling side of a testing library is just as important as the library APIs.
-MUnit is implemented as a JUnit runner, which means that any tool that knows how
-to run a JUnit test knows how to run MUnit tests.</p>
+<p>The tooling side of a testing library is equally important as the library APIs.
+MUnit is implemented as a JUnit runner, which means that any existing tool that
+knows how to run a JUnit test suite knows how to run MUnit test suites.</p>
 <p>For example, IntelliJ already detects MUnit test suites even if IntelliJ has no
 custom logic to support MUnit.</p>
 <p><img src="https://camo.githubusercontent.com/2965bd83df7b98dbc2734815c5bcbe3e784f6242/68747470733a2f2f692e696d6775722e636f6d2f6f4141325a65512e706e67" alt="Demo showing IntelliJ running MUnit tests"></p>
 <p>Likewise, build tools such as Gradle and Pants can integrate with MUnit using
-existing JUnit integrations.</p>
+their existing JUnit integrations.</p>
 <h2><a class="anchor" aria-hidden="true" id="insightful-test-reports"></a><a href="#insightful-test-reports" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Insightful test reports</h2>
 <p>MUnit has an sbt plugin to store structured JSON data about test results in
 Google Cloud. The data can then be used to generate HTML reports based on
@@ -243,18 +246,18 @@ flaky, it consistently fails on every run. On the other hand,
 to be legitimately flaky.</p>
 <p>The Metals codebase has ~1.5k test cases, some which run against up to seven
 different Scala compiler versions. It's not ideal that some test cases fail
-non-deterministically but it's normal that it happens as the project evolves.
-While there is no silver bullet for avoiding flaky test failures, having data
-about how frequently a test fails is at least a starting point to begin
-addressing the problem.</p>
+non-deterministically but it's normal that it happens as the project grows and
+we support more build tools, Scala versions and features. While there is no
+silver bullet for avoiding flaky test failures, having data about how frequently
+a test fails is at least a starting point to begin addressing the problem.</p>
 <p>Check out the
 <a href="https://scalameta.org/munit/docs/reports.html">generating test reports guide</a>
 to learn how to configure your build to upload test reports to Google Cloud
-using the MUnit sbt plugin. The plugin is implemented as an sbt <code>testsListener</code>
-so it works in theory with any testing library (including ScalaTest, utest, ...)
+using the MUnit sbt plugin. The plugin is implemented as an sbt <code>TestsListener</code>
+so should work with any testing library (including ScalaTest, utest, ...)
 although it has so far only been tested against MUnit.</p>
 <h2><a class="anchor" aria-hidden="true" id="credits"></a><a href="#credits" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Credits</h2>
-<p>I want to thank to <a href="https://twitter.com/gabro27/">@gabro</a> for implementing Dotty
+<p>I want to thank <a href="https://twitter.com/gabro27/">@gabro</a> for implementing Dotty
 support, porting the Metals codebase to MUnit and sharing tons of valuable
 feedback. Without your initial interest in MUnit I probably would not have
 polished the project for a proper release.</p>
@@ -270,7 +273,7 @@ inspired by existing testing libraries including ScalaTest, utest, JUnit and ava
 provides the combination of all the features presented in this post in one
 solution and I hope that explains the motivation for why MUnit exists.</p>
 <p>Happy testing ✌️</p>
-</span></div></div><div class="blogSocialSection"></div></div><div class="blog-recent"><a class="button" href="/munit/blog">Recent Posts</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#tldr">TL;DR</a></li><li><a href="#tests-as-values">Tests as values</a></li><li><a href="#rich-filtering-capabilities">Rich filtering capabilities</a></li><li><a href="#actionable-errors">Actionable errors</a></li><li><a href="#tooling-integrations">Tooling integrations</a></li><li><a href="#insightful-test-reports">Insightful test reports</a></li><li><a href="#credits">Credits</a></li><li><a href="#conclusion">Conclusion</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#045C4D"><section class="sitemap"><a href="/munit/" class="nav-home"><img src="/munit/img/scalameta-logo.png" alt="MUnit" width="66" height="58"/></a><div><h5>Overview</h5><a href="/munit/docs/getting-started.html">Getting started</a></div><div><h5>Social</h5><a href="https://github.com/scalameta/munit" target="_blank"><img src="https://img.shields.io/github/stars/scalameta/munit.svg?color=%23087e8b&amp;label=stars&amp;logo=github&amp;style=social"/></a><a href="https://discord.gg/RFpSVth" target="_blank"><img src="https://img.shields.io/discord/632642981228314653?logo=discord&amp;style=social"/></a><a href="https://gitter.im/scalameta/munit" target="_blank"><img src="https://img.shields.io/gitter/room/scalameta/munit.svg?logo=gitter&amp;style=social"/></a><a href="https://twitter.com/scalameta" target="_blank"><img src="https://img.shields.io/twitter/follow/scalameta.svg?logo=twitter&amp;style=social"/></a></div></section><section class="copyright">Copyright © 2020 Scalameta</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></div><div class="blogSocialSection"></div></div><div class="blog-recent"><a class="button" href="/munit/blog">Recent Posts</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#tldr">TL;DR</a></li><li><a href="#tests-as-values">Tests as values</a></li><li><a href="#rich-filtering-capabilities">Rich filtering capabilities</a></li><li><a href="#actionable-errors">Actionable errors</a></li><li><a href="#tooling-integrations">Tooling integrations</a></li><li><a href="#insightful-test-reports">Insightful test reports</a></li><li><a href="#credits">Credits</a></li><li><a href="#conclusion">Conclusion</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#045C4D"><section class="sitemap"><a href="/munit/" class="nav-home"><img src="/munit/img/scalameta-logo.png" alt="MUnit" width="66" height="58"/></a><div><h5>Overview</h5><a href="/munit/docs/getting-started.html">Getting started</a></div><div><h5>Social</h5><a href="https://github.com/scalameta/munit" target="_blank"><img src="https://img.shields.io/github/stars/scalameta/munit.svg?color=%23087e8b&amp;label=stars&amp;logo=github&amp;style=social"/></a><a href="https://discord.gg/RFpSVth" target="_blank"><img src="https://img.shields.io/discord/632642981228314653?logo=discord&amp;style=social"/></a><a href="https://gitter.im/scalameta/munit" target="_blank"><img src="https://img.shields.io/gitter/room/scalameta/munit.svg?logo=gitter&amp;style=social"/></a><a href="https://twitter.com/scalameta" target="_blank"><img src="https://img.shields.io/twitter/follow/scalameta.svg?logo=twitter&amp;style=social"/></a></div></section><section class="copyright">Copyright © 2021 Scalameta</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

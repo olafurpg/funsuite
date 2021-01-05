@@ -4,7 +4,7 @@
         <title>MUnit Blog</title>
         <link>http://scalameta.org/munit/munit/blog</link>
         <description>The best place to stay up-to-date with the latest MUnit news and events.</description>
-        <lastBuildDate>Sat, 01 Feb 2020 06:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 05 Jan 2021 06:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,7 +12,47 @@
             <url>http://scalameta.org/munit/munit/img/scalameta-logo.png</url>
             <link>http://scalameta.org/munit/munit/blog</link>
         </image>
-        <copyright>Copyright © 2020 Scalameta</copyright>
+        <copyright>Copyright © 2021 Scalameta</copyright>
+        <item>
+            <title><![CDATA[Publish Scala 2 and Scala 3 macros together]]></title>
+            <link>http://scalameta.org/munit/munit/blog/2021/01/05/macromix.html</link>
+            <guid>http://scalameta.org/munit/munit/blog/2021/01/05/macromix.html</guid>
+            <pubDate>Tue, 05 Jan 2021 06:00:00 GMT</pubDate>
+            <description><![CDATA[<p>The next release of MUnit makes use of a new compiler feature that allows you to publish Scala 2 and Scala 3 macros together in a single artifact. The blog post <a href="https://www.scala-lang.org/blog/2020/11/19/scala-3-forward-compat.html">Forward Compatibility for the Scala 3 Transition</a> by Jamie Thompson explains this feature ...</p>]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Using ScalaCheck with MUnit]]></title>
+            <link>http://scalameta.org/munit/munit/blog/2020/03/24/scalacheck.html</link>
+            <guid>http://scalameta.org/munit/munit/blog/2020/03/24/scalacheck.html</guid>
+            <pubDate>Tue, 24 Mar 2020 06:00:00 GMT</pubDate>
+            <description><![CDATA[<p>Property-based testing is a popular testing style and its most widely used
+implementation for Scala is the <a href="https://www.scalacheck.org">ScalaCheck</a>
+library.</p>
+<p>Starting with version 0.7.0, MUnit introduces a dedicated integration for
+ScalaCheck, which we'll explore in this blog post.</p>
+]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Cross-platform async testing support]]></title>
+            <link>http://scalameta.org/munit/munit/blog/2020/02/16/async.html</link>
+            <guid>http://scalameta.org/munit/munit/blog/2020/02/16/async.html</guid>
+            <pubDate>Sun, 16 Feb 2020 06:00:00 GMT</pubDate>
+            <description><![CDATA[<p>MUnit v0.4.x did not support truly async tests on platforms like JavaScript. For
+example, the following test case would succeed even if it returns a failing
+future:</p>
+<pre><code class="hljs css language-scala">test(<span class="hljs-string">"should fail after 100 milliseconds"</span>) {
+  <span class="hljs-keyword">val</span> p = <span class="hljs-type">Promise</span>[<span class="hljs-type">Unit</span>]()
+  setTimeout(<span class="hljs-number">100</span>) {
+    p.failure(<span class="hljs-keyword">new</span> <span class="hljs-type">RuntimeException</span>(<span class="hljs-string">"boom"</span>))
+  }
+  p.future
+}
+</code></pre>
+<p>The latest MUnit v0.5.0 release fixes this issue by adding support for async
+tests on all platforms meaning that the example test case above fails as
+expected after 100 milliseconds.</p>
+]]></description>
+        </item>
         <item>
             <title><![CDATA[MUnit is a new Scala testing library]]></title>
             <link>http://scalameta.org/munit/munit/blog/2020/02/01/hello-world.html</link>

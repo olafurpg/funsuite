@@ -1,0 +1,155 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Using ScalaCheck with MUnit · MUnit</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Property-based testing is a popular testing style and its most widely used"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Using ScalaCheck with MUnit · MUnit"/><meta property="og:type" content="website"/><meta property="og:url" content="http://scalameta.org/munit/munit/blog/2020/03/24/scalacheck.html"/><meta property="og:description" content="Property-based testing is a popular testing style and its most widely used"/><meta property="og:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><link rel="shortcut icon" href="/munit/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="http://scalameta.org/munit/munit/blog/atom.xml" title="MUnit Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="http://scalameta.org/munit/munit/blog/feed.xml" title="MUnit Blog RSS Feed"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-140140828-1', 'auto');
+              ga('send', 'pageview');
+            </script><link rel="stylesheet" href="/munit/css/custom.css"/><script src="/munit/js/scrollSpy.js"></script><link rel="stylesheet" href="/munit/css/main.css"/><script src="/munit/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/munit/"><img class="logo" src="/munit/img/scalameta-logo.png" alt="MUnit"/><h2 class="headerTitleWithLogo">MUnit</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/munit/docs/getting-started.html" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/munit/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/scalameta/munit" target="_blank">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>All Blog Posts</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">All Blog Posts</h3><ul class=""><li class="navListItem"><a class="navItem" href="/munit/blog/2021/01/05/macromix.html">Publish Scala 2 and Scala 3 macros together</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/munit/blog/2020/03/24/scalacheck.html">Using ScalaCheck with MUnit</a></li><li class="navListItem"><a class="navItem" href="/munit/blog/2020/02/16/async.html">Cross-platform async testing support</a></li><li class="navListItem"><a class="navItem" href="/munit/blog/2020/02/01/hello-world.html">MUnit is a new Scala testing library</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer postContainer blogContainer"><div class="wrapper"><div class="lonePost"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle"><a href="/munit/blog/2020/03/24/scalacheck.html">Using ScalaCheck with MUnit</a></h1><p class="post-meta">March 24, 2020</p><div class="authorBlock"><p class="post-authorName"><a href="https://twitter.com/gabro27" target="_blank" rel="noreferrer noopener">Gabriele Petronella</a></p><div class="authorPhoto"><a href="https://twitter.com/gabro27" target="_blank" rel="noreferrer noopener"><img src="https://github.com/gabro.png" alt="Gabriele Petronella"/></a></div></div></header><div><span><p>Property-based testing is a popular testing style and its most widely used
+implementation for Scala is the <a href="https://www.scalacheck.org">ScalaCheck</a>
+library.</p>
+<p>Starting with version 0.7.0, MUnit introduces a dedicated integration for
+ScalaCheck, which we'll explore in this blog post.</p>
+<!-- truncate -->
+<p>Once you've
+<a href="/munit/docs/integrations/scalacheck.html">setup the <code>munit-scalacheck</code> module</a>
+you can extend the <code>ScalaCheckSuite</code> trait and start writing your properties,
+for example:</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> munit.<span class="hljs-type">ScalaCheckSuite</span>
+<span class="hljs-keyword">import</span> org.scalacheck.<span class="hljs-type">Prop</span>._
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IntegerSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ScalaCheckSuite</span> </span>{
+
+  property(<span class="hljs-string">"addition is commutative"</span>) {
+    forAll { (n1: <span class="hljs-type">Int</span>, n2: <span class="hljs-type">Int</span>) =&gt;
+      n1 + n2 == n2 + n1
+    }
+  }
+
+  property(<span class="hljs-string">"0 is the identity of addition"</span>) {
+    forAll { (n: <span class="hljs-type">Int</span>) =&gt;
+      n + <span class="hljs-number">0</span> == n
+    }
+  }
+
+}
+</code></pre>
+<p>You can define properties using the familiar features of ScalaCheck, including
+labels (<code>:|</code> and <code>|:</code>), conditional properties (<code>==&gt;</code>) and custom generators.</p>
+<p>The integration with MUnit also grants you the ability to use
+<a href="/munit/docs/assertions.html">assertions</a>. This is especially useful when
+testing multiple conditions of a property.</p>
+<p>For example, using the ScalaCheck API you may write:</p>
+<pre><code class="hljs css language-scala">property(<span class="hljs-string">"integer identities"</span>) {
+  forAll { (n: <span class="hljs-type">Int</span>) =&gt;
+    (n + <span class="hljs-number">0</span> == n) :| <span class="hljs-string">"0 is the addition identity"</span> &amp;&amp;
+    (n * <span class="hljs-number">1</span> == n) :| <span class="hljs-string">"1 is the multiplication identity"</span>
+  }
+}
+</code></pre>
+<p>This is a boolean expression, which uses labels to better identify which part of
+the expression fails.</p>
+<p>For example, here's what happens if we change the second check to make it fail:</p>
+<p><img src="https://user-images.githubusercontent.com/691940/77507758-52eb5f80-6e69-11ea-9d01-a15bd7c79ba8.png" alt="scalacheck api fail"></p>
+<p>For longer expressions, however, this may become inconvenient and may choose to
+use a MUnit assertions instead:</p>
+<pre><code class="hljs css language-scala">property(<span class="hljs-string">"integer identities"</span>) {
+  forAll { (n: <span class="hljs-type">Int</span>) =&gt;
+    assertEquals(n + <span class="hljs-number">0</span>, n, <span class="hljs-string">"0 is the addition identity"</span>)
+    assertEquals(n * <span class="hljs-number">1</span>, n, <span class="hljs-string">"1 is the multiplication identity"</span>)
+  }
+}
+</code></pre>
+<p>Here's what happens when we introduce the same error as before:</p>
+<p><img src="https://user-images.githubusercontent.com/691940/77507636-1b7cb300-6e69-11ea-8325-63469d830d7d.png" alt="assertion api fail"></p>
+<p>Using assertions for property checks has a few advantages:</p>
+<ul>
+<li><p>the expression is easier to read and write, since it doesn't need to be a long
+boolean expression concatenated with <code>&amp;&amp;</code></p></li>
+<li><p>when one of the condition fails, MUnit will report an error highlighting the
+exact line that failed. Note that this makes the use of labels less necessary,
+since it's already clear which is the offending check, so you could
+potentially avoid them if you prefer.</p></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="conclusions"></a><a href="#conclusions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Conclusions</h2>
+<p>Writing property-based tests using MUnit and ScalaCheck is easy to setup and it
+doesn't require to learn a new API.</p>
+<p>You can optionally use MUnit assertions to break down complicated property
+checks and get better error reporting.</p>
+<p>Happy (property-based) testing!</p>
+</span></div></div><div class="blogSocialSection"></div></div><div class="blog-recent"><a class="button" href="/munit/blog">Recent Posts</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#conclusions">Conclusions</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#045C4D"><section class="sitemap"><a href="/munit/" class="nav-home"><img src="/munit/img/scalameta-logo.png" alt="MUnit" width="66" height="58"/></a><div><h5>Overview</h5><a href="/munit/docs/getting-started.html">Getting started</a></div><div><h5>Social</h5><a href="https://github.com/scalameta/munit" target="_blank"><img src="https://img.shields.io/github/stars/scalameta/munit.svg?color=%23087e8b&amp;label=stars&amp;logo=github&amp;style=social"/></a><a href="https://discord.gg/RFpSVth" target="_blank"><img src="https://img.shields.io/discord/632642981228314653?logo=discord&amp;style=social"/></a><a href="https://gitter.im/scalameta/munit" target="_blank"><img src="https://img.shields.io/gitter/room/scalameta/munit.svg?logo=gitter&amp;style=social"/></a><a href="https://twitter.com/scalameta" target="_blank"><img src="https://img.shields.io/twitter/follow/scalameta.svg?logo=twitter&amp;style=social"/></a></div></section><section class="copyright">Copyright © 2021 Scalameta</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '586dbbac9432319747bfea750fab16cb',
+                indexName: 'scalameta_munit',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>

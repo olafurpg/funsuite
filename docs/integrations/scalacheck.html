@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>ScalaCheck · MUnit</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="MUnit supports writing property-based tests using"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="ScalaCheck · MUnit"/><meta property="og:type" content="website"/><meta property="og:url" content="http://scalameta.org/munit/munit/index.html"/><meta property="og:description" content="MUnit supports writing property-based tests using"/><meta property="og:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://scalameta.org/munit/munit/img/scalameta-logo.png"/><link rel="shortcut icon" href="/munit/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="http://scalameta.org/munit/munit/blog/atom.xml" title="MUnit Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="http://scalameta.org/munit/munit/blog/feed.xml" title="MUnit Blog RSS Feed"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-140140828-1', 'auto');
+              ga('send', 'pageview');
+            </script><link rel="stylesheet" href="/munit/css/custom.css"/><script src="/munit/js/scrollSpy.js"></script><link rel="stylesheet" href="/munit/css/main.css"/><script src="/munit/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/munit/"><img class="logo" src="/munit/img/scalameta-logo.png" alt="MUnit"/><h2 class="headerTitleWithLogo">MUnit</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/munit/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/munit/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/scalameta/munit" target="_blank">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Integrations</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/munit/docs/getting-started.html">Getting started</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/tests.html">Declaring tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/assertions.html">Writing assertions</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/fixtures.html">Using fixtures</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/filtering.html">Filtering tests</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/reports.html">Generating test reports</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/scalatest.html">Coming from ScalaTest</a></li><li class="navListItem"><a class="navItem" href="/munit/docs/troubleshooting.html">Troubleshooting</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Integrations</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/munit/docs/integrations/scalacheck.html">ScalaCheck</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/scalameta/munit/edit/master/docs/integrations/scalacheck.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">ScalaCheck</h1></header><article><div><span><p>MUnit supports writing property-based tests using
+<a href="http://www.scalacheck.org/">ScalaCheck</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="getting-started"></a><a href="#getting-started" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Getting started</h2>
+<p>ScalaCheck support is provided as a separate module. You can add it to your
+build via:</p>
+<pre><code class="hljs css language-scala">libraryDependencies += <span class="hljs-string">"org.scalameta"</span> %% <span class="hljs-string">"munit-scalacheck"</span> % <span class="hljs-string">"0.7.21-SNAPSHOT"</span> % <span class="hljs-type">Test</span>
+</code></pre>
+<p>You can then extend <code>ScalaCheckSuite</code> and write ScalaCheck property tests:</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> munit.<span class="hljs-type">ScalaCheckSuite</span>
+<span class="hljs-keyword">import</span> org.scalacheck.<span class="hljs-type">Prop</span>._
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IntegerSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ScalaCheckSuite</span> </span>{
+
+  property(<span class="hljs-string">"addition is commutative"</span>) {
+    forAll { (n1: <span class="hljs-type">Int</span>, n2: <span class="hljs-type">Int</span>) =&gt;
+      n1 + n2 == n2 + n1
+    }
+  }
+
+  property(<span class="hljs-string">"0 is the identity of addition"</span>) {
+    forAll { (n: <span class="hljs-type">Int</span>) =&gt;
+      n + <span class="hljs-number">0</span> == n
+    }
+  }
+
+}
+</code></pre>
+<blockquote>
+<p>👉 <code>property</code> is almost identical to <code>FunSuite</code>'s <code>test</code>, but it additionally
+ensures that the test value is a ScalaCheck <code>Prop</code>.</p>
+<p>It supports all of <code>test</code>'s features, such as tagging and marking the property
+as expected to fail:</p>
+<pre><code class="hljs css language-scala">property(<span class="hljs-string">"my property"</span>.tag(<span class="hljs-type">WindowsOnly</span>)) {
+  forAll { (n: <span class="hljs-type">Int</span>) =&gt; n * <span class="hljs-number">0</span> == <span class="hljs-number">0</span> }
+}
+</code></pre>
+<pre><code class="hljs css language-scala">property(<span class="hljs-string">"issue-123"</span>.fail) {
+  forAll { (n: <span class="hljs-type">Int</span>) =&gt; buggyFunction(n) }
+}
+</code></pre>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="using-assertions"></a><a href="#using-assertions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using assertions</h2>
+<p>ScalaCheck supports writing property checks as boolean expressions (as in the
+examples above).</p>
+<p>In MUnit you can also use <a href="/munit/docs/assertions.html">assertions</a> to verify properties:</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> munit.<span class="hljs-type">ScalaCheckSuite</span>
+<span class="hljs-keyword">import</span> org.scalacheck.<span class="hljs-type">Prop</span>._
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IntegerSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ScalaCheckSuite</span> </span>{
+
+  property(<span class="hljs-string">"integer identities"</span>) {
+    forAll { (n: <span class="hljs-type">Int</span>) =&gt;
+      assertEquals(n + <span class="hljs-number">0</span>, n)
+      assertEquals(n * <span class="hljs-number">1</span>, n)
+    }
+  }
+
+}
+</code></pre>
+<p>The property above is equivalent to</p>
+<pre><code class="hljs css language-scala">property(<span class="hljs-string">"integer identities"</span>) {
+  forAll { (n: <span class="hljs-type">Int</span>) =&gt;
+    (n + <span class="hljs-number">0</span> == n) &amp;&amp; (n * <span class="hljs-number">1</span> == n)
+  }
+}
+</code></pre>
+<p>but it provides better error reporting by including the source location of the
+failed assertion, which is not possible when using boolean expressions.</p>
+<h2><a class="anchor" aria-hidden="true" id="configuring-scalacheck"></a><a href="#configuring-scalacheck" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuring ScalaCheck</h2>
+<p>You can override the <code>scalaCheckTestParameters</code> property of <code>ScalaCheckSuite</code> to
+customize how ScalaCheck checks the properties:</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> munit.<span class="hljs-type">ScalaCheckSuite</span>
+<span class="hljs-keyword">import</span> org.scalacheck.<span class="hljs-type">Prop</span>._
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IntegerSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ScalaCheckSuite</span> </span>{
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scalaCheckTestParameters</span> </span>=
+    <span class="hljs-keyword">super</span>.scalaCheckTestParameters
+      .withMinSuccessfulTests(<span class="hljs-number">200</span>)
+      .withMaxDiscardRatio(<span class="hljs-number">10</span>)
+
+  property(<span class="hljs-string">"addition is commutative"</span>) {
+    forAll { (n1: <span class="hljs-type">Int</span>, n2: <span class="hljs-type">Int</span>) =&gt;
+      n1 + n2 == n2 + n1
+    }
+  }
+
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="reproducing-a-property-failure"></a><a href="#reproducing-a-property-failure" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reproducing a property failure</h2>
+<p>In some cases, you may find that ScalaCheck properties fail
+non-deterministically. This can happen due to the randomness of the input values
+for each test run.</p>
+<p>When this happens, you can deterministally reproduce a property failure by using
+its seed. Whenever a failure occurs, MUnit prints the offending seed along with
+a suggestion on how to reproduce it:</p>
+<pre><code class="hljs">Failing seed: CTH6hXj8ViScMmsO78-k4_RytXHPK_wSJYNH2h4dCpB=
+You can reproduce <span class="hljs-keyword">this</span> failure <span class="hljs-keyword">by</span> adding the following <span class="hljs-keyword">override</span> to your suite:
+
+  <span class="hljs-keyword">override</span> <span class="hljs-keyword">val</span> scalaCheckInitialSeed = <span class="hljs-string">"CTH6hXj8ViScMmsO78-k4_RytXHPK_wSJYNH2h4dCpB="</span>
+
+</code></pre>
+<p>To reproduce the failure you can follow the suggestion to fix the seed:</p>
+<pre><code class="hljs css language-diff"> class MySuite extends ScalaCheckSuite {
+
+<span class="hljs-addition">+  override val scalaCheckInitialSeed = "CTH6hXj8ViScMmsO78-k4_RytXHPK_wSJYNH2h4dCpB="</span>
+
+   // ...
+ }
+</code></pre>
+<p>Re-running the test will now fail deterministically, which allows you to work on
+an appropriate fix without worrying about randomness.</p>
+<h2><a class="anchor" aria-hidden="true" id="migrating-from-scalatest"></a><a href="#migrating-from-scalatest" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Migrating from ScalaTest</h2>
+<p>ScalaTest provides two styles for writing property-based tests, which are both
+front-ends to ScalaCheck.</p>
+<p>If you are using the &quot;ScalaCheck style&quot; API, i.e. the <code>Checkers</code> trait,
+switching to MUnit requires minor mechanical changes:</p>
+<pre><code class="hljs css language-diff"><span class="hljs-deletion">-import org.scalatest.prop.Checkers</span>
+<span class="hljs-deletion">-import org.scalatest.FunSuite</span>
+<span class="hljs-addition">+import munit.ScalaCheckSuite</span>
+ import org.scalacheck.Prop._
+
+<span class="hljs-deletion">-class IntegerSuite extends FunSuite with Checkers {</span>
+<span class="hljs-addition">+class IntegerSuite extends ScalaCheckSuite {</span>
+
+<span class="hljs-deletion">-  test("addition is commutative") {</span>
+<span class="hljs-addition">+  property("addition is commutative") {</span>
+<span class="hljs-deletion">-    check { (n1: Int, n2: Int) =&gt;</span>
+<span class="hljs-addition">+    forAll { (n1: Int, n2: Int) =&gt;</span>
+       n1 + n2 == n2 + n1
+     }
+   }
+
+}
+</code></pre>
+<p>If you're using the &quot;ScalaTest style&quot; API, i.e. the
+<code>GeneratorDrivenPropertyChecks</code> trait, switching to MUnit requires again a few
+changes, typically including the property body.</p>
+<p>For example, if you are using ScalaTest matchers you will need to convert them
+to MUnit assertions:</p>
+<pre><code class="hljs css language-diff"><span class="hljs-deletion">-import org.scalatest.Matchers</span>
+<span class="hljs-deletion">-import org.scalatest.prop.GeneratorDrivenPropertyChecks</span>
+<span class="hljs-deletion">-import org.scalatest.FunSuite</span>
+<span class="hljs-addition">+import munit.ScalaCheckSuite</span>
+<span class="hljs-addition">+import org.scalacheck.Prop._</span>
+
+<span class="hljs-deletion">-class IntegerSuite extends FunSuite with GeneratorDrivenPropertyChecks with Matchers {</span>
+<span class="hljs-addition">+class IntegerSuite extends ScalaCheckSuite {</span>
+
+<span class="hljs-deletion">-  test("addition and multiplication are commutative") {</span>
+<span class="hljs-addition">+  property("addition and multiplication are commutative") {</span>
+     forAll { (n1: Int, n2: Int) =&gt;
+     forAll { (n1: Int, n2: Int) =&gt;
+<span class="hljs-deletion">-      (n1 + n2) should be (n2 + n1)</span>
+<span class="hljs-deletion">-      (n1 * n2) should be (n2 * n1)</span>
+<span class="hljs-addition">+      assertEquals(n1 + n2, n2 + n1)</span>
+<span class="hljs-addition">+      assertEquals(n1 * n2, n2 * n1)</span>
+     }
+   }
+
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="porting-existing-scalacheck-properties"></a><a href="#porting-existing-scalacheck-properties" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Porting existing ScalaCheck <code>Properties</code></h2>
+<p>If you have existing properties written with the built-in ScalaCheck
+<code>Properties</code> class and you don't want to rewrite them using MUnit suites yet,
+you can define a utility method along the lines of:</p>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">import</span> org.scalacheck.<span class="hljs-type">Properties</span>
+
+<span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">PropertiesAdapter</span> </span>{ self: <span class="hljs-type">ScalaCheckSuite</span> =&gt;
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">include</span></span>(ps: <span class="hljs-type">Properties</span>): <span class="hljs-type">Unit</span> =
+    <span class="hljs-keyword">for</span> ((name, prop) &lt;- ps.properties) property(name)(prop)
+}
+</code></pre>
+<p>And use it:</p>
+<pre><code class="hljs css language-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">LegacyIntProps</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Properties</span>(<span class="hljs-params">"<span class="hljs-type">Int</span>"</span>) </span>{
+  property(<span class="hljs-string">"commutative"</span>) = forAll((x: <span class="hljs-type">Int</span>, y: <span class="hljs-type">Int</span>) =&gt; x + y == y + x)
+  property(<span class="hljs-string">"identity"</span>) = forAll((x: <span class="hljs-type">Int</span>) =&gt; x + <span class="hljs-number">0</span> == x)
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IntSuite</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ScalaCheckSuite</span> <span class="hljs-keyword">with</span> <span class="hljs-title">PropertiesAdapter</span> </span>{
+
+  <span class="hljs-comment">// Include existing ScalaCheck Properties...</span>
+  include(<span class="hljs-type">LegacyIntProps</span>)
+
+  <span class="hljs-comment">// ...and write new properties using MUnit</span>
+  property(<span class="hljs-string">"addition is associative"</span>) {
+    forAll { (x: <span class="hljs-type">Int</span>, y: <span class="hljs-type">Int</span>, z: <span class="hljs-type">Int</span>) =&gt;
+      x + y + z == x + (y + z)
+    }
+  }
+
+}
+</code></pre>
+<p>This way you can re-use the existing property definitions alongside the new ones
+written with MUnit.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/munit/docs/troubleshooting.html"><span class="arrow-prev">← </span><span>Troubleshooting</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#getting-started">Getting started</a></li><li><a href="#using-assertions">Using assertions</a></li><li><a href="#configuring-scalacheck">Configuring ScalaCheck</a></li><li><a href="#reproducing-a-property-failure">Reproducing a property failure</a></li><li><a href="#migrating-from-scalatest">Migrating from ScalaTest</a></li><li><a href="#porting-existing-scalacheck-properties">Porting existing ScalaCheck <code>Properties</code></a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#045C4D"><section class="sitemap"><a href="/munit/" class="nav-home"><img src="/munit/img/scalameta-logo.png" alt="MUnit" width="66" height="58"/></a><div><h5>Overview</h5><a href="/munit/docs/getting-started.html">Getting started</a></div><div><h5>Social</h5><a href="https://github.com/scalameta/munit" target="_blank"><img src="https://img.shields.io/github/stars/scalameta/munit.svg?color=%23087e8b&amp;label=stars&amp;logo=github&amp;style=social"/></a><a href="https://discord.gg/RFpSVth" target="_blank"><img src="https://img.shields.io/discord/632642981228314653?logo=discord&amp;style=social"/></a><a href="https://gitter.im/scalameta/munit" target="_blank"><img src="https://img.shields.io/gitter/room/scalameta/munit.svg?logo=gitter&amp;style=social"/></a><a href="https://twitter.com/scalameta" target="_blank"><img src="https://img.shields.io/twitter/follow/scalameta.svg?logo=twitter&amp;style=social"/></a></div></section><section class="copyright">Copyright © 2021 Scalameta</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '586dbbac9432319747bfea750fab16cb',
+                indexName: 'scalameta_munit',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>
